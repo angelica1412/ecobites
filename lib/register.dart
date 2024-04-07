@@ -173,7 +173,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                 ],
                 ),
-
                 TextFormField(
                   controller: emailController,
                   decoration: InputDecoration(

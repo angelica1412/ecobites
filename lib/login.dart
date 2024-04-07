@@ -1,7 +1,47 @@
+import 'package:ecobites/home.dart';
 import 'package:flutter/material.dart';
-import 'register.dart'; // Mengimpor file signup_page.dart
+import 'register.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passController = TextEditingController();
+
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+
+  Future<void> userLogin(BuildContext context) async {
+    if (_formkey.currentState!.validate()) {
+      try {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: emailController.text.trim(), password: passController.text.trim());
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Home()));
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              backgroundColor: Colors.amber,
+              content: Text(
+                "No User Found",
+                style: TextStyle(fontSize: 18.0),
+              )));
+        } else if (e.code == 'wrong-password') {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              backgroundColor: Colors.amber,
+              content: Text(
+                "Wrong Password",
+                style: TextStyle(fontSize: 18.0),
+              )));
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -9,7 +49,9 @@ class LoginPage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Center(
           child: SingleChildScrollView(
-            child: Column(
+            child: Form(
+              key: _formkey,
+              child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Align(
@@ -51,7 +93,14 @@ class LoginPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 10),
-                    TextField(
+                    TextFormField(
+                      validator: (value){
+                        if(value==null||value.isEmpty){
+                          return 'Please Enter Email';
+                        }
+                        return null;
+                      },
+                      controller: emailController,
                       decoration: InputDecoration(
                         hintText: 'emailanda@gmail.com',
                         focusedBorder: OutlineInputBorder(
@@ -79,7 +128,14 @@ class LoginPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 10),
-                    TextField(
+                    TextFormField(
+                      validator: (value){
+                        if(value==null||value.isEmpty){
+                          return 'Please Enter Password';
+                        }
+                        return null;
+                      },
+                      controller: passController,
                       obscureText: true,
                       decoration: InputDecoration(
                         hintText: '**************',
@@ -102,8 +158,8 @@ class LoginPage extends StatelessWidget {
                     width: 300,
                     child: ElevatedButton(
                       onPressed: () {
-                        // Fungsi yang akan dijalankan ketika tombol login ditekan
-                        // Anda dapat menambahkan logika autentikasi di sini
+                        userLogin(context);
+                        // Add your authentication logic here
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Color(0xFF92E3A9),
@@ -124,7 +180,6 @@ class LoginPage extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        // Navigasi ke halaman pendaftaran
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => RegisterPage()),
@@ -141,7 +196,7 @@ class LoginPage extends StatelessWidget {
                     SizedBox(width: 4),
                     GestureDetector(
                       onTap: () {
-                        // Navigasi ke halaman pendaftaran
+                        // Navigate to the registration page
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => RegisterPage()),
@@ -159,6 +214,7 @@ class LoginPage extends StatelessWidget {
                   ],
                 ),
               ],
+            ),
             ),
           ),
         ),
