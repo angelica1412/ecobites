@@ -36,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // Simulate a time-consuming task (e.g., loading data) for the splash screen.
     // Replace this with your actual data loading logic.
     Future.delayed(
-      Duration(seconds: 7),
+      Duration(seconds: 3),
       () {
         Navigator.pushReplacementNamed(context, '/onboardingscreen');
       },

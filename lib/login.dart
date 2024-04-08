@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:ecobites/services/auth.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -17,28 +18,9 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> userLogin(BuildContext context) async {
     if (_formkey.currentState!.validate()) {
-      try {
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
-            email: emailController.text.trim(), password: passController.text.trim());
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Home()));
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'user-not-found') {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              backgroundColor: Colors.amber,
-              content: Text(
-                "No User Found",
-                style: TextStyle(fontSize: 18.0),
-              )));
-        } else if (e.code == 'wrong-password') {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              backgroundColor: Colors.amber,
-              content: Text(
-                "Wrong Password",
-                style: TextStyle(fontSize: 18.0),
-              )));
-        }
-      }
+      await Auth.login(context, emailController.text.trim(), passController.text.trim());
+      // Bring the user to the home page after successful login
+
     }
   }
 

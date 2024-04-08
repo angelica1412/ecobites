@@ -1,3 +1,4 @@
+import 'package:ecobites/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'home.dart';
@@ -18,39 +19,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future<void> registration(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
-      try {
-        UserCredential userCredential = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(
-            email: emailController.text.trim(),
-            password: passController.text.trim());
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("Registered Successfully",
-                style: TextStyle(fontSize: 20.0)),
-          ),
-        );
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Home()));
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'weak-password') {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: Colors.amber,
-              content: Text("Password weak", style: TextStyle(fontSize: 20.0)),
-            ),
-          );
-        } else if (e.code == "email-already-in-use") {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: Colors.amber,
-              content:
-              Text("Account already exists", style: TextStyle(fontSize: 20.0)),
-            ),
-          );
-        }
+        await Auth.registerUser(context, emailController.text.trim(), passController.text.trim());
       }
     }
-  }
 
   @override
   Widget build(BuildContext context) {
