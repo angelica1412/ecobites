@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import 'authenticate/Controller/userController.dart';
 
 class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -13,8 +14,8 @@ class _ProfilePageState extends State<ProfilePage> {
   String? userFirstName;
   String? userLastName;
 
-  TextEditingController _firstNameController = TextEditingController();
-  TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
 
   @override
   void initState() {
@@ -41,9 +42,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
     try {
       await updateUserDetailsbyUID(userData);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('User details updated successfully')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('User details updated successfully')));
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to update user details')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Failed to update user details')));
     }
   }
 
@@ -51,33 +52,33 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: const Text('Profile'),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
               'Email: ${userEmail ?? 'Loading...'}',
-              style: TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 20),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             TextField(
               controller: _firstNameController,
-              decoration: InputDecoration(labelText: 'First Name'),
+              decoration: const InputDecoration(labelText: 'First Name'),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             TextField(
               controller: _lastNameController,
-              decoration: InputDecoration(labelText: 'Last Name'),
+              decoration: const InputDecoration(labelText: 'Last Name'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed:(){
                 updateUserDetails(context);
               },
-              child: Text('Update'),
+              child: const Text('Update'),
             ),
           ],
         ),

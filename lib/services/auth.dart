@@ -15,11 +15,11 @@ class Auth {
           email: email, password: password);
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => ProfilePage()),
+        MaterialPageRoute(builder: (context) => const ProfilePage()),
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: Colors.amber,
             content: Text(
               "No User Found",
@@ -27,7 +27,7 @@ class Auth {
             )));
       } else if (e.code == 'invalid-credential') {
         // Use Builder widget to ensure correct context
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: Colors.amber,
             content: Text(
               "Wrong email or password",
@@ -37,7 +37,7 @@ class Auth {
         );
       }else if (e.code == 'too-many-requests') {
         // Use Builder widget to ensure correct context
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: Colors.amber,
             content: Text(
               "Please try again later",
@@ -45,7 +45,7 @@ class Auth {
             )));
       }else if (e.code == 'invalid-email') {
         // Use Builder widget to ensure correct context
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: Colors.amber,
             content: Text(
               "invalid Email",
@@ -53,7 +53,7 @@ class Auth {
             )));
       }
       else{
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: Colors.amber,
             content: Text(
               "Error",
@@ -75,7 +75,7 @@ class Auth {
 
         );
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text(
               "Registered Successfully",
               style: TextStyle(fontSize: 20.0),
@@ -86,12 +86,12 @@ class Auth {
         // Misalnya:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Home()),
+          MaterialPageRoute(builder: (context) => const Home()),
         );
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               backgroundColor: Colors.amber,
               content: Text(
                 "Password weak",
@@ -101,7 +101,7 @@ class Auth {
           );
         } else if (e.code == "email-already-in-use") {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               backgroundColor: Colors.amber,
               content: Text(
                 "Account already exists",
@@ -118,7 +118,7 @@ class Auth {
       await FirebaseAuth.instance.signOut(); // Lakukan proses logout
       Navigator.pushReplacement( // Navigasi kembali ke layar login setelah logout berhasil
         context,
-        MaterialPageRoute(builder: (context) => LoginPage()),
+        MaterialPageRoute(builder: (context) => const LoginPage()),
       );
     } catch (e) {
       // Tangani jika terjadi kesalahan saat proses logout
@@ -136,12 +136,12 @@ class Auth {
     if (user != null) {
       // Jika pengguna sudah masuk sebelumnya, arahkan ke layar beranda
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => Home()),
+        MaterialPageRoute(builder: (context) => const Home()),
       );
     } else{
       // Jika pengguna belum masuk, arahkan ke layar login
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => SplashScreen(),
+        MaterialPageRoute(builder: (context) => const SplashScreen(),
       )
       );
     }

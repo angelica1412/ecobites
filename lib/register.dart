@@ -1,11 +1,11 @@
 import 'package:ecobites/authenticate/Controller/userController.dart';
 import 'package:ecobites/services/auth.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'home.dart';
 import 'login.dart';
 
 class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
+
   @override
   _RegisterPageState createState() => _RegisterPageState();
 }
@@ -34,9 +34,9 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Back'),
+        title: const Text('Back'),
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back,
             color: Color(0xFF92E3A9),
           ),
@@ -45,7 +45,7 @@ class _RegisterPageState extends State<RegisterPage> {
           },
         ),
         elevation: 0,
-        backgroundColor: Color(0xFFFAFAFA),
+        backgroundColor: const Color(0xFFFAFAFA),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -55,7 +55,7 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Create an Account',
                   style: TextStyle(
                     fontSize: 32,
@@ -63,15 +63,15 @@ class _RegisterPageState extends State<RegisterPage> {
                     color: Color(0xFFE8AE45),
                   ),
                 ),
-                SizedBox(height: 8),
-                Text(
+                const SizedBox(height: 8),
+                const Text(
                   'Enter your username, email, and password correctly to create a new account',
                   style: TextStyle(
                     fontSize: 12,
                     color: Color(0xFF838181),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Center(
                   child: Image.asset(
                     'assets/register.png',
@@ -79,7 +79,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     width: 300,
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   children: [
                     Expanded(
@@ -87,10 +87,10 @@ class _RegisterPageState extends State<RegisterPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
 
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             TextFormField(
                               controller: firstNameController,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 labelText: 'First Name',
                                 focusedBorder: OutlineInputBorder(
                                   borderSide:
@@ -112,11 +112,11 @@ class _RegisterPageState extends State<RegisterPage> {
                                 return null;
                               },
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                           ],
                         )
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,7 +124,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                             TextFormField(
                               controller: lastNameController,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 labelText: 'Last Name',
                                 focusedBorder: OutlineInputBorder(
                                   borderSide:
@@ -153,7 +153,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 TextFormField(
                   controller: emailController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Email',
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Color(0xFFE8AE45), width: 2.0),
@@ -171,11 +171,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     return null;
                   },
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 TextFormField(
                   controller: passController,
                   obscureText: true,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Password',
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Color(0xFFE8AE45), width: 2.0),
@@ -193,20 +193,20 @@ class _RegisterPageState extends State<RegisterPage> {
                     return null;
                   },
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
                     registration(context);
 
 
                   },
-                  child: Text('Register'),
+                  child: const Text('Register'),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
+                    const Text(
                       'Already have an account? ',
                       style: TextStyle(fontSize: 16),
                     ),
@@ -214,10 +214,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => LoginPage()),
+                          MaterialPageRoute(builder: (context) => const LoginPage()),
                         );
                       },
-                      child: Text(
+                      child: const Text(
                         'Sign In',
                         style: TextStyle(
                           fontSize: 16,

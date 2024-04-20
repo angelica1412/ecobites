@@ -97,7 +97,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 if (_currentIndex == onBoardinglist.length - 1) {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginPage()), // Pindah ke halaman home
+                    MaterialPageRoute(builder: (context) => const LoginPage()), // Pindah ke halaman home
                   );
                 } else {
                   _pageController1.nextPage(
