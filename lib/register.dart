@@ -1,3 +1,4 @@
+import 'package:ecobites/authenticate/Controller/userController.dart';
 import 'package:ecobites/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,7 +20,13 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future<void> registration(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
+      Map<String, dynamic> userData = {
+        'firstName' : firstNameController.text.trim(),
+        'lastName' : lastNameController.text.trim(),
+        'email' : emailController.text.trim() ,
+      };
         await Auth.registerUser(context, emailController.text.trim(), passController.text.trim());
+        await addUserDetailsToFirestore(userData);
       }
     }
 
@@ -190,6 +197,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 ElevatedButton(
                   onPressed: () {
                     registration(context);
+
+
                   },
                   child: Text('Register'),
                 ),

@@ -1,4 +1,5 @@
 import 'package:ecobites/main.dart';
+import 'package:ecobites/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class Auth {
           email: email, password: password);
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Home()),
+        MaterialPageRoute(builder: (context) => ProfilePage()),
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
