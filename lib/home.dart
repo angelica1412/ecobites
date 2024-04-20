@@ -1,13 +1,15 @@
-import 'package:ecobites/services/auth.dart';
+import 'package:ecobites/profile.dart';
 import 'package:flutter/material.dart';
-
+import 'package:ecobites/services/auth.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
-  // Fungsi untuk logout pengguna
+
+  // Function to log out the user
   Future<void> _logout(BuildContext context) async {
     await Auth.logout(context);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,15 +27,34 @@ class Home extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                _logout(context); // Panggil fungsi logout saat tombol logout ditekan
+                _logout(context); // Call the logout function when the logout button is pressed
               },
               child: const Text('Logout'),
             ),
           ],
         ),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+        currentIndex: 0, // You can set this value based on which page you're currently on
+        onTap: (int index) {
+          if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ProfilePage()),
+            );
+          }
+        },
+      ),
     );
   }
 }
-
-
