@@ -22,7 +22,7 @@ class Home extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              'Welcome to Home Screen!',
+              'Welcome to Home Screens!',
               style: TextStyle(fontSize: 20),
             ),
             const SizedBox(height: 20),
