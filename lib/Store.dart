@@ -1,4 +1,162 @@
 import 'package:flutter/material.dart';
+class Product {
+  final String name;
+  final String description;
+  final double price;
+  final String imageURL;
+
+  Product({required this.name, required this.description, required this.price, required this.imageURL});
+}
+
+class ProductCard extends StatefulWidget {
+  final Product product;
+
+  ProductCard({required this.product});
+
+  @override
+  _ProductCardState createState() => _ProductCardState();
+}
+
+class _ProductCardState extends State<ProductCard> {
+  int _quantity = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: Image.asset(
+                    widget.product.imageURL,
+                    width: 80,
+                    height: 80,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  flex: 5,
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              widget.product.name,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 5),
+                        Text(widget.product.description),
+                        SizedBox(height: 5),
+                        Text(
+                          '\$${widget.product.price.toStringAsFixed(2)}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+
+              ],
+            ),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: SizedBox(
+                        width: double.infinity, // Batasi lebar Column sesuai dengan batas card
+                        height: 40, // Tinggi Column sama dengan tinggi gambar
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            _quantity == 0 ? _buildAddButton() : _buildQuantityButton(),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ]
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildQuantityButton() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        IconButton(
+          icon: Icon(Icons.remove),
+          onPressed: () {
+            setState(() {
+              if (_quantity > 0) {
+                _quantity--;
+              }
+            });
+          },
+        ),
+        Text(
+          _quantity.toString(),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () {
+            setState(() {
+              _quantity++;
+            });
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAddButton() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Align(
+          alignment: Alignment.center,
+          child: IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              setState(() {
+                _quantity++;
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+
 
 class StorePage extends StatefulWidget {
   @override
@@ -7,11 +165,27 @@ class StorePage extends StatefulWidget {
 
 class _StorePageState extends State<StorePage> {
   String _selectedCategory = 'All';
+  int qty = 0;
   bool _searching = false; // Untuk melacak apakah sedang dalam mode pencarian
   bool _isFavorite = false; // Untuk melacak apakah toko ini merupakan favorit
 
   TextEditingController _searchController = TextEditingController();
 
+  List<Product> products = [
+    Product(
+      name: 'Product 1',
+      description: 'Description for Product 1',
+      price: 10.99,
+      imageURL: 'assets/login.png',
+    ),
+    Product(
+      name: 'Product 2',
+      description: 'Description for Product 2',
+      price: 19.99,
+      imageURL: 'assets/login.png',
+    ),
+    // Add more products as needed
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -156,6 +330,16 @@ class _StorePageState extends State<StorePage> {
               _buildButton('Daur'),
             ],
           ),
+          SizedBox(height: 20),
+          Expanded(
+            child: ListView.builder(
+              itemCount: products.length,
+              itemBuilder: (context, index) {
+                return ProductCard(product: products[index]);
+              },
+            ),
+          ),
+
         ],
       ),
     );

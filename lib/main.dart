@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:ecobites/Store.dart';
+import 'package:ecobites/home.dart';
 import 'package:flutter/material.dart';
 import 'onboardingscreen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: StorePage(),
+      home: const SplashScreen(),
       routes: {
         '/onboardingscreen': (context) => const OnBoardingScreen(),
       },

@@ -1,3 +1,4 @@
+import 'package:ecobites/Store.dart';
 import 'package:ecobites/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:ecobites/services/auth.dart';
@@ -44,6 +45,10 @@ class Home extends StatelessWidget {
             icon: Icon(Icons.person),
             label: 'Profile',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.store),
+            label: 'Store',
+          ),
         ],
         currentIndex: 0, // You can set this value based on which page you're currently on
         onTap: (int index) {
@@ -51,6 +56,11 @@ class Home extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => ProfilePage()),
+            );
+          }else if (index ==2){
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => StorePage()),
             );
           }
         },
