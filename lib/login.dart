@@ -106,7 +106,7 @@ class LoginPage extends StatelessWidget {
                         // Anda dapat menambahkan logika autentikasi di sini
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF92E3A9),
+                        backgroundColor: Color(0xFF92E3A9),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0),
                         ),

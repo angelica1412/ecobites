@@ -1,6 +1,6 @@
 import 'dart:async';
+import 'package:ecobites/Profile.dart';
 import 'package:flutter/material.dart';
-import 'onboardingscreen.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,10 +10,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: SplashScreen(),
-      routes: {
-        '/onboardingscreen': (context) => OnBoardingScreen(),
-      },
+      home: ProfileScreen(),
+      // routes: {
+      //   '/profilescreen': (context) => ProfileScreen(),
+      // },
     );
   }
 }
