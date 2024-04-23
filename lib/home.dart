@@ -1,5 +1,5 @@
 import 'package:ecobites/Store.dart';
-import 'package:ecobites/profile.dart';
+import 'package:ecobites/user_store_page.dart';
 import 'package:flutter/material.dart';
 import 'package:ecobites/services/auth.dart';
 
@@ -42,7 +42,7 @@ class Home extends StatelessWidget {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.store_mall_directory),
             label: 'Profile',
           ),
           BottomNavigationBarItem(
@@ -55,12 +55,12 @@ class Home extends StatelessWidget {
           if (index == 1) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ProfilePage()),
+              MaterialPageRoute(builder: (context) => const userStorePage()),
             );
           }else if (index ==2){
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => StorePage()),
+              MaterialPageRoute(builder: (context) => const StorePage()),
             );
           }
         },

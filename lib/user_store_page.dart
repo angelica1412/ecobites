@@ -4,19 +4,17 @@ import 'package:ecobites/Widgets/category_button.dart';
 import 'package:ecobites/Widgets/share_widget.dart';
 
 
-class StorePage extends StatefulWidget {
-  const StorePage({super.key});
+class userStorePage extends StatefulWidget {
+  const userStorePage({super.key});
 
   @override
   _StorePageState createState() => _StorePageState();
 }
 
-class _StorePageState extends State<StorePage> {
+class _StorePageState extends State<userStorePage> {
   String _selectedCategory = 'All';
-  bool _searching = false; // Untuk melacak apakah sedang dalam mode pencarian
-  bool _isFavorite = false; // Untuk melacak apakah toko ini merupakan favorit
-  bool _showCheckoutButton = false;// Untuk melacak apakah harus menampilkan tombol checkout
-  bool _isStore = false;
+  bool _searching = false;// Untuk melacak apakah sedang dalam mode pencarian
+  bool _isUserStore = true;
 
   void _setSelectedCategory(String category) {
     setState(() {
@@ -78,6 +76,7 @@ class _StorePageState extends State<StorePage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
+        // Remove shadow
         leading: _searching
             ? IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -106,7 +105,7 @@ class _StorePageState extends State<StorePage> {
           ),
         )
             : const Text(
-          '',
+          'Toko Saya',
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
@@ -206,9 +205,9 @@ class _StorePageState extends State<StorePage> {
                               children: [
                                 Padding(
                                   padding: EdgeInsets.only(right: 8.0),
-                                  child: Icon(Icons.location_on),
+                                  child: Icon(Icons.rate_review_outlined),
                                 ),
-                                Text('Alamat'),
+                                Text('128 reviews'),
                               ],
                             ),
                           ],
@@ -216,17 +215,6 @@ class _StorePageState extends State<StorePage> {
                       ),
                     ),
                     const Spacer(),
-                    InkWell(
-                      onTap: () {
-                        
-                        // Panggil fungsi untuk menampilkan informasi toko
-                        _showStoreInformation(context);
-                      },
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Icon(Icons.info_outline),
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -266,80 +254,11 @@ class _StorePageState extends State<StorePage> {
                 itemBuilder: (context, index) {
                   return ProductCard(
                     product: products[index],
-                    onQuantityChanged: () {
-                      // Panggil fungsi untuk menampilkan/menyembunyikan tombol checkout
-                      _handleShowCheckoutButton();
-                    },
                   );
                 },
               ),
             ],
           ),
-          Positioned(
-            bottom: 0.0, // Atur posisi vertical container
-            left: 0.0, // Atur posisi horizontal container
-            right: 0.0, // Atur lebar container agar sesuai dengan parent
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              height: _showCheckoutButton ? 60.0 : 0.0,
-              color: Colors.transparent,
-              child: _showCheckoutButton
-                  ? InkWell(
-                onTap: () {
-                  // Lakukan tindakan saat container diklik
-                  // Misalnya, tampilkan dialog, navigasi ke halaman checkout, dll.
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Container(
-                    height: 30.0,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(12.0), // Membuat sudut agak bulat dengan radius 12.0
-                    ),
-                    margin: const EdgeInsets.only(left: 10.0, right: 10.0),
-                    child: const Row(
-                      children: [
-                        // Icon keranjang
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
-                          child: Icon(Icons.shopping_cart, color: Colors.white),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                          child: VerticalDivider(
-                            color: Colors.white, // Warna garis pembatas vertikal
-                            thickness: 2, // Ketebalan garis
-                            indent: 16, // Jarak dari tepi kiri ikon keranjang
-                            endIndent: 16, // Jarak dari tepi kanan ikon keranjang
-                          ),
-                        ),
-                        Text(
-                          '5 Produk',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        // Spacer untuk memberi jarak
-                        Spacer(),
-                        // Total harga
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(0, 0, 16, 0),
-                          child: Text(
-                            'Total: \$50.00', // Ganti dengan total harga sesuai dengan logika aplikasi Anda
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-
-              )
-                  : null,
-            ),
-          ),
-
-
         ],
       ),
     );
@@ -362,17 +281,6 @@ class _StorePageState extends State<StorePage> {
     } else {
       return [
         IconButton(
-          icon: _isFavorite ? const Icon(Icons.favorite, color: Colors.red) : const Icon(
-              Icons.favorite_border),
-          color: Colors.black,
-          onPressed: () {
-            // Toggle status favorit
-            setState(() {
-              _isFavorite = !_isFavorite;
-            });
-          },
-        ),
-        IconButton(
           icon: const Icon(Icons.search),
           color: Colors.black,
           onPressed: () {
@@ -393,34 +301,5 @@ class _StorePageState extends State<StorePage> {
       ];
     }
   }
-  // Fungsi untuk menangani penampilan tombol checkout
-  void _handleShowCheckoutButton() {
-    bool hasProductWithQuantity = false;
-    for (var product in products) {
-      if (product.quantity > 0) {
-        hasProductWithQuantity = true;
-        break;
-      }
-    }
-    setState(() {
-      _showCheckoutButton = hasProductWithQuantity;
-    });
-  }
-  void _showStoreInformation(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-          child: const Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 20),
-            ],
-          ),
-        );
-      },
-    );
-  }
+  // Fungsi untuk menangani penampilan tombol checkou
 }

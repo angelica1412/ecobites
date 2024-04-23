@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:ecobites/Store.dart';
 import 'package:ecobites/home.dart';
 import 'package:flutter/material.dart';
 import 'onboardingscreen.dart';
@@ -19,7 +18,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: StorePage(),
+      home: const Home(),
+      debugShowCheckedModeBanner: false,
       routes: {
         '/onboardingscreen': (context) => const OnBoardingScreen(),
       },

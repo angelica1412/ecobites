@@ -6,19 +6,19 @@ class ShareWidget {
       context: context,
       builder: (BuildContext context) {
         return Container(
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'Share',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -53,7 +53,7 @@ class ShareWidget {
       child: Column(
         children: [
           Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Stack(
               alignment: Alignment.center,
               children: [
@@ -62,7 +62,7 @@ class ShareWidget {
                     shape: BoxShape.circle,
                     color: backgroundColor, // Mengatur warna latar belakang bulat
                   ),
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   child: Icon(
                     icon,
                     color: Colors
@@ -75,7 +75,7 @@ class ShareWidget {
           Container(
             child: Text(
               text,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 12,
               ),
             ),

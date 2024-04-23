@@ -20,14 +20,17 @@ class ProductCard extends StatefulWidget {
   final Product product;
   final VoidCallback? onQuantityChanged; // Tambahkan properti ini
 
-  ProductCard({required this.product, this.onQuantityChanged}); // Perbarui konstruktor
+  const ProductCard({super.key, required this.product, this.onQuantityChanged}); // Perbarui konstruktor
 
   @override
-  _ProductCardState createState() => _ProductCardState();
+  _ProductCardState createState() => _ProductCardState(false);
 }
 
 class _ProductCardState extends State<ProductCard> {
   int _quantity = 0;
+  bool _isStore = false;
+
+  _ProductCardState(this._isStore);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +50,7 @@ class _ProductCardState extends State<ProductCard> {
                 fit: BoxFit.cover,
               ),
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             // Informasi produk
             Expanded(
               flex: 3,
@@ -56,24 +59,25 @@ class _ProductCardState extends State<ProductCard> {
                 children: [
                   Text(
                     widget.product.name,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Text(widget.product.description),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Text(
                     '\$${widget.product.price.toStringAsFixed(2)}',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  _quantity == 0 ? _buildAddButton() : _buildQuantityButton(),
+                  // _buildEditButton()
+                  if (_quantity == 0) _buildAddButton() else _buildQuantityButton(),
                 ],
               ),
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
           ],
         ),
       ),
@@ -85,7 +89,7 @@ class _ProductCardState extends State<ProductCard> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         IconButton(
-          icon: Icon(Icons.remove),
+          icon: const Icon(Icons.remove),
           onPressed: () {
             setState(() {
               if (_quantity > 0) {
@@ -99,12 +103,12 @@ class _ProductCardState extends State<ProductCard> {
         ),
         Text(
           _quantity.toString(),
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
           ),
         ),
         IconButton(
-          icon: Icon(Icons.add),
+          icon: const Icon(Icons.add),
           onPressed: () {
             setState(() {
               _quantity++;
@@ -121,7 +125,7 @@ class _ProductCardState extends State<ProductCard> {
     return Align(
       alignment: Alignment.centerRight,
       child: IconButton(
-        icon: Icon(Icons.add),
+        icon: const Icon(Icons.add),
         onPressed: () {
           setState(() {
             _quantity++;
@@ -132,4 +136,25 @@ class _ProductCardState extends State<ProductCard> {
       ),
     );
   }
+
+  Widget _buildEditButton() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0), // Atur padding sesuai kebutuhan Anda
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {
+            },
+          ),
+          const Text('Edit'),
+        ],
+      ),
+    );
+  }
+
+
+
+
 }
