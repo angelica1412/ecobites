@@ -1,7 +1,9 @@
+import 'package:ecobites/Widgets/scheduleStore.dart';
 import 'package:flutter/material.dart';
 import 'package:ecobites/Widgets/ProductCard.dart';
 import 'package:ecobites/Widgets/category_button.dart';
 import 'package:ecobites/Widgets/share_widget.dart';
+import 'Widgets/MapsContainer.dart';
 
 
 class StorePage extends StatefulWidget {
@@ -16,7 +18,6 @@ class _StorePageState extends State<StorePage> {
   bool _searching = false; // Untuk melacak apakah sedang dalam mode pencarian
   bool _isFavorite = false; // Untuk melacak apakah toko ini merupakan favorit
   bool _showCheckoutButton = false;// Untuk melacak apakah harus menampilkan tombol checkout
-  bool _isStore = false;
 
   void _setSelectedCategory(String category) {
     setState(() {
@@ -409,14 +410,94 @@ class _StorePageState extends State<StorePage> {
   void _showStoreInformation(BuildContext context) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       builder: (BuildContext context) {
         return Container(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-          child: const Column(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
+          child:Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 20),
+              MapsContainer(storeName: 'gohanku sangir'),
+                Container(
+                padding: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 3,
+                      blurRadius: 7,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize
+                      .min, // Menyesuaikan tinggi dengan konten
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: RichText(
+                              text: TextSpan(
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height * 0.03,
+                                  height: 1.5,
+                                ),
+                                children: const [
+                                  TextSpan(text: 'Nama '),
+                                  TextSpan(text: 'Toko', style: TextStyle(fontWeight: FontWeight.bold)),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.only(bottom: 8.0),
+                            child:Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(right: 8.0),
+                                  child: Icon(Icons.location_on),
+                                ),
+                                Text('Alamat'),
+                              ],
+                            ),
+
+                          ),
+                          const Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(right: 8.0),
+                                child: Icon(Icons.route, color: Colors.greenAccent),
+                              ),
+                              Text('Jarak'),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Spacer(),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              scheduleStore(day: "Senin", time: "4.00 - 16.00"),
+              scheduleStore(day: "Selasa", time: "4.00 - 16.00"),
+              scheduleStore(day: "Rabu", time: "4.00 - 16.00"),
+              scheduleStore(day: "Kamis", time: "4.00 - 16.00"),
+              scheduleStore(day: "Jumat", time: "4.00 - 16.00"),
+              scheduleStore(day: "Sabtu", time: "4.00 - 16.00"),
+              scheduleStore(day: "Minggu", time: "4.00 - 16.00"),
             ],
           ),
         );

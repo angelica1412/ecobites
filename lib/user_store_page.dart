@@ -14,7 +14,6 @@ class userStorePage extends StatefulWidget {
 class _StorePageState extends State<userStorePage> {
   String _selectedCategory = 'All';
   bool _searching = false;// Untuk melacak apakah sedang dalam mode pencarian
-  bool _isUserStore = true;
 
   void _setSelectedCategory(String category) {
     setState(() {
@@ -254,6 +253,7 @@ class _StorePageState extends State<userStorePage> {
                 itemBuilder: (context, index) {
                   return ProductCard(
                     product: products[index],
+                    isUserStore: true,
                   );
                 },
               ),

@@ -18,19 +18,17 @@ class Product {
 
 class ProductCard extends StatefulWidget {
   final Product product;
-  final VoidCallback? onQuantityChanged; // Tambahkan properti ini
+  final VoidCallback? onQuantityChanged;// Tambahkan properti ini
+  final bool isUserStore;
 
-  const ProductCard({super.key, required this.product, this.onQuantityChanged}); // Perbarui konstruktor
+  const ProductCard({Key? key, required this.product, this.onQuantityChanged, this.isUserStore = false}) : super(key: key);
 
   @override
-  _ProductCardState createState() => _ProductCardState(false);
+  _ProductCardState createState() => _ProductCardState();
 }
 
 class _ProductCardState extends State<ProductCard> {
   int _quantity = 0;
-  bool _isStore = false;
-
-  _ProductCardState(this._isStore);
 
   @override
   Widget build(BuildContext context) {
@@ -73,8 +71,12 @@ class _ProductCardState extends State<ProductCard> {
                     ),
                   ),
                   // _buildEditButton()
-                  if (_quantity == 0) _buildAddButton() else _buildQuantityButton(),
-                ],
+                  if (widget.isUserStore)
+                    _buildEditButton()
+                  else if (_quantity == 0)
+                    _buildAddButton()
+                  else
+                    _buildQuantityButton(),                ],
               ),
             ),
             const SizedBox(width: 10),
@@ -144,7 +146,7 @@ class _ProductCardState extends State<ProductCard> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           IconButton(
-            icon: const Icon(Icons.add),
+            icon: const Icon(Icons.edit ),
             onPressed: () {
             },
           ),
