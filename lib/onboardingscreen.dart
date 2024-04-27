@@ -3,7 +3,7 @@ import 'AppColor.dart';
 import 'ImagesPath.dart';
 import 'DotsIndicator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'login.dart'; // Import halaman home
+import 'login.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({Key? key}) : super(key: key);
@@ -49,7 +49,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 },
                 itemBuilder: (context, index) {
                   return OnBoardingCard(
-                    onBoardingModel: onBoardinglist[index],
+                    onBoardingModel: onBoardinglist[_currentIndex],
                   );
                 }),
           ),
@@ -84,7 +84,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 },
                 itemBuilder: (context, index) {
                   return OnboardingTextCard(
-                    onBoardingModel: onBoardinglist[index],
+                    onBoardingModel: onBoardinglist[_currentIndex],
                   );
                 }),
           ),
@@ -97,22 +97,16 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 if (_currentIndex == onBoardinglist.length - 1) {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()), // Pindah ke halaman home
+                    MaterialPageRoute(builder: (context) => LoginPage()), // Pindah ke halaman login
                   );
                 } else {
-                  _pageController1.nextPage(
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.fastOutSlowIn,
-                  );
-                  _pageController2.nextPage(
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.fastOutSlowIn,
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()), // Pindah ke halaman login
                   );
                 }
               },
-              text: _currentIndex == onBoardinglist.length - 1
-                  ? 'Get Started'
-                  : 'Next',
+              text:"Get Started",
               bgColor: AppColor.kPrimary,
               borderRadius: 20,
               height: 46,
@@ -248,40 +242,43 @@ class _OnBoardingCardState extends State<OnBoardingCard> {
 
 class OnboardingTextCard extends StatelessWidget {
   final OnBoarding onBoardingModel;
-  const OnboardingTextCard({required this.onBoardingModel, super.key});
+  const OnboardingTextCard({required this.onBoardingModel, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 23),
-      child: Column(
-        children: [
-          Text(
-            onBoardingModel.title,
-            textAlign: TextAlign.center,
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: AppColor.kGrayscaleDark100,
-            ).copyWith(fontSize: 24),
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          Text(
-            onBoardingModel.description,
-            textAlign: TextAlign.center,
-            style: GoogleFonts.plusJakartaSans(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: AppColor.kWhite)
-                .copyWith(color: AppColor.kGrayscale40, fontSize: 14),
-          ),
-        ],
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 23),
+        child: Column(
+          children: [
+            Text(
+              onBoardingModel.title,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: AppColor.kGrayscaleDark100,
+              ).copyWith(fontSize: 24),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Text(
+              onBoardingModel.description,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.plusJakartaSans(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: AppColor.kWhite)
+                  .copyWith(color: AppColor.kGrayscale40, fontSize: 14),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
+
 
 class OnBoarding {
   String title;
@@ -297,7 +294,7 @@ class OnBoarding {
 
 List<OnBoarding> onBoardinglist = [
   OnBoarding(
-    title: 'Reduced Food Waste',
+    title: 'Reduced Food',
     image: ImagesPath.kOnboarding1,
     description:
         'Welcome to EcoBites! We help reduce food waste by connecting you with several food courts or other food companies',

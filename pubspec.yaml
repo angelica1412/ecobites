@@ -66,6 +66,10 @@ flutter:
   - assets/logo.png
   - assets/login.png
   - assets/register.png
+  - assets/daurulang.png
+  - assets/food.png
+  - assets/pupuk.png
+  - assets/voucher.png
   - assets/product1.png
   - assets/product2.png
   - assets/product3.png

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'register.dart'; // Mengimpor file signup_page.dart
+import 'homepage.dart'; // Mengimpor file homepage.dart
 import 'register.dart';
 import 'package:ecobites/services/auth.dart';
 
@@ -22,7 +24,6 @@ class _LoginPageState extends State<LoginPage> {
 
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
