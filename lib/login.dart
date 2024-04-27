@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'register.dart'; // Mengimpor file signup_page.dart
+import 'homepage.dart'; // Mengimpor file homepage.dart
 
 class LoginPage extends StatelessWidget {
   @override
@@ -102,8 +103,11 @@ class LoginPage extends StatelessWidget {
                     width: 300,
                     child: ElevatedButton(
                       onPressed: () {
-                        // Fungsi yang akan dijalankan ketika tombol login ditekan
-                        // Anda dapat menambahkan logika autentikasi di sini
+                        // Navigasi ke halaman homepage setelah login berhasil
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomePage()),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Color(0xFF92E3A9),
