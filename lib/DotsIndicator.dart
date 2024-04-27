@@ -5,7 +5,7 @@ class DotsIndicator extends StatelessWidget {
   final int position;
   final DotsDecorator decorator;
 
-  const DotsIndicator({
+  const DotsIndicator({super.key, 
     required this.dotsCount,
     required this.position,
     required this.decorator,

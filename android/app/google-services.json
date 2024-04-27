@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "187615014655",
+    "project_id": "ecobites-57b68",
+    "storage_bucket": "ecobites-57b68.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:187615014655:android:278a9f8db6c682264be6ca",
+        "android_client_info": {
+          "package_name": "com.ecobitescompany.ecobites"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSLA3pHj0JX-E92RFCAmcfUcmtuAXH6T0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
