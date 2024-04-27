@@ -1,7 +1,28 @@
 import 'package:flutter/material.dart';
-import 'register.dart'; // Mengimpor file signup_page.dart
+import 'register.dart';
+import 'package:ecobites/services/auth.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passController = TextEditingController();
+
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+
+  Future<void> userLogin(BuildContext context) async {
+    if (_formkey.currentState!.validate()) {
+      await Auth.login(context, emailController.text.trim(), passController.text.trim());
+      // Bring the user to the home page after successful login
+
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -9,10 +30,12 @@ class LoginPage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Center(
           child: SingleChildScrollView(
-            child: Column(
+            child: Form(
+              key: _formkey,
+              child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Align(
+                const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
                     'Welcome Back!!',
@@ -22,15 +45,15 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 8),
-                Text(
+                const SizedBox(height: 8),
+                const Text(
                   'Please login by using your email and password.',
                   style: TextStyle(
                     fontSize: 12,
                     color: Color(0xFF838181),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Center(
                   child: Image.asset(
                     'assets/login.png',
@@ -38,11 +61,11 @@ class LoginPage extends StatelessWidget {
                     width: 300,
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Email',
                       style: TextStyle(
                         color: Colors.black,
@@ -50,9 +73,16 @@ class LoginPage extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 10),
-                    TextField(
-                      decoration: InputDecoration(
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      validator: (value){
+                        if(value==null||value.isEmpty){
+                          return 'Please Enter Email';
+                        }
+                        return null;
+                      },
+                      controller: emailController,
+                      decoration: const InputDecoration(
                         hintText: 'emailanda@gmail.com',
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Color(0xFFE8AE45), width: 2.0),
@@ -66,11 +96,11 @@ class LoginPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Password',
                       style: TextStyle(
                         color: Colors.black,
@@ -78,10 +108,17 @@ class LoginPage extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 10),
-                    TextField(
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      validator: (value){
+                        if(value==null||value.isEmpty){
+                          return 'Please Enter Password';
+                        }
+                        return null;
+                      },
+                      controller: passController,
                       obscureText: true,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: '**************',
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Color(0xFFE8AE45), width: 2.0),
@@ -95,42 +132,41 @@ class LoginPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 28),
+                const SizedBox(height: 28),
                 Align(
                   alignment: Alignment.center,
-                  child: Container(
+                  child: SizedBox(
                     width: 300,
                     child: ElevatedButton(
                       onPressed: () {
-                        // Fungsi yang akan dijalankan ketika tombol login ditekan
-                        // Anda dapat menambahkan logika autentikasi di sini
+                        userLogin(context);
+                        // Add your authentication logic here
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF92E3A9),
+                        backgroundColor: const Color(0xFF92E3A9),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0),
                         ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
+                      child: const Padding(
+                        padding: EdgeInsets.all(16.0),
                         child: Text('Login', style: TextStyle(fontSize: 18)),
                       ),
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     GestureDetector(
                       onTap: () {
-                        // Navigasi ke halaman pendaftaran
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => RegisterPage()),
+                          MaterialPageRoute(builder: (context) => const RegisterPage()),
                         );
                       },
-                      child: Text(
+                      child: const Text(
                         'Don’t have an account?',
                         style: TextStyle(
                           color: Colors.black,
@@ -138,16 +174,16 @@ class LoginPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(width: 4),
+                    const SizedBox(width: 4),
                     GestureDetector(
                       onTap: () {
-                        // Navigasi ke halaman pendaftaran
+                        // Navigate to the registration page
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => RegisterPage()),
+                          MaterialPageRoute(builder: (context) => const RegisterPage()),
                         );
                       },
-                      child: Text(
+                      child: const Text(
                         'Sign Up',
                         style: TextStyle(
                           color: Color(0xFF92E3A9),
@@ -159,6 +195,7 @@ class LoginPage extends StatelessWidget {
                   ],
                 ),
               ],
+            ),
             ),
           ),
         ),
