@@ -1,24 +1,35 @@
 import 'dart:async';
+import 'package:ecobites/home.dart';
 import 'package:flutter/material.dart';
 import 'onboardingscreen.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(apiKey: 'AIzaSyCEmE75DispSxV_17bFkeRCTdhXFn5e60U', appId: '1:187615014655:android:278a9f8db6c682264be6ca', messagingSenderId: '187615014655', projectId: "ecobites-57b68"),
+  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: SplashScreen(),
+      home: const Home(),
+      debugShowCheckedModeBanner: false,
       routes: {
-        '/onboardingscreen': (context) => OnBoardingScreen(),
+        '/onboardingscreen': (context) => const OnBoardingScreen(),
       },
     );
   }
 }
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -30,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // Simulate a time-consuming task (e.g., loading data) for the splash screen.
     // Replace this with your actual data loading logic.
     Future.delayed(
-      Duration(seconds: 7),
+      const Duration(seconds: 3),
       () {
         Navigator.pushReplacementNamed(context, '/onboardingscreen');
       },
@@ -49,8 +60,8 @@ class _SplashScreenState extends State<SplashScreen> {
               width: 180.0, // Adjust the width as needed
               height: 180.0, // Adjust the height as needed
             ),
-            SizedBox(height: 16.0),
-            Text.rich(
+            const SizedBox(height: 16.0),
+            const Text.rich(
               TextSpan(
                 children: [
                   TextSpan(
