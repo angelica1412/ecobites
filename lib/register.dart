@@ -79,7 +79,7 @@ class RegisterPage extends StatelessWidget {
                   hintText: 'Full Name',
                   focusedBorder: OutlineInputBorder(
                     borderSide:
-                        BorderSide(color: Color(0xFFE8AE45), width: 2.0),
+                        BorderSide(color: Color.fromARGB(255, 137, 208, 157), width: 2.0),
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   ),
                   enabledBorder: OutlineInputBorder(
@@ -103,7 +103,7 @@ class RegisterPage extends StatelessWidget {
                   hintText: 'youremail@example.com',
                   focusedBorder: OutlineInputBorder(
                     borderSide:
-                        BorderSide(color: Color(0xFFE8AE45), width: 2.0),
+                        BorderSide(color: Color.fromARGB(255, 137, 208, 157), width: 2.0),
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   ),
                   enabledBorder: OutlineInputBorder(
@@ -152,7 +152,7 @@ class RegisterPage extends StatelessWidget {
                   hintText: '123-456-7890',
                   focusedBorder: OutlineInputBorder(
                     borderSide:
-                        BorderSide(color: Color(0xFFE8AE45), width: 2.0),
+                        BorderSide(color: Color.fromARGB(255, 137, 208, 157), width: 2.0),
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   ),
                   enabledBorder: OutlineInputBorder(
@@ -177,7 +177,7 @@ class RegisterPage extends StatelessWidget {
                   hintText: 'Your Address',
                   focusedBorder: OutlineInputBorder(
                     borderSide:
-                        BorderSide(color: Color(0xFFE8AE45), width: 2.0),
+                        BorderSide(color: Color.fromARGB(255, 137, 208, 157), width: 2.0),
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   ),
                   enabledBorder: OutlineInputBorder(
@@ -228,7 +228,7 @@ class RegisterPage extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFFE8AE45),
+                      primary: Color.fromARGB(255, 137, 208, 157),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),

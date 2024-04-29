@@ -56,7 +56,7 @@ class LoginPage extends StatelessWidget {
                       decoration: InputDecoration(
                         hintText: 'emailanda@gmail.com',
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFFE8AE45), width: 2.0),
+                          borderSide: BorderSide(color: Color(0xFF92E3A9), width: 2.0),
                           borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         ),
                         enabledBorder: OutlineInputBorder(
@@ -85,7 +85,7 @@ class LoginPage extends StatelessWidget {
                       decoration: InputDecoration(
                         hintText: '**************',
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFFE8AE45), width: 2.0),
+                          borderSide: BorderSide(color: Color(0xFF92E3A9), width: 2.0),
                           borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         ),
                         enabledBorder: OutlineInputBorder(
