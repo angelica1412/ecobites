@@ -5,7 +5,7 @@ class CategoryButton extends StatelessWidget {
   final String selectedCategory;
   final Function onPressed;
 
-  const CategoryButton({super.key, 
+  const CategoryButton({super.key,
     required this.category,
     required this.selectedCategory,
     required this.onPressed,
