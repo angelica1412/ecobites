@@ -8,7 +8,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Back'),
+        title: Text('Profile'),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
@@ -43,7 +43,7 @@ class ProfileScreen extends StatelessWidget {
                 'Your Name',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 24,
+                  fontSize: 30,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -54,7 +54,7 @@ class ProfileScreen extends StatelessWidget {
                 'youremail@ecobites.com',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 16,
+                  fontSize: 20,
                   fontWeight: FontWeight.normal,
                 ),
               ),
@@ -65,7 +65,7 @@ class ProfileScreen extends StatelessWidget {
                 '+62yourphonenumber',
                 style: TextStyle(
                   color: Colors.grey,
-                  fontSize: 14,
+                  fontSize: 16,
                   fontWeight: FontWeight.normal,
                 ),
               ),

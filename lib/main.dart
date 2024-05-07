@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:ecobites/DetailAlamatToko.dart';
 import 'package:ecobites/Profile.dart';
+import 'package:ecobites/UploadBarang.dart';
 import 'package:flutter/material.dart';
 
 void main() {
