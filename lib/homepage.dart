@@ -1,5 +1,6 @@
-import 'package:ecobites/profilepage.dart';
-import 'package:ecobites/uploadpage.dart';
+import 'package:ecobites/UploadBarang.dart';
+import 'package:ecobites/profile.dart';
+// import 'package:ecobites/uploadpage.dart';
 import 'package:ecobites/voucher.dart';
 import 'package:flutter/material.dart';
 
@@ -34,7 +35,8 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Container(
                     decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 178, 178, 178), // Background color
+                      color: Color.fromARGB(
+                          255, 178, 178, 178), // Background color
                       shape: BoxShape.circle, // Circular background
                     ),
                     child: IconButton(
@@ -43,7 +45,8 @@ class _HomePageState extends State<HomePage> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const ProfilePage()),
+                          MaterialPageRoute(
+                              builder: (context) => const ProfileScreen()),
                         );
                       },
                     ),
@@ -54,7 +57,8 @@ class _HomePageState extends State<HomePage> {
               TextFormField(
                 onTap: () {
                   setState(() {
-                    searchIconColor = const Color(0xFF92E3A9); // Change color when tapped
+                    searchIconColor =
+                        const Color(0xFF92E3A9); // Change color when tapped
                   });
                 },
                 decoration: InputDecoration(
@@ -134,12 +138,14 @@ class _HomePageState extends State<HomePage> {
               Center(
                 child: ElevatedButton(
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF92E3A9)),
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        const Color(0xFF92E3A9)),
                   ),
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const VoucherPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const VoucherPage()),
                     );
                   },
                   child: const Row(
@@ -181,7 +187,7 @@ class _HomePageState extends State<HomePage> {
           if (index == 1) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const UploadPage()),
+              MaterialPageRoute(builder: (context) => const UploadBarang()),
             );
           }
         },

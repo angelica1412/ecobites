@@ -273,61 +273,60 @@ class _UploadBarangState extends State<UploadBarang> {
                   width: 200,
                   height: 50,
                   child: ElevatedButton(
-  onPressed: () {
-    // Hapus gambar yang dipilih saat tombol submit ditekan
-    setState(() {
-      _imageFile = null;
-    });
+                    onPressed: () {
+                      // Hapus gambar yang dipilih saat tombol submit ditekan
+                      setState(() {
+                        _imageFile = null;
+                      });
 
-    // Mengosongkan semua data input
-    setState(() {
-      _selectedQuantity = null;
-      _selectedCategory = null;
-      _hargaAsliController.clear();
-      _hargaDiskonController.clear();
-      _selectedDiscount = null;
-    });
+                      // Mengosongkan semua data input
+                      setState(() {
+                        _selectedQuantity = null;
+                        _selectedCategory = null;
+                        _hargaAsliController.clear();
+                        _hargaDiskonController.clear();
+                        _selectedDiscount = null;
+                      });
 
-    // Menampilkan popup berhasil
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Sukses'),
-          content: const Text('Data berhasil ditambahkan.'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  },
-  style: ElevatedButton.styleFrom(
-    backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(20.0),
-      side: const BorderSide(color: Colors.black),
-    ),
-  ),
-  child: const Padding(
-    padding: EdgeInsets.all(0.0),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          'Submit',
-          style: TextStyle(fontSize: 18),
-        ),
-      ],
-    ),
-  ),
-),
-
+                      // Menampilkan popup berhasil
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Sukses'),
+                            content: const Text('Data berhasil ditambahkan.'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                        side: const BorderSide(color: Colors.black),
+                      ),
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.all(0.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Submit',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ],

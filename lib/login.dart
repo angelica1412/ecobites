@@ -20,9 +20,9 @@ class _LoginPageState extends State<LoginPage> {
     if (_formkey.currentState!.validate()) {
       await Auth.login(context, emailController.text.trim(), passController.text.trim());
       // Bring the user to the home page after successful login
-
     }
   }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -167,7 +167,7 @@ class _LoginPageState extends State<LoginPage> {
                         );
                       },
                       child: const Text(
-                        'Don’t have an account?',
+                        'Don`t have an account?',
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 16,
