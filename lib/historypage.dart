@@ -2,13 +2,15 @@ import 'package:ecobites/homepage.dart';
 import 'package:flutter/material.dart';
 
 class HistoryPage extends StatelessWidget {
+  const HistoryPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('History Page'),
+        title: const Text('History Page'),
       ),
-      body: Center(
+      body: const Center(
         child: Text(
           'This is the History Page',
           style: TextStyle(fontSize: 20),
@@ -35,13 +37,13 @@ class HistoryPage extends StatelessWidget {
             // Navigate to Home page
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => HomePage()), // Ganti HomePage dengan halaman yang sesuai
+              MaterialPageRoute(builder: (context) => const HomePage()), // Ganti HomePage dengan halaman yang sesuai
             );
           } else if (index == 2) {
              // Navigate to Home page
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => HistoryPage()), // Ganti HomePage dengan halaman yang sesuai
+              MaterialPageRoute(builder: (context) => const HistoryPage()), // Ganti HomePage dengan halaman yang sesuai
             );
           }
         },

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'register.dart'; // Mengimpor file signup_page.dart
-import 'homepage.dart'; // Mengimpor file homepage.dart
-import 'register.dart';
+// Mengimpor file homepage.dart
 import 'package:ecobites/services/auth.dart';
 
 class LoginPage extends StatefulWidget {
@@ -144,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                         // Add your authentication logic here
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF92E3A9),
+                        backgroundColor: const Color(0xFF92E3A9),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0),
                         ),

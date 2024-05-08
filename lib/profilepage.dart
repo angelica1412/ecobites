@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Upload Page'),
+        title: const Text('Upload Page'),
       ),
-      body: Center(
+      body: const Center(
         child: Text(
           'This is the Upload Page',
           style: TextStyle(fontSize: 20),

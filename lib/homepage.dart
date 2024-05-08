@@ -4,6 +4,8 @@ import 'package:ecobites/voucher.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -16,12 +18,12 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          color: Color.fromARGB(255, 255, 255, 255),
+          color: const Color.fromARGB(255, 255, 255, 255),
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -31,24 +33,24 @@ class _HomePageState extends State<HomePage> {
                     width: 80,
                   ),
                   Container(
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 178, 178, 178), // Background color
+                    decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 178, 178, 178), // Background color
                       shape: BoxShape.circle, // Circular background
                     ),
                     child: IconButton(
-                      icon: Icon(Icons.person, size: 32),
+                      icon: const Icon(Icons.person, size: 32),
                       color: Colors.black,
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => ProfilePage()),
+                          MaterialPageRoute(builder: (context) => const ProfilePage()),
                         );
                       },
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextFormField(
                 onTap: () {
                   setState(() {
@@ -58,21 +60,21 @@ class _HomePageState extends State<HomePage> {
                 decoration: InputDecoration(
                   hintText: 'Search for food...',
                   prefixIcon: Icon(Icons.search, color: searchIconColor),
-                  border: OutlineInputBorder(
+                  border: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black, width: 2.0),
                   ),
-                  focusedBorder: OutlineInputBorder(
+                  focusedBorder: const OutlineInputBorder(
                     borderSide:
                         BorderSide(color: Color(0xFF92E3A9), width: 2.0),
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Expanded(
-                    child: Container(
+                    child: SizedBox(
                       width: 160,
                       height: 200,
                       child: Card(
@@ -82,16 +84,16 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Image.asset('assets/food.png',
                                 height: 80, width: 80),
-                            SizedBox(height: 8),
-                            Text('Food'),
+                            const SizedBox(height: 8),
+                            const Text('Food'),
                           ],
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   Expanded(
-                    child: Container(
+                    child: SizedBox(
                       width: 160,
                       height: 200,
                       child: Card(
@@ -101,8 +103,8 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Image.asset('assets/daurulang.png',
                                 height: 80, width: 80),
-                            SizedBox(height: 8),
-                            Text('Bahan Daur Ulang'),
+                            const SizedBox(height: 8),
+                            const Text('Bahan Daur Ulang'),
                           ],
                         ),
                       ),
@@ -110,9 +112,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Center(
-                child: Container(
+                child: SizedBox(
                   width: 160,
                   height: 200,
                   child: Card(
@@ -121,14 +123,14 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset('assets/pupuk.png', height: 80, width: 80),
-                        SizedBox(height: 8),
-                        Text('Fertilizer'),
+                        const SizedBox(height: 8),
+                        const Text('Fertilizer'),
                       ],
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Center(
                 child: ElevatedButton(
                   style: ButtonStyle(
@@ -137,10 +139,10 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => VoucherPage()),
+                      MaterialPageRoute(builder: (context) => const VoucherPage()),
                     );
                   },
-                  child: Row(
+                  child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
@@ -179,7 +181,7 @@ class _HomePageState extends State<HomePage> {
           if (index == 1) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => UploadPage()),
+              MaterialPageRoute(builder: (context) => const UploadPage()),
             );
           }
         },

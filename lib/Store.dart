@@ -115,7 +115,7 @@ class _StorePageState extends State<StorePage> {
         ),
         actions: _buildActions(),
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(4.0), // Tinggi bayangan
+          preferredSize: const Size.fromHeight(4.0), // Tinggi bayangan
           child: Container(
             decoration: BoxDecoration(
               boxShadow: [
@@ -123,7 +123,7 @@ class _StorePageState extends State<StorePage> {
                   color: Colors.black.withOpacity(0.2), // Warna dan opacity bayangan
                   spreadRadius: 1, // Radius penyebaran bayangan
                   blurRadius: 5, // Radius blur bayangan
-                  offset: Offset(0, 3), // Perubahan posisi bayangan (horizontal, vertical)
+                  offset: const Offset(0, 3), // Perubahan posisi bayangan (horizontal, vertical)
                 ),
               ],
             ),
@@ -418,8 +418,8 @@ class _StorePageState extends State<StorePage> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 20),
-              MapsContainer(storeName: 'gohanku sangir'),
+              const SizedBox(height: 20),
+              const MapsContainer(storeName: 'gohanku sangir'),
                 Container(
                 padding: const EdgeInsets.all(15),
                 decoration: BoxDecoration(
@@ -490,14 +490,14 @@ class _StorePageState extends State<StorePage> {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
-              scheduleStore(day: "Senin", time: "4.00 - 16.00"),
-              scheduleStore(day: "Selasa", time: "4.00 - 16.00"),
-              scheduleStore(day: "Rabu", time: "4.00 - 16.00"),
-              scheduleStore(day: "Kamis", time: "4.00 - 16.00"),
-              scheduleStore(day: "Jumat", time: "4.00 - 16.00"),
-              scheduleStore(day: "Sabtu", time: "4.00 - 16.00"),
-              scheduleStore(day: "Minggu", time: "4.00 - 16.00"),
+              const SizedBox(height: 20),
+              const scheduleStore(day: "Senin", time: "4.00 - 16.00"),
+              const scheduleStore(day: "Selasa", time: "4.00 - 16.00"),
+              const scheduleStore(day: "Rabu", time: "4.00 - 16.00"),
+              const scheduleStore(day: "Kamis", time: "4.00 - 16.00"),
+              const scheduleStore(day: "Jumat", time: "4.00 - 16.00"),
+              const scheduleStore(day: "Sabtu", time: "4.00 - 16.00"),
+              const scheduleStore(day: "Minggu", time: "4.00 - 16.00"),
             ],
           ),
         );

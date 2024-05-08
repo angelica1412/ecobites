@@ -97,12 +97,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 if (_currentIndex == onBoardinglist.length - 1) {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginPage()), // Pindah ke halaman login
+                    MaterialPageRoute(builder: (context) => const LoginPage()), // Pindah ke halaman login
                   );
                 } else {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginPage()), // Pindah ke halaman login
+                    MaterialPageRoute(builder: (context) => const LoginPage()), // Pindah ke halaman login
                   );
                 }
               },

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 class ProductDetailPage extends StatelessWidget {
+  const ProductDetailPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Product Detail'),
+        title: const Text('Product Detail'),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -19,24 +21,24 @@ class ProductDetailPage extends StatelessWidget {
                 width: 200,
                 fit: BoxFit.cover,
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'Product Name',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
-              Text(
+              const Text(
                 'Category: Product Category',
                 style: TextStyle(fontSize: 16),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 10),
-              Text(
+              const SizedBox(height: 10),
+              const Text(
                 'Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi malesuada velit eu est bibendum, sit amet ultricies nisi hendrerit.',
                 style: TextStyle(fontSize: 16),
               ),
-              SizedBox(height: 20),
-              Row(
+              const SizedBox(height: 20),
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.star, color: Colors.yellow),
@@ -51,18 +53,18 @@ class ProductDetailPage extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 10),
-              Text(
+              const SizedBox(height: 10),
+              const Text(
                 'In Stock: 100', // Stock information
                 style: TextStyle(fontSize: 16),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                   // Add navigation to edit product page
                 },
-                child: Text('Edit Product'),
+                child: const Text('Edit Product'),
               ),
             ],
           ),

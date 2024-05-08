@@ -3,13 +3,15 @@ import 'package:ecobites/homepage.dart';
 import 'package:flutter/material.dart';
 
 class UploadPage extends StatelessWidget {
+  const UploadPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Upload Page'),
+        title: const Text('Upload Page'),
       ),
-      body: Center(
+      body: const Center(
         child: Text(
           'This is the Upload Page',
           style: TextStyle(fontSize: 20),
@@ -36,13 +38,13 @@ class UploadPage extends StatelessWidget {
             // Navigate to Home page
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => HomePage()), // Ganti HomePage dengan halaman yang sesuai
+              MaterialPageRoute(builder: (context) => const HomePage()), // Ganti HomePage dengan halaman yang sesuai
             );
           } else if (index == 2) {
              // Navigate to Home page
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => HistoryPage()), // Ganti HomePage dengan halaman yang sesuai
+              MaterialPageRoute(builder: (context) => const HistoryPage()), // Ganti HomePage dengan halaman yang sesuai
             );
           }
         },

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class detailAlamatToko extends StatelessWidget {
+  const detailAlamatToko({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back,
             color: Color(0xFF92E3A9),
           ),
@@ -15,10 +17,10 @@ class detailAlamatToko extends StatelessWidget {
           },
         ),
         elevation: 0,
-        backgroundColor: Color(0xFFFAFAFA),
+        backgroundColor: const Color(0xFFFAFAFA),
       ),
-      body: Padding(
-          padding: const EdgeInsets.all(16.0),
+      body: const Padding(
+          padding: EdgeInsets.all(16.0),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

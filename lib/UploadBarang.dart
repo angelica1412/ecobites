@@ -5,19 +5,21 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UploadBarang extends StatefulWidget {
+  const UploadBarang({super.key});
+
   @override
   _UploadBarangState createState() => _UploadBarangState();
 }
 
 class _UploadBarangState extends State<UploadBarang> {
   String? _selectedQuantity;
-  List<String> _quantities = ['1', '2', '3', '4', '5'];
+  final List<String> _quantities = ['1', '2', '3', '4', '5'];
 
   String? _selectedDiscount;
-  List<String> _discountOptions = ['100%', '90%', '50%'];
+  final List<String> _discountOptions = ['100%', '90%', '50%'];
 
   String? _selectedCategory;
-  List<String> _categoryOptions = [
+  final List<String> _categoryOptions = [
     'Makanan',
     'Daur Ulang',
     'Bahan Daur Ulang',
@@ -40,9 +42,9 @@ class _UploadBarangState extends State<UploadBarang> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Upload Barang'),
+        title: const Text('Upload Barang'),
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back,
             color: Color(0xFF000000),
           ),
@@ -51,7 +53,7 @@ class _UploadBarangState extends State<UploadBarang> {
           },
         ),
         elevation: 0,
-        backgroundColor: Color(0xFFFAFAFA),
+        backgroundColor: const Color(0xFFFAFAFA),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -59,14 +61,14 @@ class _UploadBarangState extends State<UploadBarang> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'Upload Gambar Barang',
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF000000)),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               if (_imageFile != null)
                 Image.file(
                   _imageFile!,
@@ -74,31 +76,31 @@ class _UploadBarangState extends State<UploadBarang> {
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
                     onPressed: _pickImageFromGallery,
-                    child: Text('Pilih dari Galeri'),
+                    child: const Text('Pilih dari Galeri'),
                   ),
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   ElevatedButton(
                     onPressed: _pickImageFromCamera,
-                    child: Text('Ambil Foto'),
+                    child: const Text('Ambil Foto'),
                   ),
                 ],
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'Nama Barang',
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF000000)),
               ),
-              SizedBox(height: 8),
-              TextField(
+              const SizedBox(height: 8),
+              const TextField(
                 decoration: InputDecoration(
                   hintText: 'Nama Barang',
                   focusedBorder: OutlineInputBorder(
@@ -112,17 +114,17 @@ class _UploadBarangState extends State<UploadBarang> {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'Jumlah Barang',
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF000000)),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               DropdownButton<String>(
-                hint: Text('Pilih Jumlah Barang'),
+                hint: const Text('Pilih Jumlah Barang'),
                 value: _selectedQuantity,
                 onChanged: (String? newValue) {
                   setState(() {
@@ -131,20 +133,20 @@ class _UploadBarangState extends State<UploadBarang> {
                 },
                 items: _quantities.map((quantity) {
                   return DropdownMenuItem(
-                    child: new Text(quantity),
                     value: quantity,
+                    child: Text(quantity),
                   );
                 }).toList(),
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'Harga Asli Barang',
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF000000)),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               TextField(
                 controller: _hargaAsliController,
                 keyboardType: TextInputType.number,
@@ -157,12 +159,12 @@ class _UploadBarangState extends State<UploadBarang> {
                           _hargaAsliController.text.isEmpty
                       ? '*required number'
                       : null,
-                  focusedBorder: OutlineInputBorder(
+                  focusedBorder: const OutlineInputBorder(
                     borderSide:
                         BorderSide(color: Color(0xFFE8AE45), width: 2.0),
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   ),
-                  enabledBorder: OutlineInputBorder(
+                  enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black, width: 2.0),
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   ),
@@ -176,17 +178,17 @@ class _UploadBarangState extends State<UploadBarang> {
                   calculateDiscountedPrice();
                 },
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'Potongan Harga',
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF000000)),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               DropdownButton<String>(
-                hint: Text('Pilih Potongan'),
+                hint: const Text('Pilih Potongan'),
                 value: _selectedDiscount,
                 onChanged: (String? newValue) {
                   setState(() {
@@ -196,38 +198,38 @@ class _UploadBarangState extends State<UploadBarang> {
                 },
                 items: _discountOptions.map((discount) {
                   return DropdownMenuItem(
-                    child: new Text(discount),
                     value: discount,
+                    child: Text(discount),
                   );
                 }).toList(),
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'Harga Barang setelah Diskon',
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF000000)),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
                 'Rp. ${_hargaDiskonController.text}',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   color: Colors.black,
                 ),
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'Kategori Barang',
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF000000)),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               DropdownButton<String>(
-                hint: Text('Pilih Kategori Barang'),
+                hint: const Text('Pilih Kategori Barang'),
                 value: _selectedCategory,
                 onChanged: (String? newValue) {
                   setState(() {
@@ -236,21 +238,21 @@ class _UploadBarangState extends State<UploadBarang> {
                 },
                 items: _categoryOptions.map((category) {
                   return DropdownMenuItem(
-                    child: new Text(category),
                     value: category,
+                    child: Text(category),
                   );
                 }).toList(),
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'Deskripsi Barang',
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF000000)),
               ),
-              SizedBox(height: 8),
-              TextField(
+              const SizedBox(height: 8),
+              const TextField(
                 decoration: InputDecoration(
                   hintText: 'Deskripsi',
                   focusedBorder: OutlineInputBorder(
@@ -264,10 +266,10 @@ class _UploadBarangState extends State<UploadBarang> {
                   ),
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Align(
                 alignment: Alignment.centerRight,
-                child: Container(
+                child: SizedBox(
                   width: 200,
                   height: 50,
                   child: ElevatedButton(
@@ -291,14 +293,14 @@ class _UploadBarangState extends State<UploadBarang> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Sukses'),
-          content: Text('Data berhasil ditambahkan.'),
+          title: const Text('Sukses'),
+          content: const Text('Data berhasil ditambahkan.'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );
@@ -306,14 +308,14 @@ class _UploadBarangState extends State<UploadBarang> {
     );
   },
   style: ElevatedButton.styleFrom(
-    backgroundColor: Color.fromARGB(255, 255, 255, 255),
+    backgroundColor: const Color.fromARGB(255, 255, 255, 255),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(20.0),
-      side: BorderSide(color: Colors.black),
+      side: const BorderSide(color: Colors.black),
     ),
   ),
-  child: Padding(
-    padding: const EdgeInsets.all(0.0),
+  child: const Padding(
+    padding: EdgeInsets.all(0.0),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
