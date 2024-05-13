@@ -1,3 +1,4 @@
+import 'package:ecobites/user_store_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -110,7 +111,12 @@ class ProfileScreen extends StatelessWidget {
                 child: Container(
                   width: 300,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const userStorePage()));
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromARGB(255, 179, 229, 193),
                       shape: RoundedRectangleBorder(
