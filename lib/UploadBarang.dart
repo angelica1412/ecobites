@@ -1,7 +1,7 @@
 import 'dart:io';
 
+import 'package:ecobites/Widgets/customTextfield.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UploadBarang extends StatefulWidget {
@@ -27,8 +27,10 @@ class _UploadBarangState extends State<UploadBarang> {
 
   final _hargaAsliController = TextEditingController();
   final _hargaDiskonController = TextEditingController();
+  final _namaBarang = TextEditingController();
+  final _deskBarang = TextEditingController();
 
-  bool _hargaAsliFieldFocused = false;
+
   File? _imageFile;
 
   @override
@@ -100,19 +102,11 @@ class _UploadBarangState extends State<UploadBarang> {
                     color: Color(0xFF000000)),
               ),
               const SizedBox(height: 8),
-              const TextField(
-                decoration: InputDecoration(
-                  hintText: 'Nama Barang',
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color(0xFFE8AE45), width: 2.0),
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black, width: 2.0),
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  ),
-                ),
+              CustomTextField(
+                controller: _namaBarang,
+                hintText: "Masukkan Nama Barang",
+                keyboardType: TextInputType.text,
+                onChanged: (value) {},
               ),
               const SizedBox(height: 20),
               const Text(
@@ -147,33 +141,10 @@ class _UploadBarangState extends State<UploadBarang> {
                     color: Color(0xFF000000)),
               ),
               const SizedBox(height: 8),
-              TextField(
+              CustomTextField(
                 controller: _hargaAsliController,
+                hintText: "Harga Asli",
                 keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly
-                ],
-                decoration: InputDecoration(
-                  hintText: 'Harga Asli',
-                  errorText: _hargaAsliFieldFocused &&
-                          _hargaAsliController.text.isEmpty
-                      ? '*required number'
-                      : null,
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color(0xFFE8AE45), width: 2.0),
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  ),
-                  enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black, width: 2.0),
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  ),
-                ),
-                onTap: () {
-                  setState(() {
-                    _hargaAsliFieldFocused = true;
-                  });
-                },
                 onChanged: (value) {
                   calculateDiscountedPrice();
                 },
@@ -252,19 +223,11 @@ class _UploadBarangState extends State<UploadBarang> {
                     color: Color(0xFF000000)),
               ),
               const SizedBox(height: 8),
-              const TextField(
-                decoration: InputDecoration(
-                  hintText: 'Deskripsi',
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color(0xFFE8AE45), width: 2.0),
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black, width: 2.0),
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  ),
-                ),
+              CustomTextField(
+                controller: _deskBarang,
+                keyboardType: TextInputType.text,
+                hintText: "Deskripsi Barang",
+                onChanged: (value) {},
               ),
               const SizedBox(height: 8),
               Align(
@@ -277,10 +240,6 @@ class _UploadBarangState extends State<UploadBarang> {
                       // Hapus gambar yang dipilih saat tombol submit ditekan
                       setState(() {
                         _imageFile = null;
-                      });
-
-                      // Mengosongkan semua data input
-                      setState(() {
                         _selectedQuantity = null;
                         _selectedCategory = null;
                         _hargaAsliController.clear();
@@ -308,10 +267,9 @@ class _UploadBarangState extends State<UploadBarang> {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                      backgroundColor: const Color(0xFF92E3A9),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
-                        side: const BorderSide(color: Colors.black),
                       ),
                     ),
                     child: const Padding(
@@ -321,7 +279,7 @@ class _UploadBarangState extends State<UploadBarang> {
                         children: [
                           Text(
                             'Submit',
-                            style: TextStyle(fontSize: 18),
+                            style: TextStyle(fontSize: 18,color: Colors.black),
                           ),
                         ],
                       ),
