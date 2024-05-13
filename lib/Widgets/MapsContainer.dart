@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class MapsContainer extends StatelessWidget {
@@ -7,11 +8,12 @@ class MapsContainer extends StatelessWidget {
   const MapsContainer({super.key, required this.storeName});
 
   void _launchMaps() async {
+    final encodedQuery = Uri.encodeFull(storeName);
     // Format URL untuk melakukan pencarian di Google Maps berdasarkan nama toko
-    String googleMapsUrl = 'https://www.google.com/maps/search/?api=1&query=$storeName';
+    String googleMapsUrl = 'https://www.google.com/maps/search/?api=1&query=$encodedQuery';
 
-    if (await canLaunchUrlString(googleMapsUrl)) {
-      await launchUrlString(googleMapsUrl);
+    if (await launch(googleMapsUrl)) {
+      await launch(googleMapsUrl);
     } else {
       throw 'Could not launch $googleMapsUrl';
     }

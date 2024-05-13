@@ -29,48 +29,60 @@ class _StorePageState extends State<userStorePage> {
       description: 'Description for Product 1',
       price: 10.99,
       imageURL: 'assets/product1.png',
+      category: 'Food',
     ),
     Product(
       name: 'Product 3',
       description: 'Description for Product 2',
       price: 19.99,
       imageURL: 'assets/product2.png',
+      category: 'Bahan',
     ),
     Product(
       name: 'Product 2',
       description: 'Description for Product 2',
       price: 19.99,
       imageURL: 'assets/product3.png',
+      category: 'Daur',
+
     ),
     Product(
       name: 'Product 4',
       description: 'Description for Product 2',
       price: 19.99,
       imageURL: 'assets/login.png',
+      category: 'Bahan',
+
     ),
     Product(
       name: 'Product 4',
       description: 'Description for Product 2',
       price: 19.99,
       imageURL: 'assets/login.png',
+      category: 'Daur',
     ),
     Product(
       name: 'Product 4',
       description: 'Description for Product 2',
       price: 19.99,
       imageURL: 'assets/login.png',
+      category: 'Daur',
     ),
     Product(
       name: 'Product 4',
       description: 'Description for Product 2',
       price: 19.99,
       imageURL: 'assets/login.png',
+      category: 'Daur',
     ),
     // Add more products as needed
   ];
 
   @override
   Widget build(BuildContext context) {
+    List<Product> _getProductsByCategory(String category) {
+      return products.where((product) => product.category == category).toList();
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -249,18 +261,37 @@ class _StorePageState extends State<userStorePage> {
               ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: products.length,
+                itemCount: _selectedCategory == 'All' ? products.length : _getProductsByCategory(_selectedCategory).length,
                 itemBuilder: (context, index) {
+                  final product = _selectedCategory == 'All' ? products[index] : _getProductsByCategory(_selectedCategory)[index];
                   return ProductCard(
-                    product: products[index],
+                    product: product,
                     isUserStore: true,
                   );
                 },
               ),
+
             ],
+
+          ),
+          Positioned(
+            bottom: 16.0, // Atur posisi vertikal dari bawah layar
+            right: 16.0, // Atur posisi horizontal dari kanan layar
+            child: FloatingActionButton(
+              onPressed: () {
+                print("menuju ke form upload page");
+              },
+              child: Icon(Icons.add),
+              backgroundColor: Colors.green,
+              shape: CircleBorder(), // Membuat FAB bundar
+
+              // Warna latar belakang tombol
+            ),
           ),
         ],
+
       ),
+
     );
   }
 

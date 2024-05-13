@@ -5,6 +5,7 @@ class Product {
   final String description;
   final double price;
   final String imageURL;
+  final String category;
   int quantity;
 
   Product({
@@ -12,6 +13,7 @@ class Product {
     required this.description,
     required this.price,
     required this.imageURL,
+    required this.category,
     this.quantity = 0,
   });
 }
@@ -76,7 +78,8 @@ class _ProductCardState extends State<ProductCard> {
                   else if (_quantity == 0)
                     _buildAddButton()
                   else
-                    _buildQuantityButton(),                ],
+                    _buildQuantityButton(),
+                ],
               ),
             ),
             const SizedBox(width: 10),
@@ -145,16 +148,32 @@ class _ProductCardState extends State<ProductCard> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          IconButton(
-            icon: const Icon(Icons.edit ),
-            onPressed: () {
+          InkWell(
+            onTap: () {
+              // Tindakan yang akan dijalankan ketika tombol di klik
+              // Misalnya, tampilkan dialog edit, navigasi ke halaman edit, dll.
             },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.edit),
+                const SizedBox(width: 4), // Spasi antara ikon dan teks
+                Text(
+                  'Edit',
+                  style: TextStyle(
+                    fontSize: 16, // Atur ukuran teks sesuai kebutuhan Anda
+                  ),
+                ),
+              ],
+            ),
           ),
-          const Text('Edit'),
         ],
       ),
     );
   }
+
+
+
 
 
 

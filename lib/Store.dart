@@ -1,77 +1,89 @@
-import 'package:ecobites/Widgets/scheduleStore.dart';
-import 'package:flutter/material.dart';
-import 'package:ecobites/Widgets/ProductCard.dart';
-import 'package:ecobites/Widgets/category_button.dart';
-import 'package:ecobites/Widgets/share_widget.dart';
-import 'Widgets/MapsContainer.dart';
+  import 'package:ecobites/Widgets/scheduleStore.dart';
+  import 'package:flutter/material.dart';
+  import 'package:ecobites/Widgets/ProductCard.dart';
+  import 'package:ecobites/Widgets/category_button.dart';
+  import 'package:ecobites/Widgets/share_widget.dart';
+  import 'Widgets/MapsContainer.dart';
 
 
-class StorePage extends StatefulWidget {
-  const StorePage({super.key});
+  class StorePage extends StatefulWidget {
+    const StorePage({super.key});
 
-  @override
-  _StorePageState createState() => _StorePageState();
-}
-
-class _StorePageState extends State<StorePage> {
-  String _selectedCategory = 'All';
-  bool _searching = false; // Untuk melacak apakah sedang dalam mode pencarian
-  bool _isFavorite = false; // Untuk melacak apakah toko ini merupakan favorit
-  bool _showCheckoutButton = false;// Untuk melacak apakah harus menampilkan tombol checkout
-
-  void _setSelectedCategory(String category) {
-    setState(() {
-      _selectedCategory = category;
-    });
+    @override
+    _StorePageState createState() => _StorePageState();
   }
 
-  final TextEditingController _searchController = TextEditingController();
+  class _StorePageState extends State<StorePage> {
+    String _selectedCategory = 'All';
+    bool _searching = false; // Untuk melacak apakah sedang dalam mode pencarian
+    bool _isFavorite = false; // Untuk melacak apakah toko ini merupakan favorit
+    bool _showCheckoutButton = false;// Untuk melacak apakah harus menampilkan tombol checkout
 
-  List<Product> products = [
-    Product(
-      name: 'Product 1',
-      description: 'Description for Product 1',
-      price: 10.99,
-      imageURL: 'assets/product1.png',
-    ),
-    Product(
-      name: 'Product 3',
-      description: 'Description for Product 2',
-      price: 19.99,
-      imageURL: 'assets/product2.png',
-    ),
-    Product(
-      name: 'Product 2',
-      description: 'Description for Product 2',
-      price: 19.99,
-      imageURL: 'assets/product3.png',
-    ),
-    Product(
-      name: 'Product 4',
-      description: 'Description for Product 2',
-      price: 19.99,
-      imageURL: 'assets/login.png',
-    ),
-    Product(
-      name: 'Product 4',
-      description: 'Description for Product 2',
-      price: 19.99,
-      imageURL: 'assets/login.png',
-    ),
-    Product(
-      name: 'Product 4',
-      description: 'Description for Product 2',
-      price: 19.99,
-      imageURL: 'assets/login.png',
-    ),
-    Product(
-      name: 'Product 4',
-      description: 'Description for Product 2',
-      price: 19.99,
-      imageURL: 'assets/login.png',
-    ),
-    // Add more products as needed
-  ];
+    void _setSelectedCategory(String category) {
+      setState(() {
+        _selectedCategory = category;
+      });
+    }
+
+    final TextEditingController _searchController = TextEditingController();
+    List<Product> _getProductsByCategory(String category) {
+      return products.where((product) => product.category == category).toList();
+    }
+
+    List<Product> products = [
+      Product(
+        name: 'Product 1',
+        description: 'Description for Product 1',
+        price: 10.99,
+        imageURL: 'assets/product1.png',
+        category: 'Food',
+      ),
+      Product(
+        name: 'Product 3',
+        description: 'Description for Product 2',
+        price: 19.99,
+        imageURL: 'assets/product2.png',
+        category: 'Bahan',
+      ),
+      Product(
+        name: 'Product 2',
+        description: 'Description for Product 2',
+        price: 19.99,
+        imageURL: 'assets/product3.png',
+          category: 'Daur',
+
+      ),
+      Product(
+        name: 'Product 4',
+        description: 'Description for Product 2',
+        price: 19.99,
+        imageURL: 'assets/login.png',
+          category: 'Bahan',
+
+      ),
+      Product(
+        name: 'Product 4',
+        description: 'Description for Product 2',
+        price: 19.99,
+        imageURL: 'assets/login.png',
+          category: 'Daur',
+      ),
+      Product(
+        name: 'Product 4',
+        description: 'Description for Product 2',
+        price: 19.99,
+        imageURL: 'assets/login.png',
+          category: 'Daur',
+      ),
+      Product(
+        name: 'Product 4',
+        description: 'Description for Product 2',
+        price: 19.99,
+        imageURL: 'assets/login.png',
+          category: 'Daur',
+      ),
+      // Add more products as needed
+    ];
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +127,7 @@ class _StorePageState extends State<StorePage> {
         ),
         actions: _buildActions(),
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(4.0), // Tinggi bayangan
+          preferredSize: Size.fromHeight(4.0), // Tinggi bayangan
           child: Container(
             decoration: BoxDecoration(
               boxShadow: [
@@ -123,7 +135,7 @@ class _StorePageState extends State<StorePage> {
                   color: Colors.black.withOpacity(0.2), // Warna dan opacity bayangan
                   spreadRadius: 1, // Radius penyebaran bayangan
                   blurRadius: 5, // Radius blur bayangan
-                  offset: const Offset(0, 3), // Perubahan posisi bayangan (horizontal, vertical)
+                  offset: Offset(0, 3), // Perubahan posisi bayangan (horizontal, vertical)
                 ),
               ],
             ),
@@ -232,119 +244,119 @@ class _StorePageState extends State<StorePage> {
                 ),
               ),
 
-              const SizedBox(height: 20),
-              //Tombol kategori
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  CategoryButton(
-                    category: 'All',
-                    selectedCategory: _selectedCategory,
-                    onPressed: _setSelectedCategory,
-                  ),
-                  CategoryButton(
-                    category: 'Food',
-                    selectedCategory: _selectedCategory,
-                    onPressed: _setSelectedCategory,
-                  ),
-                  CategoryButton(
-                    category: 'Bahan',
-                    selectedCategory: _selectedCategory,
-                    onPressed: _setSelectedCategory,
-                  ),
-                  CategoryButton(
-                    category: 'Daur',
-                    selectedCategory: _selectedCategory,
-                    onPressed: _setSelectedCategory,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: products.length,
-                itemBuilder: (context, index) {
-                  return ProductCard(
-                    product: products[index],
-                    onQuantityChanged: () {
-                      // Panggil fungsi untuk menampilkan/menyembunyikan tombol checkout
-                      _handleShowCheckoutButton();
-                    },
-                  );
-                },
-              ),
-            ],
-          ),
-          Positioned(
-            bottom: 0.0, // Atur posisi vertical container
-            left: 0.0, // Atur posisi horizontal container
-            right: 0.0, // Atur lebar container agar sesuai dengan parent
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              height: _showCheckoutButton ? 60.0 : 0.0,
-              color: Colors.transparent,
-              child: _showCheckoutButton
-                  ? InkWell(
-                onTap: () {
-                  // Lakukan tindakan saat container diklik
-                  // Misalnya, tampilkan dialog, navigasi ke halaman checkout, dll.
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Container(
-                    height: 30.0,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(12.0), // Membuat sudut agak bulat dengan radius 12.0
+                const SizedBox(height: 20),
+                //Tombol kategori
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    CategoryButton(
+                      category: 'All',
+                      selectedCategory: _selectedCategory,
+                      onPressed: _setSelectedCategory,
                     ),
-                    margin: const EdgeInsets.only(left: 10.0, right: 10.0),
-                    child: const Row(
-                      children: [
-                        // Icon keranjang
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
-                          child: Icon(Icons.shopping_cart, color: Colors.white),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                          child: VerticalDivider(
-                            color: Colors.white, // Warna garis pembatas vertikal
-                            thickness: 2, // Ketebalan garis
-                            indent: 16, // Jarak dari tepi kiri ikon keranjang
-                            endIndent: 16, // Jarak dari tepi kanan ikon keranjang
+                    CategoryButton(
+                      category: 'Food',
+                      selectedCategory: _selectedCategory,
+                      onPressed: _setSelectedCategory,
+                    ),
+                    CategoryButton(
+                      category: 'Bahan',
+                      selectedCategory: _selectedCategory,
+                      onPressed: _setSelectedCategory,
+                    ),
+                    CategoryButton(
+                      category: 'Daur',
+                      selectedCategory: _selectedCategory,
+                      onPressed: _setSelectedCategory,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: _selectedCategory == 'All' ? products.length : _getProductsByCategory(_selectedCategory).length,
+                  itemBuilder: (context, index) {
+                    final product = _selectedCategory == 'All' ? products[index] : _getProductsByCategory(_selectedCategory)[index];
+                    return ProductCard(
+                      product: product,
+                      onQuantityChanged: () {
+                        _handleShowCheckoutButton();
+                      },
+                    );
+                  },
+                ),
+              ],
+            ),
+            Positioned(
+              bottom: 0.0, // Atur posisi vertical container
+              left: 0.0, // Atur posisi horizontal container
+              right: 0.0, // Atur lebar container agar sesuai dengan parent
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                height: _showCheckoutButton ? 60.0 : 0.0,
+                color: Colors.transparent,
+                child: _showCheckoutButton
+                    ? InkWell(
+                  onTap: () {
+                    // Lakukan tindakan saat container diklik
+                    // Misalnya, tampilkan dialog, navigasi ke halaman checkout, dll.
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Container(
+                      height: 30.0,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(12.0), // Membuat sudut agak bulat dengan radius 12.0
+                      ),
+                      margin: const EdgeInsets.only(left: 10.0, right: 10.0),
+                      child: const Row(
+                        children: [
+                          // Icon keranjang
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
+                            child: Icon(Icons.shopping_cart, color: Colors.white),
                           ),
-                        ),
-                        Text(
-                          '5 Produk',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        // Spacer untuk memberi jarak
-                        Spacer(),
-                        // Total harga
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(0, 0, 16, 0),
-                          child: Text(
-                            'Total: \$50.00', // Ganti dengan total harga sesuai dengan logika aplikasi Anda
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                            child: VerticalDivider(
+                              color: Colors.white, // Warna garis pembatas vertikal
+                              thickness: 2, // Ketebalan garis
+                              indent: 16, // Jarak dari tepi kiri ikon keranjang
+                              endIndent: 16, // Jarak dari tepi kanan ikon keranjang
+                            ),
+                          ),
+                          Text(
+                            '5 Produk',
                             style: TextStyle(color: Colors.white),
                           ),
-                        ),
-                      ],
+                          // Spacer untuk memberi jarak
+                          Spacer(),
+                          // Total harga
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(0, 0, 16, 0),
+                            child: Text(
+                              'Total: \$50.00', // Ganti dengan total harga sesuai dengan logika aplikasi Anda
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+                  )
+
                 )
-
-              )
-                  : null,
+                    : null,
+              ),
             ),
-          ),
 
 
-        ],
-      ),
-    );
-  }
+          ],
+        ),
+      );
+    }
 
   // Fungsi untuk membangun actions sesuai dengan mode pencarian
   List<Widget> _buildActions() {
@@ -418,8 +430,8 @@ class _StorePageState extends State<StorePage> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 20),
-              const MapsContainer(storeName: 'gohanku sangir'),
+              SizedBox(height: 20),
+              MapsContainer(storeName: 'gohanku sangir'),
                 Container(
                 padding: const EdgeInsets.all(15),
                 decoration: BoxDecoration(
@@ -490,14 +502,14 @@ class _StorePageState extends State<StorePage> {
                   ],
                 ),
               ),
-              const SizedBox(height: 20),
-              const scheduleStore(day: "Senin", time: "4.00 - 16.00"),
-              const scheduleStore(day: "Selasa", time: "4.00 - 16.00"),
-              const scheduleStore(day: "Rabu", time: "4.00 - 16.00"),
-              const scheduleStore(day: "Kamis", time: "4.00 - 16.00"),
-              const scheduleStore(day: "Jumat", time: "4.00 - 16.00"),
-              const scheduleStore(day: "Sabtu", time: "4.00 - 16.00"),
-              const scheduleStore(day: "Minggu", time: "4.00 - 16.00"),
+              SizedBox(height: 20),
+              scheduleStore(day: "Senin", time: "4.00 - 16.00"),
+              scheduleStore(day: "Selasa", time: "4.00 - 16.00"),
+              scheduleStore(day: "Rabu", time: "4.00 - 16.00"),
+              scheduleStore(day: "Kamis", time: "4.00 - 16.00"),
+              scheduleStore(day: "Jumat", time: "4.00 - 16.00"),
+              scheduleStore(day: "Sabtu", time: "4.00 - 16.00"),
+              scheduleStore(day: "Minggu", time: "4.00 - 16.00"),
             ],
           ),
         );
