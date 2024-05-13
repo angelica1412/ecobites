@@ -1,5 +1,3 @@
-import 'package:ecobites/PengaturanAkun.dart';
-import 'package:ecobites/user_store_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -34,8 +32,8 @@ class ProfileScreen extends StatelessWidget {
               Center(
                 child: Image.asset(
                   'assets/defaultProfilePicture.png',
-                  height: 150,
-                  width: 150,
+                  height: 200,
+                  width: 200,
                 ),
               ),
               const SizedBox(
@@ -71,25 +69,15 @@ class ProfileScreen extends StatelessWidget {
                   fontWeight: FontWeight.normal,
                 ),
               ),
-              const SizedBox(height: 15,),
-              const Divider(
-                color: Colors.black,
-                thickness: 1.0,
-                height: 20,
-                indent: 20,
-                endIndent: 20,
-              ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 56),
               Align(
                 alignment: Alignment.center,
                 child: Container(
                   width: 300,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const PengaturanAkun()));
+                      // Fungsi yang akan dijalankan ketika tombol login ditekan
+                      // Anda dapat menambahkan logika autentikasi di sini
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
@@ -122,12 +110,7 @@ class ProfileScreen extends StatelessWidget {
                 child: Container(
                   width: 300,
                   child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const userStorePage()));
-                    },
+                    onPressed: () {},
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 179, 229, 193),
                       shape: RoundedRectangleBorder(
