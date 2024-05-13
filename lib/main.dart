@@ -1,5 +1,8 @@
 import 'dart:async';
 import 'package:ecobites/Store.dart';
+import 'package:ecobites/UploadBarang.dart';
+import 'package:ecobites/profile.dart';
+import 'package:ecobites/tau.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'onboardingscreen.dart';

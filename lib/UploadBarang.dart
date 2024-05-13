@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:ecobites/Widgets/customTextfield.dart';
+import 'package:ecobites/tau.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -29,7 +30,6 @@ class _UploadBarangState extends State<UploadBarang> {
   final _hargaDiskonController = TextEditingController();
   final _namaBarang = TextEditingController();
   final _deskBarang = TextEditingController();
-
 
   File? _imageFile;
 
@@ -84,12 +84,32 @@ class _UploadBarangState extends State<UploadBarang> {
                 children: [
                   ElevatedButton(
                     onPressed: _pickImageFromGallery,
-                    child: const Text('Pilih dari Galeri'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors
+                          .white24, // Ubah warna latar belakang sesuai keinginanmu
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Icon(
+                        Icons.photo_library,
+                        color: Colors.black,
+                      ),
+                    ),
                   ),
                   const SizedBox(width: 16),
                   ElevatedButton(
                     onPressed: _pickImageFromCamera,
-                    child: const Text('Ambil Foto'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors
+                          .white24, // Ubah warna latar belakang sesuai keinginanmu
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Icon(
+                        Icons.camera_alt,
+                        color: Colors.black,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -133,6 +153,20 @@ class _UploadBarangState extends State<UploadBarang> {
                 }).toList(),
               ),
               const SizedBox(height: 20),
+              // Kualitas Barang
+              const Text(
+                'Kualitas Barang',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF000000)),
+              ),
+              const SizedBox(height: 8),
+              const SliderWithLabel(), // Tambahkan komponen SliderWithLabel di sini
+// Kualitas Barang end
+              const SizedBox(
+                height: 20,
+              ),
               const Text(
                 'Harga Asli Barang',
                 style: TextStyle(
@@ -183,11 +217,26 @@ class _UploadBarangState extends State<UploadBarang> {
                     color: Color(0xFF000000)),
               ),
               const SizedBox(height: 8),
-              Text(
-                'Rp. ${_hargaDiskonController.text}',
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
+              Container(
+                width: MediaQuery.of(context)
+                    .size
+                    .width, // Menggunakan lebar perangkat sebagai lebar kontainer
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.black, // Warna border
+                    width: 1, // Lebar border (misal: 1% dari lebar perangkat)
+                  ),
+                  borderRadius: BorderRadius.circular(8), // Border radius
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text(
+                    'Rp. ${_hargaDiskonController.text}',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
@@ -229,7 +278,7 @@ class _UploadBarangState extends State<UploadBarang> {
                 hintText: "Deskripsi Barang",
                 onChanged: (value) {},
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 25),
               Align(
                 alignment: Alignment.centerRight,
                 child: SizedBox(
@@ -237,34 +286,65 @@ class _UploadBarangState extends State<UploadBarang> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-                      // Hapus gambar yang dipilih saat tombol submit ditekan
-                      setState(() {
-                        _imageFile = null;
-                        _selectedQuantity = null;
-                        _selectedCategory = null;
-                        _hargaAsliController.clear();
-                        _hargaDiskonController.clear();
-                        _selectedDiscount = null;
-                      });
-
-                      // Menampilkan popup berhasil
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: const Text('Sukses'),
-                            content: const Text('Data berhasil ditambahkan.'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('OK'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
+                      // Check if all fields are filled
+                      if (_imageFile == null ||
+                          _namaBarang.text.isEmpty ||
+                          _selectedQuantity == null ||
+                          _selectedCategory == null ||
+                          _hargaAsliController.text.isEmpty ||
+                          _hargaDiskonController.text.isEmpty ||
+                          _deskBarang.text.isEmpty ||
+                          _selectedDiscount == null) {
+                        // Show popup for incomplete data
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Data Belum Lengkap'),
+                              content: const Text(
+                                  'Mohon lengkapi semua data sebelum menekan tombol Submit.'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      } else {
+                        // Clear selected image and fields
+                        setState(() {
+                          _imageFile = null;
+                          _selectedQuantity = null;
+                          _selectedCategory = null;
+                          _hargaAsliController.clear();
+                          _hargaDiskonController.clear();
+                          _namaBarang.clear();
+                          _deskBarang.clear();
+                          _selectedDiscount = null;
+                        });
+                        // Show success popup
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Sukses'),
+                              content: const Text('Data berhasil ditambahkan.'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF92E3A9),
@@ -279,7 +359,7 @@ class _UploadBarangState extends State<UploadBarang> {
                         children: [
                           Text(
                             'Submit',
-                            style: TextStyle(fontSize: 18,color: Colors.black),
+                            style: TextStyle(fontSize: 18, color: Colors.black),
                           ),
                         ],
                       ),
