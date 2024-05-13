@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'register.dart';
+import 'register.dart'; // Mengimpor file signup_page.dart
+// Mengimpor file homepage.dart
 import 'package:ecobites/services/auth.dart';
 
 class LoginPage extends StatefulWidget {
@@ -19,10 +20,9 @@ class _LoginPageState extends State<LoginPage> {
     if (_formkey.currentState!.validate()) {
       await Auth.login(context, emailController.text.trim(), passController.text.trim());
       // Bring the user to the home page after successful login
-
     }
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
                       decoration: const InputDecoration(
                         hintText: 'emailanda@gmail.com',
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFFE8AE45), width: 2.0),
+                          borderSide: BorderSide(color: Color(0xFF92E3A9), width: 2.0),
                           borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         ),
                         enabledBorder: OutlineInputBorder(
@@ -121,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                       decoration: const InputDecoration(
                         hintText: '**************',
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFFE8AE45), width: 2.0),
+                          borderSide: BorderSide(color: Color(0xFF92E3A9), width: 2.0),
                           borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         ),
                         enabledBorder: OutlineInputBorder(
@@ -167,7 +167,7 @@ class _LoginPageState extends State<LoginPage> {
                         );
                       },
                       child: const Text(
-                        'Don’t have an account?',
+                        'Don`t have an account?',
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 16,

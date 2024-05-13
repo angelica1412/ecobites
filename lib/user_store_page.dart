@@ -124,7 +124,7 @@ class _StorePageState extends State<userStorePage> {
         ),
         actions: _buildActions(),
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(4.0), // Tinggi bayangan
+          preferredSize: const Size.fromHeight(4.0), // Tinggi bayangan
           child: Container(
             decoration: BoxDecoration(
               boxShadow: [
@@ -132,7 +132,7 @@ class _StorePageState extends State<userStorePage> {
                   color: Colors.black.withOpacity(0.2), // Warna dan opacity bayangan
                   spreadRadius: 1, // Radius penyebaran bayangan
                   blurRadius: 5, // Radius blur bayangan
-                  offset: Offset(0, 3), // Perubahan posisi bayangan (horizontal, vertical)
+                  offset: const Offset(0, 3), // Perubahan posisi bayangan (horizontal, vertical)
                 ),
               ],
             ),

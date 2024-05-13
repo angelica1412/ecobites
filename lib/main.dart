@@ -1,8 +1,7 @@
 import 'dart:async';
-import 'package:ecobites/home.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'onboardingscreen.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,8 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const Home(),
-      debugShowCheckedModeBanner: false,
+      home: const SplashScreen(),
       routes: {
         '/onboardingscreen': (context) => const OnBoardingScreen(),
       },
