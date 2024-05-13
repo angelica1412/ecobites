@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:ecobites/Widgets/customTextfield.dart';
-import 'package:ecobites/tau.dart';
+import 'package:ecobites/Widgets/SliderWithLabel.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -25,6 +25,9 @@ class _UploadBarangState extends State<UploadBarang> {
     'Daur Ulang',
     'Bahan Daur Ulang',
   ];
+
+  String? _selectedUnit;
+  final List<String> _unitOptions = ['Kg', 'g'];
 
   final _hargaAsliController = TextEditingController();
   final _hargaDiskonController = TextEditingController();
@@ -137,21 +140,46 @@ class _UploadBarangState extends State<UploadBarang> {
                     color: Color(0xFF000000)),
               ),
               const SizedBox(height: 8),
-              DropdownButton<String>(
-                hint: const Text('Pilih Jumlah Barang'),
-                value: _selectedQuantity,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _selectedQuantity = newValue;
-                  });
-                },
-                items: _quantities.map((quantity) {
-                  return DropdownMenuItem(
-                    value: quantity,
-                    child: Text(quantity),
-                  );
-                }).toList(),
+              Row(
+                children: [
+                  Expanded(
+                    child: DropdownButton<String>(
+                      hint: const Text('Jumlah'),
+                      value: _selectedQuantity,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedQuantity = newValue;
+                        });
+                      },
+                      items: _quantities.map((quantity) {
+                        return DropdownMenuItem(
+                          value: quantity,
+                          child: Text(quantity),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: DropdownButton<String>(
+                      hint: const Text('Satuan'),
+                      value: _selectedUnit,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedUnit = newValue;
+                        });
+                      },
+                      items: _unitOptions.map((unit) {
+                        return DropdownMenuItem(
+                          value: unit,
+                          child: Text(unit),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
               ),
+
               const SizedBox(height: 20),
               // Kualitas Barang
               const Text(
@@ -289,6 +317,7 @@ class _UploadBarangState extends State<UploadBarang> {
                       // Check if all fields are filled
                       if (_imageFile == null ||
                           _namaBarang.text.isEmpty ||
+                          _selectedUnit == null ||
                           _selectedQuantity == null ||
                           _selectedCategory == null ||
                           _hargaAsliController.text.isEmpty ||
@@ -320,6 +349,7 @@ class _UploadBarangState extends State<UploadBarang> {
                           _imageFile = null;
                           _selectedQuantity = null;
                           _selectedCategory = null;
+                          _selectedUnit = null;
                           _hargaAsliController.clear();
                           _hargaDiskonController.clear();
                           _namaBarang.clear();

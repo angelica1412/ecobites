@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:ecobites/UploadBarang.dart';
+import 'package:ecobites/detailproduk.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'onboardingscreen.dart';
@@ -18,9 +20,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: const SplashScreen(),
-      routes: {
-        '/onboardingscreen': (context) => const OnBoardingScreen(),
-      },
+      // routes: {
+      //   '/onboardingscreen': (context) => const OnBoardingScreen(),
+      // },
     );
   }
 }
