@@ -13,6 +13,14 @@ class UploadBarang extends StatefulWidget {
 }
 
 class _UploadBarangState extends State<UploadBarang> {
+  String? _selectedQuality;
+  final List<String> _quality = [
+    'Sangat Baik',
+    'Baik',
+    'Kurang Baik',
+    'Buruk',
+  ];
+
   String? _selectedQuantity;
   final List<String> _quantities = ['1', '2', '3', '4', '5'];
 
@@ -190,7 +198,21 @@ class _UploadBarangState extends State<UploadBarang> {
                     color: Color(0xFF000000)),
               ),
               const SizedBox(height: 8),
-              const SliderWithLabel(), // Tambahkan komponen SliderWithLabel di sini
+              DropdownButton<String>(
+                hint: const Text('Kualitas Barang'),
+                value: _selectedQuality,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _selectedQuality = newValue;
+                  });
+                },
+                items: _quality.map((quality) {
+                  return DropdownMenuItem(
+                    value: quality,
+                    child: Text(quality),
+                  );
+                }).toList(),
+              ),
 // Kualitas Barang end
               const SizedBox(
                 height: 20,
@@ -306,97 +328,189 @@ class _UploadBarangState extends State<UploadBarang> {
                 hintText: "Deskripsi Barang",
                 onChanged: (value) {},
               ),
-              const SizedBox(height: 25),
+              const SizedBox(height: 100),
               Align(
-                alignment: Alignment.centerRight,
-                child: SizedBox(
-                  width: 200,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Check if all fields are filled
-                      if (_imageFile == null ||
-                          _namaBarang.text.isEmpty ||
-                          _selectedUnit == null ||
-                          _selectedQuantity == null ||
-                          _selectedCategory == null ||
-                          _hargaAsliController.text.isEmpty ||
-                          _hargaDiskonController.text.isEmpty ||
-                          _deskBarang.text.isEmpty ||
-                          _selectedDiscount == null) {
-                        // Show popup for incomplete data
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text('Data Belum Lengkap'),
-                              content: const Text(
-                                  'Mohon lengkapi semua data sebelum menekan tombol Submit.'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      } else {
-                        // Clear selected image and fields
-                        setState(() {
-                          _imageFile = null;
-                          _selectedQuantity = null;
-                          _selectedCategory = null;
-                          _selectedUnit = null;
-                          _hargaAsliController.clear();
-                          _hargaDiskonController.clear();
-                          _namaBarang.clear();
-                          _deskBarang.clear();
-                          _selectedDiscount = null;
-                        });
-                        // Show success popup
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text('Sukses'),
-                              content: const Text('Data berhasil ditambahkan.'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF92E3A9),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(0.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Submit',
-                            style: TextStyle(fontSize: 18, color: Colors.black),
+                alignment: Alignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SizedBox(
+                      width: 75,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Show confirmation popup
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('Konfirmasi'),
+                                content: const Text(
+                                    'Apakah Anda yakin ingin menghapus semua field?'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pop(); // Close the dialog
+                                    },
+                                    child: const Text('Batal'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      // Clear all fields
+                                      setState(() {
+                                        _imageFile = null;
+                                        _selectedQuantity = null;
+                                        _selectedCategory = null;
+                                        _selectedUnit = null;
+                                        _selectedQuality = null;
+                                        _hargaAsliController.clear();
+                                        _hargaDiskonController.clear();
+                                        _namaBarang.clear();
+                                        _deskBarang.clear();
+                                        _selectedDiscount = null;
+                                      });
+                                      Navigator.of(context)
+                                          .pop(); // Close the dialog
+                                    },
+                                    child: const Text('Hapus'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFE57373),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
                           ),
-                        ],
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.all(0.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.delete,
+                                color: Colors.black,
+                              )
+                            ],
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                    const SizedBox(width: 20), // Space between the buttons
+                    SizedBox(
+                      width: 200,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Check if all fields are filled
+                          if (_imageFile == null ||
+                              _namaBarang.text.isEmpty ||
+                              _selectedUnit == null ||
+                              _selectedQuantity == null ||
+                              _selectedCategory == null ||
+                              _selectedQuality == null ||
+                              _hargaAsliController.text.isEmpty ||
+                              _hargaDiskonController.text.isEmpty ||
+                              _deskBarang.text.isEmpty ||
+                              _selectedDiscount == null) {
+                            // Show popup for incomplete data
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('Data Belum Lengkap'),
+                                  content: const Text(
+                                      'Mohon lengkapi semua data sebelum menekan tombol Submit.'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('OK'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          } else {
+                            // Clear selected image and fields
+                            setState(() {
+                              _imageFile = null;
+                              _selectedQuantity = null;
+                              _selectedCategory = null;
+                              _selectedUnit = null;
+                              _selectedQuality = null;
+                              _hargaAsliController.clear();
+                              _hargaDiskonController.clear();
+                              _namaBarang.clear();
+                              _deskBarang.clear();
+                              _selectedDiscount = null;
+                            });
+                            // Show success popup
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('Sukses'),
+                                  content:
+                                      const Text('Data berhasil ditambahkan.'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('OK'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF92E3A9),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                        ),
+                        child: const Stack(
+                          children: [
+                            Align(
+                                alignment: Alignment.center,
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    right: 25,
+                                  ),
+                                  child: Text(
+                                    'Submit',
+                                    style: TextStyle(
+                                        fontSize: 18, color: Colors.black),
+                                  ),
+                                )),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Padding(
+                                padding: EdgeInsets.only(right: 0.0),
+                                child: Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    )
+                  ],
                 ),
-              ),
+              )
             ],
           ),
         ),

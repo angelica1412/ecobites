@@ -8,9 +8,9 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: Text('Profile'),
         leading: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back,
             color: Color(0xFF92E3A9),
           ),
@@ -19,14 +19,14 @@ class ProfileScreen extends StatelessWidget {
           },
         ),
         elevation: 0,
-        backgroundColor: const Color(0xFFFAFAFA),
+        backgroundColor: Color(0xFFFAFAFA),
       ),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(10),
           child: Column(
             children: [
-              const SizedBox(
+              SizedBox(
                 height: 20,
               ),
               Center(
@@ -36,10 +36,10 @@ class ProfileScreen extends StatelessWidget {
                   width: 200,
                 ),
               ),
-              const SizedBox(
+              SizedBox(
                 height: 20,
               ),
-              const Text(
+              Text(
                 'Your Name',
                 style: TextStyle(
                   color: Colors.black,
@@ -47,10 +47,10 @@ class ProfileScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(
+              SizedBox(
                 height: 15,
               ),
-              const Text(
+              Text(
                 'youremail@ecobites.com',
                 style: TextStyle(
                   color: Colors.black,
@@ -58,10 +58,10 @@ class ProfileScreen extends StatelessWidget {
                   fontWeight: FontWeight.normal,
                 ),
               ),
-              const SizedBox(
+              SizedBox(
                 height: 10,
               ),
-              const Text(
+              Text(
                 '+62yourphonenumber',
                 style: TextStyle(
                   color: Colors.grey,
@@ -69,7 +69,7 @@ class ProfileScreen extends StatelessWidget {
                   fontWeight: FontWeight.normal,
                 ),
               ),
-              const SizedBox(height: 56),
+              SizedBox(height: 56),
               Align(
                 alignment: Alignment.center,
                 child: Container(
@@ -80,13 +80,13 @@ class ProfileScreen extends StatelessWidget {
                       // Anda dapat menambahkan logika autentikasi di sini
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                      backgroundColor: Color.fromARGB(255, 255, 255, 255),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(16.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -104,7 +104,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 14),
+              SizedBox(height: 14),
               Align(
                 alignment: Alignment.center,
                 child: Container(
@@ -112,13 +112,13 @@ class ProfileScreen extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 179, 229, 193),
+                      backgroundColor: Color.fromARGB(255, 179, 229, 193),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(16.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
