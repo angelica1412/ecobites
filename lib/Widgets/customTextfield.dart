@@ -62,7 +62,8 @@ class CustomTextField extends StatelessWidget {
               borderSide: const BorderSide(
                 color: Colors.black,
                 width: 1.0,
-              ))),
+              ))
+          ),
     );
   }
 }
