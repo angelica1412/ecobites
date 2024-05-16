@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:ecobites/Widgets/customTextfield.dart';
-import 'package:ecobites/Widgets/SliderWithLabel.dart';
+// import 'package:ecobites/Widgets/SliderWithLabel.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -483,7 +483,7 @@ class _UploadBarangState extends State<UploadBarang> {
                                 alignment: Alignment.center,
                                 child: Padding(
                                   padding: EdgeInsets.only(
-                                    right: 25,
+                                    right: 15,
                                   ),
                                   child: Text(
                                     'Submit',
@@ -496,7 +496,7 @@ class _UploadBarangState extends State<UploadBarang> {
                               child: Padding(
                                 padding: EdgeInsets.only(right: 0.0),
                                 child: Icon(
-                                  Icons.arrow_forward_ios,
+                                  Icons.chevron_right,
                                   color: Colors.black,
                                 ),
                               ),
