@@ -27,21 +27,21 @@ class _StorePageState extends State<userStorePage> {
     Product(
       name: 'Product 1',
       description: 'Description for Product 1',
-      price: 10.99,
+      price: 15000,
       imageURL: 'assets/product1.png',
       category: 'Food',
     ),
     Product(
       name: 'Product 3',
       description: 'Description for Product 2',
-      price: 19.99,
+      price: 20000,
       imageURL: 'assets/product2.png',
       category: 'Bahan',
     ),
     Product(
       name: 'Product 2',
       description: 'Description for Product 2',
-      price: 19.99,
+      price: 5000,
       imageURL: 'assets/product3.png',
       category: 'Daur',
 
@@ -49,7 +49,7 @@ class _StorePageState extends State<userStorePage> {
     Product(
       name: 'Product 4',
       description: 'Description for Product 2',
-      price: 19.99,
+      price: 7000,
       imageURL: 'assets/login.png',
       category: 'Bahan',
 
@@ -57,21 +57,21 @@ class _StorePageState extends State<userStorePage> {
     Product(
       name: 'Product 4',
       description: 'Description for Product 2',
-      price: 19.99,
+      price: 2000,
       imageURL: 'assets/login.png',
       category: 'Daur',
     ),
     Product(
       name: 'Product 4',
       description: 'Description for Product 2',
-      price: 19.99,
+      price: 1000,
       imageURL: 'assets/login.png',
       category: 'Daur',
     ),
     Product(
       name: 'Product 4',
       description: 'Description for Product 2',
-      price: 19.99,
+      price: 2305,
       imageURL: 'assets/login.png',
       category: 'Daur',
     ),
@@ -270,6 +270,8 @@ class _StorePageState extends State<userStorePage> {
                   );
                 },
               ),
+              const SizedBox(height: 60),
+
 
             ],
 

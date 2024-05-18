@@ -1,4 +1,5 @@
   import 'package:ecobites/Widgets/scheduleStore.dart';
+import 'package:ecobites/order_page.dart';
   import 'package:flutter/material.dart';
   import 'package:ecobites/Widgets/ProductCard.dart';
   import 'package:ecobites/Widgets/category_button.dart';
@@ -18,6 +19,8 @@
     bool _searching = false; // Untuk melacak apakah sedang dalam mode pencarian
     bool _isFavorite = false; // Untuk melacak apakah toko ini merupakan favorit
     bool _showCheckoutButton = false;// Untuk melacak apakah harus menampilkan tombol checkout
+    int _totalProducts = 0;
+    double _totalPrice =0.0;
 
     void _setSelectedCategory(String category) {
       setState(() {
@@ -30,25 +33,31 @@
       return products.where((product) => product.category == category).toList();
     }
 
+    List<Product> get productsWithQuantity {
+      return products.where((product) => product.quantity > 0).toList();
+    }
+
+
+
     List<Product> products = [
       Product(
         name: 'Product 1',
         description: 'Description for Product 1',
-        price: 10.99,
+        price: 15000,
         imageURL: 'assets/product1.png',
         category: 'Food',
       ),
       Product(
         name: 'Product 3',
         description: 'Description for Product 2',
-        price: 19.99,
+        price: 20000,
         imageURL: 'assets/product2.png',
         category: 'Bahan',
       ),
       Product(
         name: 'Product 2',
         description: 'Description for Product 2',
-        price: 19.99,
+        price: 5000,
         imageURL: 'assets/product3.png',
           category: 'Daur',
 
@@ -56,7 +65,7 @@
       Product(
         name: 'Product 4',
         description: 'Description for Product 2',
-        price: 19.99,
+        price: 7000,
         imageURL: 'assets/login.png',
           category: 'Bahan',
 
@@ -64,26 +73,27 @@
       Product(
         name: 'Product 4',
         description: 'Description for Product 2',
-        price: 19.99,
+        price: 2000,
         imageURL: 'assets/login.png',
           category: 'Daur',
       ),
       Product(
         name: 'Product 4',
         description: 'Description for Product 2',
-        price: 19.99,
+        price: 1000,
         imageURL: 'assets/login.png',
           category: 'Daur',
       ),
       Product(
         name: 'Product 4',
         description: 'Description for Product 2',
-        price: 19.99,
+        price: 2305,
         imageURL: 'assets/login.png',
           category: 'Daur',
       ),
       // Add more products as needed
     ];
+
 
     @override
     Widget build(BuildContext context) {
@@ -282,10 +292,16 @@
                       product: product,
                       onQuantityChanged: () {
                         _handleShowCheckoutButton();
+                        for (var product in products) {
+                        _totalProducts += product.quantity;
+                        _totalPrice += product.quantity * product.price;
+                        }
                       },
                     );
                   },
                 ),
+                const SizedBox(height: 60),
+
               ],
             ),
             Positioned(
@@ -299,6 +315,9 @@
                 child: _showCheckoutButton
                     ? InkWell(
                   onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => OrderPage(productsWithQuantity: productsWithQuantity, totalprice: _totalPrice,)));
                     // Lakukan tindakan saat container diklik
                     // Misalnya, tampilkan dialog, navigasi ke halaman checkout, dll.
                   },
@@ -312,7 +331,7 @@
                         borderRadius: BorderRadius.circular(12.0), // Membuat sudut agak bulat dengan radius 12.0
                       ),
                       margin: const EdgeInsets.only(left: 10.0, right: 10.0),
-                      child: const Row(
+                      child:  Row(
                         children: [
                           // Icon keranjang
                           Padding(
@@ -329,7 +348,7 @@
                             ),
                           ),
                           Text(
-                            '5 Produk',
+                            'Produk : $_totalProducts',
                             style: TextStyle(color: Colors.white),
                           ),
                           // Spacer untuk memberi jarak
@@ -338,7 +357,7 @@
                           Padding(
                             padding: EdgeInsets.fromLTRB(0, 0, 16, 0),
                             child: Text(
-                              'Total: \$50.00', // Ganti dengan total harga sesuai dengan logika aplikasi Anda
+                              'Total: \Rp.${_totalPrice.toInt()}', // Ganti dengan total harga sesuai dengan logika aplikasi Anda
                               style: TextStyle(color: Colors.white),
                             ),
                           ),
@@ -408,6 +427,8 @@
     }
     // Fungsi untuk menangani penampilan tombol checkout
     void _handleShowCheckoutButton() {
+      int totalProducts = 0;
+      double totalPrice = 0.0;
       bool hasProductWithQuantity = false;
       for (var product in products) {
         if (product.quantity > 0) {
@@ -417,6 +438,8 @@
       }
       setState(() {
         _showCheckoutButton = hasProductWithQuantity;
+        _totalProducts = totalProducts;
+        _totalPrice = totalPrice;
       });
     }
     void _showStoreInformation(BuildContext context) {
