@@ -22,8 +22,9 @@ class ProductCard extends StatefulWidget {
   final Product product;
   final VoidCallback? onQuantityChanged;// Tambahkan properti ini
   final bool isUserStore;
+  final bool isCheckout;
 
-  const ProductCard({Key? key, required this.product, this.onQuantityChanged, this.isUserStore = false}) : super(key: key);
+  const ProductCard({Key? key, required this.product, this.onQuantityChanged, this.isUserStore = false, this.isCheckout = false}) : super(key: key);
 
   @override
   _ProductCardState createState() => _ProductCardState();
@@ -76,6 +77,16 @@ class _ProductCardState extends State<ProductCard> {
                     _buildEditButton()
                   else if (widget.product.quantity == 0)
                     _buildAddButton()
+                  else if (widget.isCheckout)
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text('qty : ${widget.product.quantity}', style: const TextStyle(fontWeight: FontWeight.bold )),
+                        ],
+                      ),
+                    )
                   else
                     _buildQuantityButton(),
                 ],
