@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'register.dart'; // Mengimpor file signup_page.dart
-import 'homepage.dart'; // Mengimpor file homepage.dart
-import 'register.dart';
 import 'package:ecobites/services/auth.dart';
 
 class LoginPage extends StatefulWidget {
@@ -86,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                       decoration: const InputDecoration(
                         hintText: 'emailanda@gmail.com',
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFFE8AE45), width: 2.0),
+                          borderSide: BorderSide(color: Color(0xFF92E3A9), width: 2.0),
                           borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         ),
                         enabledBorder: OutlineInputBorder(
@@ -122,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                       decoration: const InputDecoration(
                         hintText: '**************',
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFFE8AE45), width: 2.0),
+                          borderSide: BorderSide(color: Color(0xFF92E3A9), width: 2.0),
                           borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         ),
                         enabledBorder: OutlineInputBorder(
@@ -164,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const RegisterPage()),
+                          MaterialPageRoute(builder: (context) => RegisterPage()),
                         );
                       },
                       child: const Text(
@@ -181,7 +179,7 @@ class _LoginPageState extends State<LoginPage> {
                         // Navigate to the registration page
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const RegisterPage()),
+                          MaterialPageRoute(builder: (context) => RegisterPage()),
                         );
                       },
                       child: const Text(
