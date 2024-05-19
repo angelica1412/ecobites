@@ -1,4 +1,5 @@
-import 'package:ecobites/profilepage.dart';
+import 'package:ecobites/historypage.dart';
+import 'package:ecobites/profile.dart';
 import 'package:ecobites/uploadpage.dart';
 import 'package:ecobites/voucher.dart';
 import 'package:flutter/material.dart';
@@ -31,9 +32,12 @@ class _HomePageState extends State<HomePage> {
                     width: 80,
                   ),
                   Container(
+                    padding: EdgeInsets.all(
+                        2), // Menambahkan padding untuk memusatkan ikon
                     decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 178, 178, 178), // Background color
-                      shape: BoxShape.circle, // Circular background
+                      color: const Color.fromARGB(
+                          255, 178, 178, 178), // Warna latar belakang
+                      shape: BoxShape.circle, // Latar belakang bulat
                     ),
                     child: IconButton(
                       icon: Icon(Icons.person, size: 32),
@@ -41,7 +45,8 @@ class _HomePageState extends State<HomePage> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => ProfilePage()),
+                          MaterialPageRoute(
+                              builder: (context) => ProfileScreen()),
                         );
                       },
                     ),
@@ -52,7 +57,8 @@ class _HomePageState extends State<HomePage> {
               TextFormField(
                 onTap: () {
                   setState(() {
-                    searchIconColor = const Color(0xFF92E3A9); // Change color when tapped
+                    searchIconColor =
+                        const Color(0xFF92E3A9); // Change color when tapped
                   });
                 },
                 decoration: InputDecoration(
@@ -132,7 +138,8 @@ class _HomePageState extends State<HomePage> {
               Center(
                 child: ElevatedButton(
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF92E3A9)),
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        const Color(0xFF92E3A9)),
                   ),
                   onPressed: () {
                     Navigator.push(
@@ -150,7 +157,7 @@ class _HomePageState extends State<HomePage> {
                           fontSize: 18,
                         ),
                       ),
-                      SizedBox(width: 145),
+                      SizedBox(width: 130, height: 60),
                       Icon(Icons.arrow_forward),
                     ],
                   ),
@@ -172,17 +179,36 @@ class _HomePageState extends State<HomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.history),
-            label: 'History',
+            label: 'Activity',
           ),
         ],
+        currentIndex: 0, // Menetapkan indeks saat ini ke halaman Upload
         onTap: (int index) {
-          if (index == 1) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => UploadPage()),
-            );
+          switch (index) {
+            case 0:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage()),
+              );
+              break;
+            case 1:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => UploadBarang()),
+              ); // Pindah ke halaman Upload
+              break;
+            case 2:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => HistoryPage()),
+              ); // Pindah ke halaman History
+              break;
           }
         },
+        selectedItemColor: const Color(
+            0xFF92E3A9), // Mengubah warna item yang dipilih menjadi hijau
+        unselectedItemColor: Colors
+            .grey, // Mengubah warna item yang tidak dipilih menjadi abu-abu
       ),
     );
   }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'register.dart'; // Mengimpor file signup_page.dart
-import 'homepage.dart'; // Mengimpor file homepage.dart
-import 'register.dart';
 import 'package:ecobites/services/auth.dart';
 
 class LoginPage extends StatefulWidget {
@@ -164,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const RegisterPage()),
+                          MaterialPageRoute(builder: (context) => RegisterPage()),
                         );
                       },
                       child: const Text(
@@ -181,7 +179,7 @@ class _LoginPageState extends State<LoginPage> {
                         // Navigate to the registration page
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const RegisterPage()),
+                          MaterialPageRoute(builder: (context) => RegisterPage()),
                         );
                       },
                       child: const Text(
