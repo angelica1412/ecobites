@@ -1,3 +1,5 @@
+import 'package:ecobites/PengaturanAkun.dart';
+import 'package:ecobites/user_store_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -76,6 +78,9 @@ class ProfileScreen extends StatelessWidget {
                   width: 300,
                   child: ElevatedButton(
                     onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context)=> PengaturanAkun()));
                       // Fungsi yang akan dijalankan ketika tombol login ditekan
                       // Anda dapat menambahkan logika autentikasi di sini
                     },
@@ -110,7 +115,11 @@ class ProfileScreen extends StatelessWidget {
                 child: Container(
                   width: 300,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context)=>userStorePage()));
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromARGB(255, 179, 229, 193),
                       shape: RoundedRectangleBorder(

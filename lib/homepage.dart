@@ -1,4 +1,5 @@
 import 'package:ecobites/UploadBarang.dart';
+import 'package:ecobites/historypage.dart';
 import 'package:ecobites/profile.dart';
 // import 'package:ecobites/uploadpage.dart';
 import 'package:ecobites/voucher.dart';
@@ -189,6 +190,11 @@ class _HomePageState extends State<HomePage> {
               context,
               MaterialPageRoute(builder: (context) => const UploadBarang()),
             );
+          }
+          else if(index == 2){
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context)=> HistoryPage()));
           }
         },
       ),
