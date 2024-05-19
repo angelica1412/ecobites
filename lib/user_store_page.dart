@@ -1,8 +1,8 @@
+import 'package:ecobites/UploadBarang.dart';
 import 'package:flutter/material.dart';
 import 'package:ecobites/Widgets/ProductCard.dart';
 import 'package:ecobites/Widgets/category_button.dart';
 import 'package:ecobites/Widgets/share_widget.dart';
-
 
 class userStorePage extends StatefulWidget {
   const userStorePage({super.key});
@@ -44,7 +44,6 @@ class _StorePageState extends State<userStorePage> {
       price: 5000,
       imageURL: 'assets/product3.png',
       category: 'Daur',
-
     ),
     Product(
       name: 'Product 4',
@@ -52,7 +51,6 @@ class _StorePageState extends State<userStorePage> {
       price: 7000,
       imageURL: 'assets/login.png',
       category: 'Bahan',
-
     ),
     Product(
       name: 'Product 4',
@@ -90,38 +88,38 @@ class _StorePageState extends State<userStorePage> {
         // Remove shadow
         leading: _searching
             ? IconButton(
-          icon: const Icon(Icons.arrow_back),
-          color: Colors.black,
-          onPressed: () {
-            // Keluar dari mode pencarian
-            setState(() {
-              _searching = false;
-            });
-          },
-        )
+                icon: const Icon(Icons.arrow_back),
+                color: Colors.black,
+                onPressed: () {
+                  // Keluar dari mode pencarian
+                  setState(() {
+                    _searching = false;
+                  });
+                },
+              )
             : IconButton(
-          icon: const Icon(Icons.arrow_back),
-          color: Colors.black,
-          onPressed: () {
-            // Kembali ke halaman sebelumnya
-            Navigator.of(context).pop();
-          },
-        ),
+                icon: const Icon(Icons.arrow_back),
+                color: Colors.black,
+                onPressed: () {
+                  // Kembali ke halaman sebelumnya
+                  Navigator.of(context).pop();
+                },
+              ),
         title: _searching
             ? TextField(
-          controller: _searchController,
-          decoration: const InputDecoration(
-            hintText: 'Cari...',
-            border: InputBorder.none,
-          ),
-        )
+                controller: _searchController,
+                decoration: const InputDecoration(
+                  hintText: 'Cari...',
+                  border: InputBorder.none,
+                ),
+              )
             : const Text(
-          'Toko Saya',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+                'Toko Saya',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
         actions: _buildActions(),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(4.0), // Tinggi bayangan
@@ -129,10 +127,12 @@ class _StorePageState extends State<userStorePage> {
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.2), // Warna dan opacity bayangan
+                  color: Colors.black
+                      .withOpacity(0.2), // Warna dan opacity bayangan
                   spreadRadius: 1, // Radius penyebaran bayangan
                   blurRadius: 5, // Radius blur bayangan
-                  offset: const Offset(0, 3), // Perubahan posisi bayangan (horizontal, vertical)
+                  offset: const Offset(
+                      0, 3), // Perubahan posisi bayangan (horizontal, vertical)
                 ),
               ],
             ),
@@ -151,7 +151,9 @@ class _StorePageState extends State<userStorePage> {
                 width: double.infinity, // Lebar penuh
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/login.png'), // Ganti dengan path foto Anda
+                    image: AssetImage(
+                        'assets/login.png'
+                    ), // Ganti dengan path foto Anda
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -171,8 +173,7 @@ class _StorePageState extends State<userStorePage> {
                   ],
                 ),
                 child: Row(
-                  mainAxisSize: MainAxisSize
-                      .min, // Menyesuaikan tinggi dengan konten
+                  mainAxisSize: MainAxisSize.min, // Menyesuaikan tinggi dengan konten
                   children: [
                     Expanded(
                       flex: 3,
@@ -195,7 +196,9 @@ class _StorePageState extends State<userStorePage> {
                                   ),
                                   children: const [
                                     TextSpan(text: 'Nama '),
-                                    TextSpan(text: 'Toko', style: TextStyle(fontWeight: FontWeight.bold)),
+                                    TextSpan(
+                                        text: 'Toko',
+                                        style: TextStyle(fontWeight: FontWeight.bold)),
                                   ],
                                 ),
                               ),
@@ -274,14 +277,14 @@ class _StorePageState extends State<userStorePage> {
 
 
             ],
-
           ),
           Positioned(
             bottom: 16.0, // Atur posisi vertikal dari bawah layar
             right: 16.0, // Atur posisi horizontal dari kanan layar
             child: FloatingActionButton(
               onPressed: () {
-                print("menuju ke form upload page");
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => UploadBarang()));
               },
               child: Icon(Icons.add),
               backgroundColor: Colors.green,
@@ -291,9 +294,7 @@ class _StorePageState extends State<userStorePage> {
             ),
           ),
         ],
-
       ),
-
     );
   }
 

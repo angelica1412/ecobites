@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:ecobites/Widgets/customTextfield.dart';
+// import 'package:ecobites/Widgets/SliderWithLabel.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -12,6 +13,14 @@ class UploadBarang extends StatefulWidget {
 }
 
 class _UploadBarangState extends State<UploadBarang> {
+  String? _selectedQuality;
+  final List<String> _quality = [
+    'Sangat Baik',
+    'Baik',
+    'Kurang Baik',
+    'Buruk',
+  ];
+
   String? _selectedQuantity;
   final List<String> _quantities = ['1', '2', '3', '4', '5'];
 
@@ -25,11 +34,13 @@ class _UploadBarangState extends State<UploadBarang> {
     'Bahan Daur Ulang',
   ];
 
+  String? _selectedUnit;
+  final List<String> _unitOptions = ['Kg', 'g'];
+
   final _hargaAsliController = TextEditingController();
   final _hargaDiskonController = TextEditingController();
   final _namaBarang = TextEditingController();
   final _deskBarang = TextEditingController();
-
 
   File? _imageFile;
 
@@ -84,12 +95,32 @@ class _UploadBarangState extends State<UploadBarang> {
                 children: [
                   ElevatedButton(
                     onPressed: _pickImageFromGallery,
-                    child: const Text('Pilih dari Galeri'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors
+                          .white24, // Ubah warna latar belakang sesuai keinginanmu
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Icon(
+                        Icons.photo_library,
+                        color: Colors.black,
+                      ),
+                    ),
                   ),
                   const SizedBox(width: 16),
                   ElevatedButton(
                     onPressed: _pickImageFromCamera,
-                    child: const Text('Ambil Foto'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors
+                          .white24, // Ubah warna latar belakang sesuai keinginanmu
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Icon(
+                        Icons.camera_alt,
+                        color: Colors.black,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -117,22 +148,75 @@ class _UploadBarangState extends State<UploadBarang> {
                     color: Color(0xFF000000)),
               ),
               const SizedBox(height: 8),
+              Row(
+                children: [
+                  Expanded(
+                    child: DropdownButton<String>(
+                      hint: const Text('Jumlah'),
+                      value: _selectedQuantity,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedQuantity = newValue;
+                        });
+                      },
+                      items: _quantities.map((quantity) {
+                        return DropdownMenuItem(
+                          value: quantity,
+                          child: Text(quantity),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: DropdownButton<String>(
+                      hint: const Text('Satuan'),
+                      value: _selectedUnit,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedUnit = newValue;
+                        });
+                      },
+                      items: _unitOptions.map((unit) {
+                        return DropdownMenuItem(
+                          value: unit,
+                          child: Text(unit),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 20),
+              // Kualitas Barang
+              const Text(
+                'Kualitas Barang',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF000000)),
+              ),
+              const SizedBox(height: 8),
               DropdownButton<String>(
-                hint: const Text('Pilih Jumlah Barang'),
-                value: _selectedQuantity,
+                hint: const Text('Kualitas Barang'),
+                value: _selectedQuality,
                 onChanged: (String? newValue) {
                   setState(() {
-                    _selectedQuantity = newValue;
+                    _selectedQuality = newValue;
                   });
                 },
-                items: _quantities.map((quantity) {
+                items: _quality.map((quality) {
                   return DropdownMenuItem(
-                    value: quantity,
-                    child: Text(quantity),
+                    value: quality,
+                    child: Text(quality),
                   );
                 }).toList(),
               ),
-              const SizedBox(height: 20),
+// Kualitas Barang end
+              const SizedBox(
+                height: 20,
+              ),
               const Text(
                 'Harga Asli Barang',
                 style: TextStyle(
@@ -183,11 +267,26 @@ class _UploadBarangState extends State<UploadBarang> {
                     color: Color(0xFF000000)),
               ),
               const SizedBox(height: 8),
-              Text(
-                'Rp. ${_hargaDiskonController.text}',
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
+              Container(
+                width: MediaQuery.of(context)
+                    .size
+                    .width, // Menggunakan lebar perangkat sebagai lebar kontainer
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.black, // Warna border
+                    width: 1, // Lebar border (misal: 1% dari lebar perangkat)
+                  ),
+                  borderRadius: BorderRadius.circular(8), // Border radius
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text(
+                    'Rp. ${_hargaDiskonController.text}',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
@@ -229,64 +328,189 @@ class _UploadBarangState extends State<UploadBarang> {
                 hintText: "Deskripsi Barang",
                 onChanged: (value) {},
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 100),
               Align(
-                alignment: Alignment.centerRight,
-                child: SizedBox(
-                  width: 200,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Hapus gambar yang dipilih saat tombol submit ditekan
-                      setState(() {
-                        _imageFile = null;
-                        _selectedQuantity = null;
-                        _selectedCategory = null;
-                        _hargaAsliController.clear();
-                        _hargaDiskonController.clear();
-                        _selectedDiscount = null;
-                      });
-
-                      // Menampilkan popup berhasil
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: const Text('Sukses'),
-                            content: const Text('Data berhasil ditambahkan.'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('OK'),
-                              ),
-                            ],
+                alignment: Alignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SizedBox(
+                      width: 75,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Show confirmation popup
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('Konfirmasi'),
+                                content: const Text(
+                                    'Apakah Anda yakin ingin menghapus semua field?'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pop(); // Close the dialog
+                                    },
+                                    child: const Text('Batal'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      // Clear all fields
+                                      setState(() {
+                                        _imageFile = null;
+                                        _selectedQuantity = null;
+                                        _selectedCategory = null;
+                                        _selectedUnit = null;
+                                        _selectedQuality = null;
+                                        _hargaAsliController.clear();
+                                        _hargaDiskonController.clear();
+                                        _namaBarang.clear();
+                                        _deskBarang.clear();
+                                        _selectedDiscount = null;
+                                      });
+                                      Navigator.of(context)
+                                          .pop(); // Close the dialog
+                                    },
+                                    child: const Text('Hapus'),
+                                  ),
+                                ],
+                              );
+                            },
                           );
                         },
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF92E3A9),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(0.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Submit',
-                            style: TextStyle(fontSize: 18,color: Colors.black),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFE57373),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
                           ),
-                        ],
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.all(0.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.delete,
+                                color: Colors.black,
+                              )
+                            ],
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                    const SizedBox(width: 20), // Space between the buttons
+                    SizedBox(
+                      width: 200,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Check if all fields are filled
+                          if (_imageFile == null ||
+                              _namaBarang.text.isEmpty ||
+                              _selectedUnit == null ||
+                              _selectedQuantity == null ||
+                              _selectedCategory == null ||
+                              _selectedQuality == null ||
+                              _hargaAsliController.text.isEmpty ||
+                              _hargaDiskonController.text.isEmpty ||
+                              _deskBarang.text.isEmpty ||
+                              _selectedDiscount == null) {
+                            // Show popup for incomplete data
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('Data Belum Lengkap'),
+                                  content: const Text(
+                                      'Mohon lengkapi semua data sebelum menekan tombol Submit.'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('OK'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          } else {
+                            // Clear selected image and fields
+                            setState(() {
+                              _imageFile = null;
+                              _selectedQuantity = null;
+                              _selectedCategory = null;
+                              _selectedUnit = null;
+                              _selectedQuality = null;
+                              _hargaAsliController.clear();
+                              _hargaDiskonController.clear();
+                              _namaBarang.clear();
+                              _deskBarang.clear();
+                              _selectedDiscount = null;
+                            });
+                            // Show success popup
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('Sukses'),
+                                  content:
+                                      const Text('Data berhasil ditambahkan.'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('OK'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF92E3A9),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                        ),
+                        child: const Stack(
+                          children: [
+                            Align(
+                                alignment: Alignment.center,
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    right: 15,
+                                  ),
+                                  child: Text(
+                                    'Submit',
+                                    style: TextStyle(
+                                        fontSize: 18, color: Colors.black),
+                                  ),
+                                )),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Padding(
+                                padding: EdgeInsets.only(right: 0.0),
+                                child: Icon(
+                                  Icons.chevron_right,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    )
+                  ],
                 ),
-              ),
+              )
             ],
           ),
         ),
