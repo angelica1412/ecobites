@@ -1,5 +1,5 @@
   import 'package:ecobites/Widgets/scheduleStore.dart';
-import 'package:ecobites/order_page.dart';
+import 'package:ecobites/checkout.dart';
   import 'package:flutter/material.dart';
   import 'package:ecobites/Widgets/ProductCard.dart';
   import 'package:ecobites/Widgets/category_button.dart';
