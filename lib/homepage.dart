@@ -1,13 +1,10 @@
-import 'package:ecobites/UploadBarang.dart';
 import 'package:ecobites/historypage.dart';
 import 'package:ecobites/profile.dart';
-// import 'package:ecobites/uploadpage.dart';
+import 'package:ecobites/uploadpage.dart';
 import 'package:ecobites/voucher.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -20,12 +17,12 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          color: const Color.fromARGB(255, 255, 255, 255),
+          color: Color.fromARGB(255, 255, 255, 255),
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -35,19 +32,21 @@ class _HomePageState extends State<HomePage> {
                     width: 80,
                   ),
                   Container(
-                    decoration: const BoxDecoration(
-                      color: Color.fromARGB(
-                          255, 178, 178, 178), // Background color
-                      shape: BoxShape.circle, // Circular background
+                    padding: EdgeInsets.all(
+                        2), // Menambahkan padding untuk memusatkan ikon
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(
+                          255, 178, 178, 178), // Warna latar belakang
+                      shape: BoxShape.circle, // Latar belakang bulat
                     ),
                     child: IconButton(
-                      icon: const Icon(Icons.person, size: 32),
+                      icon: Icon(Icons.person, size: 32),
                       color: Colors.black,
                       onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const ProfileScreen()),
+                              builder: (context) => ProfileScreen()),
                         );
                       },
                     ),
@@ -65,10 +64,10 @@ class _HomePageState extends State<HomePage> {
                 decoration: InputDecoration(
                   hintText: 'Search for food...',
                   prefixIcon: Icon(Icons.search, color: searchIconColor),
-                  border: const OutlineInputBorder(
+                  border: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black, width: 2.0),
                   ),
-                  focusedBorder: const OutlineInputBorder(
+                  focusedBorder: OutlineInputBorder(
                     borderSide:
                         BorderSide(color: Color(0xFF92E3A9), width: 2.0),
                   ),
@@ -79,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Expanded(
-                    child: SizedBox(
+                    child: Container(
                       width: 160,
                       height: 200,
                       child: Card(
@@ -98,7 +97,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const SizedBox(width: 16),
                   Expanded(
-                    child: SizedBox(
+                    child: Container(
                       width: 160,
                       height: 200,
                       child: Card(
@@ -119,7 +118,7 @@ class _HomePageState extends State<HomePage> {
               ),
               const SizedBox(height: 20),
               Center(
-                child: SizedBox(
+                child: Container(
                   width: 160,
                   height: 200,
                   child: Card(
@@ -145,11 +144,10 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const VoucherPage()),
+                      MaterialPageRoute(builder: (context) => VoucherPage()),
                     );
                   },
-                  child: const Row(
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
@@ -159,7 +157,7 @@ class _HomePageState extends State<HomePage> {
                           fontSize: 18,
                         ),
                       ),
-                      SizedBox(width: 145),
+                      SizedBox(width: 130, height: 60),
                       Icon(Icons.arrow_forward),
                     ],
                   ),
@@ -181,22 +179,36 @@ class _HomePageState extends State<HomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.history),
-            label: 'History',
+            label: 'Activity',
           ),
         ],
+        currentIndex: 0, // Menetapkan indeks saat ini ke halaman Upload
         onTap: (int index) {
-          if (index == 1) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const UploadBarang()),
-            );
-          }
-          else if(index == 2){
-            Navigator.push(
+          switch (index) {
+            case 0:
+              Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context)=> HistoryPage()));
+                MaterialPageRoute(builder: (context) => HomePage()),
+              );
+              break;
+            case 1:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => UploadBarang()),
+              ); // Pindah ke halaman Upload
+              break;
+            case 2:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => HistoryPage()),
+              ); // Pindah ke halaman History
+              break;
           }
         },
+        selectedItemColor: const Color(
+            0xFF92E3A9), // Mengubah warna item yang dipilih menjadi hijau
+        unselectedItemColor: Colors
+            .grey, // Mengubah warna item yang tidak dipilih menjadi abu-abu
       ),
     );
   }

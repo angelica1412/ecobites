@@ -78,6 +78,123 @@ class ProfileScreen extends StatelessWidget {
                   width: 300,
                   child: ElevatedButton(
                     onPressed: () {
+                      // Fungsi yang akan dijalankan ketika tombol login ditekan
+                      // Anda dapat menambahkan logika autentikasi di sini
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Pengaturan Akun',
+                            style: TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold),
+                          ),
+                          Icon(
+                            CupertinoIcons.right_chevron,
+                            size: 20,
+                            color: Colors.black,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 14),
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: 300,
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF92E3A9),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Toko Saya',
+                            style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
+                          ),
+                          Icon(
+                            CupertinoIcons.right_chevron,
+                            size: 20,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 20,
+              ),
+              Center(
+                child: Image.asset(
+                  'assets/defaultProfilePicture.png',
+                  height: 200,
+                  width: 200,
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                'Your Name',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Text(
+                'youremail@ecobites.com',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                '+62yourphonenumber',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 16,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+              SizedBox(height: 56),
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: 300,
+                  child: ElevatedButton(
+                    onPressed: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context)=> PengaturanAkun()));

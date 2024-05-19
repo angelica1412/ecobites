@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'register.dart'; // Mengimpor file signup_page.dart
-// Mengimpor file homepage.dart
 import 'package:ecobites/services/auth.dart';
 
 class LoginPage extends StatefulWidget {
@@ -22,7 +21,6 @@ class _LoginPageState extends State<LoginPage> {
       // Bring the user to the home page after successful login
     }
   }
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -163,11 +161,11 @@ class _LoginPageState extends State<LoginPage> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const RegisterPage()),
+                          MaterialPageRoute(builder: (context) => RegisterPage()),
                         );
                       },
                       child: const Text(
-                        'Don`t have an account?',
+                        'Don’t have an account?',
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 16,
@@ -180,7 +178,7 @@ class _LoginPageState extends State<LoginPage> {
                         // Navigate to the registration page
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const RegisterPage()),
+                          MaterialPageRoute(builder: (context) => RegisterPage()),
                         );
                       },
                       child: const Text(
