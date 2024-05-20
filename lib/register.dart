@@ -143,6 +143,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       borderSide:
                           BorderSide(color: Color(0xFF92E3A9), width: 2.0),
                     ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black, width: 2.0),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
                   ),
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -251,7 +255,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: ElevatedButton(
                     onPressed: () => registration(context),
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFF92E3A9),
+                      backgroundColor: Color(0xFF92E3A9),
                       minimumSize: Size(
                           200, 50), // Menetapkan ukuran minimum untuk button
                     ),

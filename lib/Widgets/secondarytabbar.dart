@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 class SecondaryTabbar extends StatefulWidget {
   final ValueChanged<int>? onTabSelected;
+  final String title;
+  final String title2;
 
-  const SecondaryTabbar({Key? key, this.onTabSelected}) : super(key: key);
+  const SecondaryTabbar({Key? key, this.onTabSelected, required this.title, required this.title2}) : super(key: key);
 
   @override
   _SecondaryTabbarState createState() => _SecondaryTabbarState();
@@ -39,7 +41,7 @@ class _SecondaryTabbarState extends State<SecondaryTabbar> {
                   ),
                   child: Center(
                     child: Text(
-                      'Pembelian',
+                      widget.title,
                       style: TextStyle(
                         color: _selectedIndex == 0 ? Colors.white : Colors.grey,
                       ),
@@ -63,7 +65,7 @@ class _SecondaryTabbarState extends State<SecondaryTabbar> {
                   ),
                   child: Center(
                     child: Text(
-                      'Penjualan',
+                      widget.title2,
                       style: TextStyle(
                         color: _selectedIndex == 1 ? Colors.white : Colors.grey,
                       ),

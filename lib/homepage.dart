@@ -1,8 +1,10 @@
+import 'package:ecobites/Store.dart';
 import 'package:ecobites/historypage.dart';
 import 'package:ecobites/profile.dart';
-import 'package:ecobites/uploadpage.dart';
 import 'package:ecobites/voucher.dart';
 import 'package:flutter/material.dart';
+
+import 'UploadBarang.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -53,7 +55,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextFormField(
                 onTap: () {
                   setState(() {
@@ -73,12 +75,15 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Expanded(
-                    child: Container(
+                    child:
+                    GestureDetector(
+                  onTap:(){ Navigator.push(context, MaterialPageRoute(builder: (context)=> StorePage()));},
+                child: Container(
                       width: 160,
                       height: 200,
                       child: Card(
@@ -88,14 +93,15 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Image.asset('assets/food.png',
                                 height: 80, width: 80),
-                            SizedBox(height: 8),
-                            Text('Food'),
+                            const SizedBox(height: 8),
+                            const Text('Food'),
                           ],
                         ),
                       ),
                     ),
+                    ),
                   ),
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   Expanded(
                     child: Container(
                       width: 160,
@@ -107,8 +113,8 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Image.asset('assets/daurulang.png',
                                 height: 80, width: 80),
-                            SizedBox(height: 8),
-                            Text('Bahan Daur Ulang'),
+                            const SizedBox(height: 8),
+                            const Text('Bahan Daur Ulang'),
                           ],
                         ),
                       ),
@@ -116,7 +122,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Center(
                 child: Container(
                   width: 160,
@@ -127,14 +133,14 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset('assets/pupuk.png', height: 80, width: 80),
-                        SizedBox(height: 8),
-                        Text('Fertilizer'),
+                        const SizedBox(height: 8),
+                        const Text('Fertilizer'),
                       ],
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Center(
                 child: ElevatedButton(
                   style: ButtonStyle(

@@ -1,8 +1,8 @@
+import 'package:ecobites/UploadBarang.dart';
 import 'package:flutter/material.dart';
 import 'package:ecobites/Widgets/ProductCard.dart';
 import 'package:ecobites/Widgets/category_button.dart';
 import 'package:ecobites/Widgets/share_widget.dart';
-
 
 class userStorePage extends StatefulWidget {
   const userStorePage({super.key});
@@ -27,50 +27,60 @@ class _StorePageState extends State<userStorePage> {
     Product(
       name: 'Product 1',
       description: 'Description for Product 1',
-      price: 10.99,
+      price: 15000,
       imageURL: 'assets/product1.png',
+      category: 'Food',
     ),
     Product(
       name: 'Product 3',
       description: 'Description for Product 2',
-      price: 19.99,
+      price: 20000,
       imageURL: 'assets/product2.png',
+      category: 'Bahan',
     ),
     Product(
       name: 'Product 2',
       description: 'Description for Product 2',
-      price: 19.99,
+      price: 5000,
       imageURL: 'assets/product3.png',
+      category: 'Daur',
     ),
     Product(
       name: 'Product 4',
       description: 'Description for Product 2',
-      price: 19.99,
+      price: 7000,
       imageURL: 'assets/login.png',
+      category: 'Bahan',
     ),
     Product(
       name: 'Product 4',
       description: 'Description for Product 2',
-      price: 19.99,
+      price: 2000,
       imageURL: 'assets/login.png',
+      category: 'Daur',
     ),
     Product(
       name: 'Product 4',
       description: 'Description for Product 2',
-      price: 19.99,
+      price: 1000,
       imageURL: 'assets/login.png',
+      category: 'Daur',
     ),
     Product(
       name: 'Product 4',
       description: 'Description for Product 2',
-      price: 19.99,
+      price: 2305,
       imageURL: 'assets/login.png',
+      category: 'Daur',
     ),
     // Add more products as needed
   ];
 
   @override
   Widget build(BuildContext context) {
+    List<Product> _getProductsByCategory(String category) {
+      return products.where((product) => product.category == category).toList();
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -78,49 +88,51 @@ class _StorePageState extends State<userStorePage> {
         // Remove shadow
         leading: _searching
             ? IconButton(
-          icon: const Icon(Icons.arrow_back),
-          color: Colors.black,
-          onPressed: () {
-            // Keluar dari mode pencarian
-            setState(() {
-              _searching = false;
-            });
-          },
-        )
+                icon: const Icon(Icons.arrow_back),
+                color: Colors.black,
+                onPressed: () {
+                  // Keluar dari mode pencarian
+                  setState(() {
+                    _searching = false;
+                  });
+                },
+              )
             : IconButton(
-          icon: const Icon(Icons.arrow_back),
-          color: Colors.black,
-          onPressed: () {
-            // Kembali ke halaman sebelumnya
-            Navigator.of(context).pop();
-          },
-        ),
+                icon: const Icon(Icons.arrow_back),
+                color: Colors.black,
+                onPressed: () {
+                  // Kembali ke halaman sebelumnya
+                  Navigator.of(context).pop();
+                },
+              ),
         title: _searching
             ? TextField(
-          controller: _searchController,
-          decoration: const InputDecoration(
-            hintText: 'Cari...',
-            border: InputBorder.none,
-          ),
-        )
+                controller: _searchController,
+                decoration: const InputDecoration(
+                  hintText: 'Cari...',
+                  border: InputBorder.none,
+                ),
+              )
             : const Text(
-          'Toko Saya',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+                'Toko Saya',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
         actions: _buildActions(),
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(4.0), // Tinggi bayangan
+          preferredSize: const Size.fromHeight(4.0), // Tinggi bayangan
           child: Container(
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.2), // Warna dan opacity bayangan
+                  color: Colors.black
+                      .withOpacity(0.2), // Warna dan opacity bayangan
                   spreadRadius: 1, // Radius penyebaran bayangan
                   blurRadius: 5, // Radius blur bayangan
-                  offset: Offset(0, 3), // Perubahan posisi bayangan (horizontal, vertical)
+                  offset: const Offset(
+                      0, 3), // Perubahan posisi bayangan (horizontal, vertical)
                 ),
               ],
             ),
@@ -139,7 +151,9 @@ class _StorePageState extends State<userStorePage> {
                 width: double.infinity, // Lebar penuh
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/login.png'), // Ganti dengan path foto Anda
+                    image: AssetImage(
+                        'assets/login.png'
+                    ), // Ganti dengan path foto Anda
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -159,8 +173,7 @@ class _StorePageState extends State<userStorePage> {
                   ],
                 ),
                 child: Row(
-                  mainAxisSize: MainAxisSize
-                      .min, // Menyesuaikan tinggi dengan konten
+                  mainAxisSize: MainAxisSize.min, // Menyesuaikan tinggi dengan konten
                   children: [
                     Expanded(
                       flex: 3,
@@ -183,7 +196,9 @@ class _StorePageState extends State<userStorePage> {
                                   ),
                                   children: const [
                                     TextSpan(text: 'Nama '),
-                                    TextSpan(text: 'Toko', style: TextStyle(fontWeight: FontWeight.bold)),
+                                    TextSpan(
+                                        text: 'Toko',
+                                        style: TextStyle(fontWeight: FontWeight.bold)),
                                   ],
                                 ),
                               ),
@@ -249,15 +264,34 @@ class _StorePageState extends State<userStorePage> {
               ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: products.length,
+                itemCount: _selectedCategory == 'All' ? products.length : _getProductsByCategory(_selectedCategory).length,
                 itemBuilder: (context, index) {
+                  final product = _selectedCategory == 'All' ? products[index] : _getProductsByCategory(_selectedCategory)[index];
                   return ProductCard(
-                    product: products[index],
+                    product: product,
                     isUserStore: true,
                   );
                 },
               ),
+              const SizedBox(height: 60),
+
+
             ],
+          ),
+          Positioned(
+            bottom: 16.0, // Atur posisi vertikal dari bawah layar
+            right: 16.0, // Atur posisi horizontal dari kanan layar
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => UploadBarang()));
+              },
+              child: Icon(Icons.add),
+              backgroundColor: Colors.green,
+              shape: CircleBorder(), // Membuat FAB bundar
+
+              // Warna latar belakang tombol
+            ),
           ),
         ],
       ),

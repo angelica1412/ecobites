@@ -15,15 +15,15 @@ class VoucherPage extends StatefulWidget {
 }
 
 class _VoucherPageState extends State<VoucherPage> {
-  TextEditingController _searchController = TextEditingController();
-  List<Voucher> _voucherCodes = [
+  final TextEditingController _searchController = TextEditingController();
+  final List<Voucher> _voucherCodes = [
     Voucher(code: 'VOUCHER123', imageName: 'voucher.png'),
     Voucher(code: 'ECO456', imageName: 'voucher.png'),
     Voucher(code: 'SAVE50', imageName: 'voucher.png'),
     Voucher(code: 'SPRINGSALE', imageName: 'voucher.png'),
     Voucher(code: 'FREEDELIVERY', imageName: 'voucher.png'),
   ];
-  List<Voucher> _filteredVoucherCodes = [];
+  final List<Voucher> _filteredVoucherCodes = [];
 
   @override
   void initState() {
@@ -33,11 +33,11 @@ class _VoucherPageState extends State<VoucherPage> {
 
   void _filterVouchers(String query) {
     _filteredVoucherCodes.clear();
-    _voucherCodes.forEach((voucher) {
+    for (var voucher in _voucherCodes) {
       if (voucher.code.toLowerCase().contains(query.toLowerCase())) {
         _filteredVoucherCodes.add(voucher);
       }
-    });
+    }
     setState(() {});
   }
 
@@ -45,7 +45,7 @@ class _VoucherPageState extends State<VoucherPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Voucher Page'),
+        title: const Text('Voucher Page'),
         backgroundColor: const Color(0xFF92E3A9), // Change app bar color to green
       ),
       body: Column(
@@ -54,7 +54,7 @@ class _VoucherPageState extends State<VoucherPage> {
             padding: const EdgeInsets.all(16.0),
             child: TextField(
               controller: _searchController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Search for voucher code...',
                 prefixIcon: Icon(Icons.search),
               ),
@@ -78,9 +78,32 @@ class _VoucherPageState extends State<VoucherPage> {
                           height: 80,
                           width: double.infinity, // Make the image full width
                         ),
-                        SizedBox(height: 8),
-                        Text(_filteredVoucherCodes[index].code),
-                        Text('Discount or Offer Description'),
+                        const SizedBox(height: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(_filteredVoucherCodes[index].code),
+                                const Text('Discount or Offer Description'),
+
+                              ],
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                // Add functionality when the "Pakai" button is tapped
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF92E3A9),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                              ),
+                              child: const Text('Pakai'),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                     onTap: () {

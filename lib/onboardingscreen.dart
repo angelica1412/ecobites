@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'AppColor.dart';
 import 'ImagesPath.dart';
@@ -97,12 +99,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 if (_currentIndex == onBoardinglist.length - 1) {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginPage()), // Pindah ke halaman login
+                    MaterialPageRoute(builder: (context) => const LoginPage()), // Pindah ke halaman login
                   );
                 } else {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginPage()), // Pindah ke halaman login
+                    MaterialPageRoute(builder: (context) => const LoginPage()), // Pindah ke halaman login
                   );
                 }
               },

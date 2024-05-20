@@ -19,7 +19,6 @@ class _LoginPageState extends State<LoginPage> {
     if (_formkey.currentState!.validate()) {
       await Auth.login(context, emailController.text.trim(), passController.text.trim());
       // Bring the user to the home page after successful login
-
     }
   }
   @override
