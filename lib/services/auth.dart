@@ -2,6 +2,7 @@ import 'package:ecobites/homepage.dart';
 import 'package:ecobites/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 import '../login.dart';
 
 class Auth {

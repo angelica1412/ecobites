@@ -1,7 +1,8 @@
 import 'package:ecobites/Widgets/secondarytabbar.dart';
 import 'package:ecobites/homepage.dart';
-import 'package:ecobites/uploadpage.dart';
 import 'package:flutter/material.dart';
+
+import 'UploadBarang.dart';
 
 class HistoryPage extends StatefulWidget {
   @override
@@ -32,7 +33,7 @@ class _HistoryPageState extends State<HistoryPage> {
                 setState(() {
                   _selectedTabIndex = index;
                 });
-              },
+              }, title: 'Pembelian', title2: 'Penjualan',
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

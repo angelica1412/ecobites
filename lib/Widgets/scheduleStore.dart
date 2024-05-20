@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class scheduleStore extends StatelessWidget {
   final String day;
   final String time;
 
-  const scheduleStore({required this.day, required this.time});
+  const scheduleStore({super.key, required this.day, required this.time});
 
 
 
@@ -33,7 +32,7 @@ class scheduleStore extends StatelessWidget {
               )
           ),
           Text(time),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
         ],
       ),
     );

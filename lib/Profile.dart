@@ -1,5 +1,8 @@
+import 'package:ecobites/user_store_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+
+import 'PengaturanAkun.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -76,8 +79,12 @@ class ProfileScreen extends StatelessWidget {
                   width: 300,
                   child: ElevatedButton(
                     onPressed: () {
-                      // Fungsi yang akan dijalankan ketika tombol login ditekan
-                      // Anda dapat menambahkan logika autentikasi di sini
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PengaturanAkun(),
+                        ),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromARGB(255, 255, 255, 255),
@@ -92,7 +99,11 @@ class ProfileScreen extends StatelessWidget {
                         children: [
                           Text(
                             'Pengaturan Akun',
-                            style: TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           Icon(
                             CupertinoIcons.right_chevron,
@@ -111,9 +122,16 @@ class ProfileScreen extends StatelessWidget {
                 child: Container(
                   width: 300,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>  userStorePage(),
+                        ),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF92E3A9),
+                      backgroundColor: Color.fromARGB(255, 179, 229, 193),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
@@ -125,7 +143,7 @@ class ProfileScreen extends StatelessWidget {
                         children: [
                           Text(
                             'Toko Saya',
-                            style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: 18),
                           ),
                           Icon(
                             CupertinoIcons.right_chevron,
