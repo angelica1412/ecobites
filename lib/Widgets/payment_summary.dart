@@ -1,4 +1,5 @@
 import 'package:ecobites/Widgets/payment_detail_row.dart';
+import 'package:ecobites/voucherPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -6,12 +7,13 @@ import 'package:flutter/material.dart';
 class PaymentSummary extends StatelessWidget {
   const PaymentSummary({
     Key? key,
-    required this.totalPrice, required this.isDelivery,
+    required this.totalPrice, required this.isDelivery, required this.selectedVoucher,
 
   }) : super(key: key);
 
   final double totalPrice;
   final bool isDelivery;
+  final Voucher? selectedVoucher;
 
   @override
   Widget build(BuildContext context) {
@@ -35,11 +37,11 @@ class PaymentSummary extends StatelessWidget {
         if (isDelivery) ...[
           PaymentDetailRow(
             title: 'Ongkos Kirim',
-            value: 'Rp 20,000', // Example shipping fee
+            value: '${selectedVoucher?.deliveryDiscount}% discount', // Example shipping fee
           ),
           PaymentDetailRow(
             title: 'Diskon',
-            value: '-Rp 10,000', // Example discount
+            value: '${selectedVoucher?.productDiscount}',
           ),
           Divider(),
           PaymentDetailRow(

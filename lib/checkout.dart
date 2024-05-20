@@ -1,6 +1,7 @@
 import 'package:ecobites/Widgets/payment_method.dart';
 import 'package:ecobites/Widgets/secondarytabbar.dart';
 import 'package:ecobites/Widgets/voucher.dart';
+import 'package:ecobites/voucherPage.dart';
 import 'package:flutter/material.dart';
 import 'Widgets/ProductCard.dart';
 import 'Widgets/payment_summary.dart';
@@ -23,6 +24,7 @@ class _OrderPageState extends State<OrderPage> {
   TextEditingController _addressController = TextEditingController();
   String _searchedAddress = '';
   bool isDelivery = true;
+  Voucher? selectedVoucher;
 
 
   @override
@@ -31,6 +33,11 @@ class _OrderPageState extends State<OrderPage> {
     super.dispose();
   }
 
+  void _onVoucherUsed(Voucher? voucher) {
+    setState(() {
+      selectedVoucher = voucher;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -146,12 +153,12 @@ class _OrderPageState extends State<OrderPage> {
               ),
               SizedBox(height: 20),
               Divider(),
-              VoucherState(fromCheckout: true,),
+              VoucherState(fromCheckout: true, onVoucherUsed: _onVoucherUsed,),
               SizedBox(height: 10),
 
               Divider(),
               SizedBox(height: 20),
-              PaymentSummary(totalPrice: widget.totalprice, isDelivery: isDelivery ,),
+              PaymentSummary(totalPrice: widget.totalprice, isDelivery: isDelivery , selectedVoucher: selectedVoucher,),
               SizedBox(height: 20),
               Divider(),
               SizedBox(height: 20),
@@ -165,6 +172,7 @@ class _OrderPageState extends State<OrderPage> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
+                    print(selectedVoucher);
                     // Handle checkout action
                   },
                   child: Text('Checkout'),

@@ -16,6 +16,7 @@ class VoucherPage extends StatefulWidget {
   final bool fromCheckout;
   final void Function(Voucher) onVoucherUsed;
 
+
   const VoucherPage({Key? key, required this.fromCheckout, required this.onVoucherUsed}) : super(key: key);
 
   @override
@@ -23,7 +24,9 @@ class VoucherPage extends StatefulWidget {
 }
 
 class _VoucherPageState extends State<VoucherPage> {
+  Voucher? usedVoucherCode; // Deklarasi variabel di sini
   bool isVoucherUsed = false;
+  Voucher? selectedVoucher;
   final TextEditingController _searchController = TextEditingController();
   final List<Voucher> _voucherCodes = [
     Voucher(code: 'VOUCHER123', imageName: 'voucher.png', description: 'Discount 50% Product', deliveryDiscount: 0, productDiscount: 50, maxDiscount: 10000),
@@ -53,7 +56,9 @@ class _VoucherPageState extends State<VoucherPage> {
   void _useVoucher(Voucher voucher) {
     // Add functionality when "Pakai" button is pressed
     setState(() {
-
+      isVoucherUsed= true;
+      usedVoucherCode=voucher;
+      selectedVoucher=voucher;
     });
     widget.onVoucherUsed(voucher);
     Navigator.pop(context);
@@ -112,6 +117,7 @@ class _VoucherPageState extends State<VoucherPage> {
                               ElevatedButton(
                                 onPressed: () {
                                   _useVoucher(_filteredVoucherCodes[index]);
+
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xFF92E3A9),
