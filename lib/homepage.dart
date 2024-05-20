@@ -1,9 +1,10 @@
 import 'package:ecobites/Store.dart';
 import 'package:ecobites/historypage.dart';
 import 'package:ecobites/profile.dart';
-import 'package:ecobites/uploadpage.dart';
 import 'package:ecobites/voucher.dart';
 import 'package:flutter/material.dart';
+
+import 'UploadBarang.dart';
 
 class HomePage extends StatefulWidget {
   @override

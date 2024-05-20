@@ -1,9 +1,7 @@
 import 'dart:async';
-import 'package:ecobites/detailprodukpenjual.dart';
 import 'package:ecobites/homepage.dart';
 import 'package:ecobites/login.dart';
 import 'package:flutter/material.dart';
-import 'onboardingscreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {

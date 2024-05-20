@@ -12,10 +12,9 @@ dependencies:
     sdk: flutter
   google_fonts: ^5.1.0
   iconsax: ^0.0.8
-  image_picker: ^1.0.8
   dots_indicator: ^3.0.0
   get: ^4.6.1
-
+  image_picker: ^1.1.1
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -50,6 +49,7 @@ flutter:
   - assets/logo.png
   - assets/login.png
   - assets/register.png
+  - assets/defaultProfilePicture.png
   - assets/daurulang.png
   - assets/food.png
   - assets/pupuk.png
@@ -57,7 +57,7 @@ flutter:
   - assets/product1.png
   - assets/product2.png
   - assets/product3.png
-  - assets/defaultprofilepicture.png
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
