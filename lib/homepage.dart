@@ -12,8 +12,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Color searchIconColor = Colors.grey; // State variable for search icon color
-
+  String? usedVoucherCode;
+  bool isVoucherUsed = false;
+  Color searchIconColor = Colors.grey;// State variable for search icon color
+  void _handleVoucherUsed(String code) {
+    setState(() {
+      usedVoucherCode= '';
+      isVoucherUsed = false;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -150,7 +157,7 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => VoucherPage()),
+                      MaterialPageRoute(builder: (context) => VoucherPage(fromCheckout: false, onVoucherUsed: _handleVoucherUsed,)),
                     );
                   },
                   child: Row(

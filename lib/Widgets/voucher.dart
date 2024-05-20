@@ -1,9 +1,23 @@
 import 'package:ecobites/voucher.dart';
 import 'package:flutter/material.dart';
 
-class Voucher extends StatelessWidget {
-  const Voucher({super.key});
+class Voucher extends StatefulWidget {
+  final bool fromCheckout;
+  const Voucher({super.key, required this.fromCheckout});
 
+  @override
+  State<Voucher> createState() => _VoucherState();
+}
+
+class _VoucherState extends State<Voucher> {
+  String? usedVoucherCode;
+  bool isVoucherUsed = false;
+  void _handleVoucherUsed(String code) {
+    setState(() {
+      isVoucherUsed = true;
+      usedVoucherCode=code;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -30,23 +44,54 @@ class Voucher extends StatelessWidget {
               size: 24.0, // Icon size
             ),
             SizedBox(width: 8.0),
-            Text(
-              'Voucher',
-              style: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
-              ),
+            Container(
+              child:
+              isVoucherUsed?
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    ' $usedVoucherCode',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.bold,
+                    ),),
+                  Text(
+                    ' 50% Discount',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.bold,
+                    ),),
+                ],
+              )
+                  : Text(
+                'Voucher',
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+
             ),
             Spacer(),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> VoucherPage()));
+                isVoucherUsed?
+                setState(() {
+                  isVoucherUsed=false;
+                })
+                    :
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> VoucherPage(fromCheckout: widget.fromCheckout, onVoucherUsed: _handleVoucherUsed,)));
+
                 // Handle button press
               },
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white, backgroundColor: Colors.green,
               ),
-              child: Text('Use Voucher'),
+              child: isVoucherUsed?  Text('Remove Voucher'):Text('Use Voucher'),
             ),
           ],
         ),

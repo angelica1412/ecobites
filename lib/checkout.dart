@@ -146,7 +146,7 @@ class _OrderPageState extends State<OrderPage> {
               ),
               SizedBox(height: 20),
               Divider(),
-              Voucher(),
+              Voucher(fromCheckout: true,),
               SizedBox(height: 10),
 
               Divider(),
