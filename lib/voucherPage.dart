@@ -14,7 +14,7 @@ class Voucher {
 
 class VoucherPage extends StatefulWidget {
   final bool fromCheckout;
-  final Function(String) onVoucherUsed;
+  final void Function(Voucher) onVoucherUsed;
 
   const VoucherPage({Key? key, required this.fromCheckout, required this.onVoucherUsed}) : super(key: key);
 
@@ -26,11 +26,11 @@ class _VoucherPageState extends State<VoucherPage> {
   bool isVoucherUsed = false;
   final TextEditingController _searchController = TextEditingController();
   final List<Voucher> _voucherCodes = [
-    Voucher(code: 'VOUCHER123', imageName: 'voucher.png', description: 'Discount 50% Product', deliveryDiscount: 50, productDiscount: 0, maxDiscount: 10000),
-    Voucher(code: 'ECO456', imageName: 'voucher.png', description: 'Discount 20% Product', deliveryDiscount: 0, productDiscount: 20, maxDiscount: 2000),
+    Voucher(code: 'VOUCHER123', imageName: 'voucher.png', description: 'Discount 50% Product', deliveryDiscount: 0, productDiscount: 50, maxDiscount: 10000),
+    Voucher(code: 'ECO456', imageName: 'voucher.png', description: 'Discount 20% Product & 30% Delivery', deliveryDiscount: 30, productDiscount: 20, maxDiscount: 2000),
     Voucher(code: 'SAVE50', imageName: 'voucher.png', description: 'Discount 30% Product', deliveryDiscount: 0, productDiscount: 30, maxDiscount: 20000),
     Voucher(code: 'SPRINGSALE', imageName: 'voucher.png', description: 'Discount 40% Product', deliveryDiscount: 0, productDiscount: 40, maxDiscount: 10000),
-    Voucher(code: 'FREEDELIVERY', imageName: 'voucher.png', description: 'Free Delivery', deliveryDiscount: 0, productDiscount: 100, maxDiscount: 100000),
+    Voucher(code: 'FREEDELIVERY', imageName: 'voucher.png', description: 'Free Delivery', deliveryDiscount: 100, productDiscount: 0, maxDiscount: 100000),
   ];
   List<Voucher> _filteredVoucherCodes = [];
 
@@ -50,12 +50,12 @@ class _VoucherPageState extends State<VoucherPage> {
     setState(() {});
   }
 
-  void _useVoucher(String code) {
+  void _useVoucher(Voucher voucher) {
     // Add functionality when "Pakai" button is pressed
     setState(() {
 
     });
-    widget.onVoucherUsed(code);
+    widget.onVoucherUsed(voucher);
     Navigator.pop(context);
   }
 
@@ -111,7 +111,7 @@ class _VoucherPageState extends State<VoucherPage> {
                             if (widget.fromCheckout)
                               ElevatedButton(
                                 onPressed: () {
-                                  _useVoucher('${_filteredVoucherCodes[index].code} used');
+                                  _useVoucher(_filteredVoucherCodes[index]);
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xFF92E3A9),

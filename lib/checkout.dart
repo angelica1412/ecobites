@@ -23,7 +23,7 @@ class _OrderPageState extends State<OrderPage> {
   TextEditingController _addressController = TextEditingController();
   String _searchedAddress = '';
   bool isDelivery = true;
-  
+
 
   @override
   void dispose() {
@@ -146,7 +146,7 @@ class _OrderPageState extends State<OrderPage> {
               ),
               SizedBox(height: 20),
               Divider(),
-              Voucher(fromCheckout: true,),
+              VoucherState(fromCheckout: true,),
               SizedBox(height: 10),
 
               Divider(),

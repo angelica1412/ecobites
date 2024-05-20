@@ -1,21 +1,21 @@
-import 'package:ecobites/voucher.dart';
+import 'package:ecobites/voucherPage.dart';
 import 'package:flutter/material.dart';
 
-class Voucher extends StatefulWidget {
+class VoucherState extends StatefulWidget {
   final bool fromCheckout;
-  const Voucher({super.key, required this.fromCheckout});
+  const VoucherState({super.key, required this.fromCheckout});
 
   @override
-  State<Voucher> createState() => _VoucherState();
+  State<VoucherState> createState() => _VoucherState();
 }
 
-class _VoucherState extends State<Voucher> {
-  String? usedVoucherCode;
+class _VoucherState extends State<VoucherState> {
+  Voucher? usedVoucherCode;
   bool isVoucherUsed = false;
-  void _handleVoucherUsed(String code) {
+  void _handleVoucherUsed(Voucher voucher) {
     setState(() {
       isVoucherUsed = true;
-      usedVoucherCode=code;
+      usedVoucherCode=voucher;
     });
   }
   @override
@@ -52,14 +52,23 @@ class _VoucherState extends State<Voucher> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    ' $usedVoucherCode',
+                    ' ${usedVoucherCode?.code} used',
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       fontSize: 12.0,
                       fontWeight: FontWeight.bold,
                     ),),
-                  Text(
-                    ' 50% Discount',
+                  if(usedVoucherCode?.productDiscount != 0)
+                    Text(
+                    ' ${usedVoucherCode?.productDiscount}% Product Discount',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.bold,
+                    ),),
+                  if(usedVoucherCode?.deliveryDiscount != 0)
+                    Text(
+                    ' ${usedVoucherCode?.deliveryDiscount}% Delivery Discount',
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       fontSize: 12.0,

@@ -1,7 +1,7 @@
 import 'package:ecobites/Store.dart';
 import 'package:ecobites/historypage.dart';
 import 'package:ecobites/profile.dart';
-import 'package:ecobites/voucher.dart';
+import 'package:ecobites/voucherPage.dart';
 import 'package:flutter/material.dart';
 
 import 'UploadBarang.dart';
@@ -15,10 +15,10 @@ class _HomePageState extends State<HomePage> {
   String? usedVoucherCode;
   bool isVoucherUsed = false;
   Color searchIconColor = Colors.grey;// State variable for search icon color
-  void _handleVoucherUsed(String code) {
+  void _handleVoucherUsed(Voucher voucher) {
     setState(() {
-      usedVoucherCode= '';
       isVoucherUsed = false;
+      usedVoucherCode='';
     });
   }
   @override
