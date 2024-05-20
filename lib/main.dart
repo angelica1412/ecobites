@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:ecobites/Profile.dart';
-import 'package:ecobites/Profile1.dart';
 import 'package:ecobites/UploadBarang.dart';
 import 'package:ecobites/detailproduk.dart';
+import 'package:ecobites/uploadpage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'onboardingscreen.dart';
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
-      home: SplashScreen(),
+      home: UploadPage(),
       routes: {
         '/onboardingscreen': (context) => const OnBoardingScreen(),
       },
