@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:ecobites/detailprodukpenjual.dart';
 import 'package:ecobites/homepage.dart';
+import 'package:ecobites/login.dart';
 import 'package:flutter/material.dart';
 import 'onboardingscreen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: HomePage(), // Splash screen sebagai halaman awal
+      home: const LoginPage(), // Splash screen sebagai halaman awal
       debugShowCheckedModeBanner: false,
       routes: {
         '/detail': (context) => HomePage(), // Routing untuk Onboarding Screen

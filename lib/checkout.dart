@@ -83,7 +83,6 @@ class _OrderPageState extends State<OrderPage> {
               SecondaryTabbar(
                   onTabSelected: (index) {
                     setState(() {
-                      _selectedTabIndex = index;
                       if(index == 0){
                         setState(() {
                           isDelivery=true;
