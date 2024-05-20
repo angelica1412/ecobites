@@ -1,3 +1,5 @@
+import 'package:ecobites/Widgets/HistoryPembelian.dart';
+import 'package:ecobites/Widgets/HistoryPenjualan.dart';
 import 'package:ecobites/Widgets/secondarytabbar.dart';
 import 'package:ecobites/homepage.dart';
 import 'package:flutter/material.dart';
@@ -77,148 +79,46 @@ class _HistoryPageState extends State<HistoryPage> {
             ),
           ],
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.upload),
-              label: 'Upload',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.history),
-              label: 'Activity',
-            ),
-          ],
-          currentIndex: 2,
-          onTap: (int index) {
-            switch (index) {
-              case 0:
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
-                );
-                break;
-              case 1:
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => UploadBarang()),
-                );
-                break;
-              case 2:
-                break;
-            }
-          },
-          selectedItemColor: const Color(0xFF92E3A9),
-          unselectedItemColor: Colors.grey,
-        ));
-  }
-
-  Widget _buildSalesView() {
-    return ListView.builder(
-      itemCount: 10, // Contoh jumlah data
-      itemBuilder: (context, index) {
-        return Center(
-          child: Card(
-            margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            child: Container(
-              padding: EdgeInsets.all(16.0),
-              width: double.infinity,
-              child: Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.only(bottom: 8.0),
-                    decoration: BoxDecoration(
-                      border: Border(bottom: BorderSide(color: Colors.grey, width: 1.0)),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('2021-12-01'),
-                        Text('On Progress'),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 16.0), // Menambahkan jarak antar baris
-                  Row(
-                    children: [
-                      Image.asset(
-                        'assets/product2.png',
-                        width: 70,
-                        height: 70,
-                      ),
-                      SizedBox(width: 16.0), // Menambahkan jarak antara gambar dan teks
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Nama Produk $index'),
-                            Text('Jumlah: 3'),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+        elevation: 0,
+        backgroundColor: Color(0xFFFAFAFA),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
           ),
-        );
-      },
-    );
-  }
-
-  Widget _buildPurchaseView() {
-    return ListView.builder(
-      itemCount: 5, // Contoh jumlah data
-      itemBuilder: (context, index) {
-        return Card(
-            margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            child: Container(
-              padding: EdgeInsets.all(16.0),
-              width: double.infinity,
-              child: Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.only(bottom: 8.0),
-                    decoration: BoxDecoration(
-                      border: Border(bottom: BorderSide(color: Colors.grey, width: 1.0)),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('2021-12-01'),
-                        Text('Done'),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 16.0), // Menambahkan jarak antar baris
-                  Row(
-                    children: [
-                      Image.asset(
-                        'assets/product3.png',
-                        width: 70,
-                        height: 70,
-                      ),
-                      SizedBox(width: 16.0), // Menambahkan jarak antara gambar dan teks
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Nama Produk $index'),
-                            Text('Jumlah: 3'),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          );
-      },
+          BottomNavigationBarItem(
+            icon: Icon(Icons.upload),
+            label: 'Upload',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history),
+            label: 'Activity',
+          ),
+        ],
+        currentIndex: 2,
+        onTap: (int index) {
+          switch (index) {
+            case 0:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage()),
+              );
+              break;
+            case 1:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => UploadBarang()),
+              );
+              break;
+            case 2:
+              break;
+          }
+        },
+        selectedItemColor: const Color(0xFF92E3A9),
+        unselectedItemColor: Colors.grey,
+      ),
     );
   }
 }
