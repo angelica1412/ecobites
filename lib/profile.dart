@@ -10,9 +10,9 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: const Text('Profile'),
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back,
             color: Color(0xFF92E3A9),
           ),
@@ -21,14 +21,14 @@ class ProfileScreen extends StatelessWidget {
           },
         ),
         elevation: 0,
-        backgroundColor: Color(0xFFFAFAFA),
+        backgroundColor: const Color(0xFFFAFAFA),
       ),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(10),
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Center(
@@ -38,10 +38,10 @@ class ProfileScreen extends StatelessWidget {
                   width: 200,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-              Text(
+              const Text(
                 'Your Name',
                 style: TextStyle(
                   color: Colors.black,
@@ -49,10 +49,10 @@ class ProfileScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
-              Text(
+              const Text(
                 'youremail@ecobites.com',
                 style: TextStyle(
                   color: Colors.black,
@@ -60,10 +60,10 @@ class ProfileScreen extends StatelessWidget {
                   fontWeight: FontWeight.normal,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              Text(
+              const Text(
                 '+62yourphonenumber',
                 style: TextStyle(
                   color: Colors.grey,
@@ -71,30 +71,38 @@ class ProfileScreen extends StatelessWidget {
                   fontWeight: FontWeight.normal,
                 ),
               ),
-              SizedBox(height: 56),
+              const SizedBox(height: 56),
               Align(
                 alignment: Alignment.center,
                 child: Container(
                   width: 300,
                   child: ElevatedButton(
                     onPressed: () {
-                      // Fungsi yang akan dijalankan ketika tombol login ditekan
-                      // Anda dapat menambahkan logika autentikasi di sini
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PengaturanAkun(),
+                        ),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
+                    child: const Padding(
+                      padding: EdgeInsets.all(16.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             'Pengaturan Akun',
-                            style: TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           Icon(
                             CupertinoIcons.right_chevron,
@@ -107,154 +115,43 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 14),
+              const SizedBox(height: 14),
               Align(
                 alignment: Alignment.center,
                 child: Container(
                   width: 300,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const userStorePage(),
+                        ),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF92E3A9),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
+                    child: const Padding(
+                      padding: EdgeInsets.all(16.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             'Toko Saya',
-                            style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           Icon(
                             CupertinoIcons.right_chevron,
                             size: 20,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        child: Container(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 20,
-              ),
-              Center(
-                child: Image.asset(
-                  'assets/defaultProfilePicture.png',
-                  height: 200,
-                  width: 200,
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                'Your Name',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Text(
-                'youremail@ecobites.com',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                '+62yourphonenumber',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 16,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-              SizedBox(height: 56),
-              Align(
-                alignment: Alignment.center,
-                child: Container(
-                  width: 300,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context)=> PengaturanAkun()));
-                      // Fungsi yang akan dijalankan ketika tombol login ditekan
-                      // Anda dapat menambahkan logika autentikasi di sini
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 255, 255, 255),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Pengaturan Akun',
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          Icon(
-                            CupertinoIcons.right_chevron,
-                            size: 20,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 14),
-              Align(
-                alignment: Alignment.center,
-                child: Container(
-                  width: 300,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context)=>userStorePage()));
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 179, 229, 193),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Toko Saya',
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          Icon(
-                            CupertinoIcons.right_chevron,
-                            size: 20,
+                            color: Colors.white,
                           ),
                         ],
                       ),

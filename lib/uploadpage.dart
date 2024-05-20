@@ -87,7 +87,7 @@ class _UploadBarangState extends State<UploadBarang> {
                       ],
                     ),
                     style: ElevatedButton.styleFrom(
-                      primary: const Color(0xFF92E3A9),
+                      backgroundColor: const Color(0xFF92E3A9),
                     ),
                   ),
                   SizedBox(width: 16),
@@ -102,7 +102,7 @@ class _UploadBarangState extends State<UploadBarang> {
                       ],
                     ),
                     style: ElevatedButton.styleFrom(
-                      primary: const Color(0xFF92E3A9),
+                      backgroundColor: const Color(0xFF92E3A9),
                     ),
                   ),
                 ],

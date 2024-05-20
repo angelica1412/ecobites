@@ -32,7 +32,7 @@ class _HistoryPageState extends State<HistoryPage> {
                 setState(() {
                   _selectedTabIndex = index;
                 });
-              },
+              }, title: 'Pembelian', title2: 'Penjualan',
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

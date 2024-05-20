@@ -255,7 +255,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: ElevatedButton(
                     onPressed: () => registration(context),
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFF92E3A9),
+                      backgroundColor: Color(0xFF92E3A9),
                       minimumSize: Size(
                           200, 50), // Menetapkan ukuran minimum untuk button
                     ),

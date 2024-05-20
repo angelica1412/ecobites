@@ -1,3 +1,4 @@
+import 'package:ecobites/voucher.dart';
 import 'package:flutter/material.dart';
 
 class Voucher extends StatelessWidget {
@@ -39,6 +40,7 @@ class Voucher extends StatelessWidget {
             Spacer(),
             ElevatedButton(
               onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> VoucherPage()));
                 // Handle button press
               },
               style: ElevatedButton.styleFrom(

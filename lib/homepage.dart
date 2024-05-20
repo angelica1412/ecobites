@@ -1,3 +1,4 @@
+import 'package:ecobites/Store.dart';
 import 'package:ecobites/historypage.dart';
 import 'package:ecobites/profile.dart';
 import 'package:ecobites/uploadpage.dart';
@@ -78,7 +79,10 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Expanded(
-                    child: Container(
+                    child:
+                    GestureDetector(
+                  onTap:(){ Navigator.push(context, MaterialPageRoute(builder: (context)=> StorePage()));},
+                child: Container(
                       width: 160,
                       height: 200,
                       child: Card(
@@ -93,6 +97,7 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ),
                       ),
+                    ),
                     ),
                   ),
                   const SizedBox(width: 16),

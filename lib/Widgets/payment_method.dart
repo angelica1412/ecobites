@@ -22,7 +22,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
     'Dana',
     'OVO',
     'LinkAja',
-    'Transfer Bank',
+    '-',
   ];
   List<String> paymentMethodPictures = [
     'assets/food.png',

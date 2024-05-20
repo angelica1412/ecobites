@@ -1,4 +1,5 @@
 import 'package:ecobites/Widgets/payment_method.dart';
+import 'package:ecobites/Widgets/secondarytabbar.dart';
 import 'package:ecobites/Widgets/voucher.dart';
 import 'package:flutter/material.dart';
 import 'Widgets/ProductCard.dart';
@@ -21,6 +22,8 @@ class OrderPage extends StatefulWidget {
 class _OrderPageState extends State<OrderPage> {
   TextEditingController _addressController = TextEditingController();
   String _searchedAddress = '';
+  bool isDelivery = true;
+  
 
   @override
   void dispose() {
@@ -66,7 +69,7 @@ class _OrderPageState extends State<OrderPage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding:  EdgeInsets.all(20.0),
           child: Column(
             children: [
               TextField(
@@ -77,6 +80,27 @@ class _OrderPageState extends State<OrderPage> {
                 ),
               ),
               SizedBox(height: 20),
+              SecondaryTabbar(
+                  onTabSelected: (index) {
+                    setState(() {
+                      _selectedTabIndex = index;
+                      if(index == 0){
+                        setState(() {
+                          isDelivery=true;
+                        });
+                      }
+                      else{
+                        setState(() {
+                          isDelivery=false;
+                        });
+                      }
+                    });
+                  },
+                  title: 'Deliver',
+                  title2: 'Pick Up'),
+              SizedBox(height: 20),
+              Divider(),
+
               Row(
                 children: [
                   Expanded(
@@ -106,6 +130,7 @@ class _OrderPageState extends State<OrderPage> {
                   ),
                 ],
               ),
+              
               Divider(),
               SizedBox(height: 20),
               ListView.builder(
@@ -127,7 +152,7 @@ class _OrderPageState extends State<OrderPage> {
 
               Divider(),
               SizedBox(height: 20),
-              PaymentSummary(totalPrice: widget.totalprice),
+              PaymentSummary(totalPrice: widget.totalprice, isDelivery: isDelivery ,),
               SizedBox(height: 20),
               Divider(),
               SizedBox(height: 20),
