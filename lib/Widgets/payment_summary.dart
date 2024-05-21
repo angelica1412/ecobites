@@ -3,12 +3,12 @@ import 'package:ecobites/voucherPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
 class PaymentSummary extends StatelessWidget {
   const PaymentSummary({
     Key? key,
-    required this.totalPrice, required this.isDelivery, required this.selectedVoucher,
-
+    required this.totalPrice,
+    required this.isDelivery,
+    required this.selectedVoucher,
   }) : super(key: key);
 
   final double totalPrice;
@@ -17,6 +17,33 @@ class PaymentSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double productDiscount = 0;
+    double deliveryDiscount = 0;
+    double shippingFee = 10000; // Ongkos kirim contoh
+    double discountedTotalPrice = totalPrice;
+
+    if (selectedVoucher != null) {
+      // Calculate product discount
+      if (selectedVoucher!.productDiscount > 0) {
+        productDiscount = (selectedVoucher!.productDiscount / 100) * totalPrice;
+        if (productDiscount > selectedVoucher!.maxDiscount) {
+          productDiscount = selectedVoucher!.maxDiscount;
+        }
+      }
+      // Calculate delivery discount
+      if (isDelivery && selectedVoucher!.deliveryDiscount > 0) {
+        deliveryDiscount = (selectedVoucher!.deliveryDiscount / 100) * shippingFee;
+        if (deliveryDiscount > selectedVoucher!.maxDiscount) {
+          deliveryDiscount = selectedVoucher!.maxDiscount;
+        }
+      }
+      discountedTotalPrice = totalPrice - productDiscount;
+    }
+
+    double finalTotalPrice = isDelivery
+        ? discountedTotalPrice + shippingFee - deliveryDiscount
+        : discountedTotalPrice;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -37,44 +64,37 @@ class PaymentSummary extends StatelessWidget {
         if (isDelivery) ...[
           PaymentDetailRow(
             title: 'Ongkos Kirim',
-            value: '${selectedVoucher?.deliveryDiscount}% discount', // Example shipping fee
+            value: 'Rp ${shippingFee.toStringAsFixed(2)}',
           ),
-          PaymentDetailRow(
-            title: 'Diskon',
-            value: '${selectedVoucher?.productDiscount}',
-          ),
+          if (selectedVoucher != null && productDiscount > 0)
+            PaymentDetailRow(
+              title: 'Diskon Produk',
+              value: '-Rp ${productDiscount.toStringAsFixed(2)}',
+            ),
+          if (selectedVoucher != null && deliveryDiscount > 0)
+            PaymentDetailRow(
+              title: 'Diskon Ongkir',
+              value: '-Rp ${deliveryDiscount.toStringAsFixed(2)}',
+            ),
           Divider(),
           PaymentDetailRow(
             title: 'Total',
-            value: 'Rp ${(totalPrice + 20000 - 10000).toStringAsFixed(2)}',
+            value: 'Rp ${finalTotalPrice.toStringAsFixed(2)}',
             isTotal: true,
           ),
         ] else ...[
-          PaymentDetailRow(
-            title: 'Diskon Pick Up',
-            value: '-Rp 5,000', // Example discount for pick up
-          ),
+          if (selectedVoucher != null && productDiscount > 0)
+            PaymentDetailRow(
+              title: 'Diskon Produk',
+              value: '-Rp ${productDiscount.toStringAsFixed(2)}',
+            ),
           Divider(),
           PaymentDetailRow(
             title: 'Total',
-            value: 'Rp ${(totalPrice - 5000).toStringAsFixed(2)}',
+            value: 'Rp ${finalTotalPrice.toStringAsFixed(2)}',
             isTotal: true,
           ),
         ],
-        // PaymentDetailRow(
-        //   title: 'Ongkos Kirim',
-        //   value: 'Rp 20,000', // Example shipping fee
-        // ),
-        // PaymentDetailRow(
-        //   title: 'Diskon',
-        //   value: '-Rp 10,000', // Example discount
-        // ),
-        // Divider(),
-        // PaymentDetailRow(
-        //   title: 'Total',
-        //   value: 'Rp ${(totalPrice + 20000 - 10000).toStringAsFixed(2)}',
-        //   isTotal: true,
-        // ),
       ],
     );
   }
