@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:ecobites/Widgets/customTextfield.dart';
+import 'package:ecobites/historypage.dart';
+import 'package:ecobites/homepage.dart';
 // import 'package:ecobites/Widgets/SliderWithLabel.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -55,16 +57,11 @@ class _UploadBarangState extends State<UploadBarang> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Upload Barang'),
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Color(0xFF000000),
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+        title: const Text(
+          'Upload Barang',
+          style: TextStyle(color: Colors.black),
         ),
+        centerTitle: true,
         elevation: 0,
         backgroundColor: const Color(0xFFFAFAFA),
       ),
@@ -213,7 +210,6 @@ class _UploadBarangState extends State<UploadBarang> {
                   );
                 }).toList(),
               ),
-// Kualitas Barang end
               const SizedBox(
                 height: 20,
               ),
@@ -514,6 +510,47 @@ class _UploadBarangState extends State<UploadBarang> {
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.upload),
+            label: 'Upload',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history),
+            label: 'Activity',
+          ),
+        ],
+        currentIndex: 1,
+        onTap: (int index) {
+          switch (index) {
+            case 0:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage()),
+              );
+              break;
+            case 1:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => UploadBarang()),
+              );
+              break;
+            case 2:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => HistoryPage()),
+              );
+              break;
+          }
+        },
+        selectedItemColor: const Color(0xFF92E3A9),
+        unselectedItemColor: Colors.grey,
       ),
     );
   }

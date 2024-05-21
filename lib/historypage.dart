@@ -1,10 +1,9 @@
+import 'package:ecobites/UploadBarang.dart';
 import 'package:ecobites/Widgets/HistoryPembelian.dart';
 import 'package:ecobites/Widgets/HistoryPenjualan.dart';
 import 'package:ecobites/Widgets/secondarytabbar.dart';
 import 'package:ecobites/homepage.dart';
 import 'package:flutter/material.dart';
-
-import 'UploadBarang.dart';
 
 class HistoryPage extends StatefulWidget {
   @override
@@ -19,68 +18,67 @@ class _HistoryPageState extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Center(
-            child: Text('History Page',
-                style: TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.bold)),
-          ),
-          elevation: 0,
-          backgroundColor: Color(0xFFFAFAFA),
-        ),
-        body: Column(
-          children: [
-            SecondaryTabbar(
-              onTabSelected: (index) {
-                setState(() {
-                  _selectedTabIndex = index;
-                });
-              }, title: 'Pembelian', title2: 'Penjualan',
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                DropdownButton<String>(
-                  value: _selectedDropdown1,
-                  hint: Text("Status"),
-                  onChanged: (newValue) {
-                    setState(() {
-                      _selectedDropdown1 = newValue;
-                    });
-                  },
-                  items: <String>['On Progress', 'Done', 'Cancelled']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
-                DropdownButton<String>(
-                  value: _selectedDropdown2,
-                  hint: Text("Kategori"),
-                  onChanged: (newValue) {
-                    setState(() {
-                      _selectedDropdown2 = newValue;
-                    });
-                  },
-                  items: <String>['Makanan', 'Bahan Daur Ulang', 'Daur Ulang']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
-              ],
-            ),
-            Expanded(
-              child: _selectedTabIndex == 0 ? _buildSalesView() : _buildPurchaseView(),
-            ),
-          ],
+      appBar: AppBar(
+        title: Center(
+          child: Text('History Page',
+              style: TextStyle(
+                  color: Colors.black, fontWeight: FontWeight.bold)),
         ),
         elevation: 0,
         backgroundColor: Color(0xFFFAFAFA),
+      ),
+      body: Column(
+        children: [
+          SecondaryTabbar(
+            title: 'Penjualan',
+            title2: 'Pembelian',
+            onTabSelected: (index) {
+              setState(() {
+                _selectedTabIndex = index;
+              });
+            },
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              DropdownButton<String>(
+                value: _selectedDropdown1,
+                hint: Text("Status"),
+                onChanged: (newValue) {
+                  setState(() {
+                    _selectedDropdown1 = newValue;
+                  });
+                },
+                items: <String>['On Progress', 'Done', 'Cancelled']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+              DropdownButton<String>(
+                value: _selectedDropdown2,
+                hint: Text("Kategori"),
+                onChanged: (newValue) {
+                  setState(() {
+                    _selectedDropdown2 = newValue;
+                  });
+                },
+                items: <String>['Makanan', 'Bahan Daur Ulang', 'Daur Ulang']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+            ],
+          ),
+          Expanded(
+            child: _selectedTabIndex == 0 ? SalesView() : PurchaseView(),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -113,6 +111,10 @@ class _HistoryPageState extends State<HistoryPage> {
               );
               break;
             case 2:
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => HistoryPage()),
+              );
               break;
           }
         },
