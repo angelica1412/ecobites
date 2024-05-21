@@ -4,9 +4,9 @@ class Voucher {
   String code;
   String imageName;
   String description;
-  int productDiscount;
-  int deliveryDiscount;
-  int maxDiscount;
+  double productDiscount;
+  double deliveryDiscount;
+  double maxDiscount;
 
 
   Voucher({required this.code, required this.imageName, required this.description,required this.deliveryDiscount, required this.productDiscount, required this.maxDiscount});
@@ -30,7 +30,7 @@ class _VoucherPageState extends State<VoucherPage> {
   final TextEditingController _searchController = TextEditingController();
   final List<Voucher> _voucherCodes = [
     Voucher(code: 'VOUCHER123', imageName: 'voucher.png', description: 'Discount 50% Product', deliveryDiscount: 0, productDiscount: 50, maxDiscount: 10000),
-    Voucher(code: 'ECO456', imageName: 'voucher.png', description: 'Discount 20% Product & 30% Delivery', deliveryDiscount: 30, productDiscount: 20, maxDiscount: 2000),
+    Voucher(code: 'ECO456', imageName: 'voucher.png', description: 'Discount 20% Product & 30% Deliveryyyyyyyyyyyyfvdfvfdevdfevyyyyyyy', deliveryDiscount: 30, productDiscount: 20, maxDiscount: 10000),
     Voucher(code: 'SAVE50', imageName: 'voucher.png', description: 'Discount 30% Product', deliveryDiscount: 0, productDiscount: 30, maxDiscount: 20000),
     Voucher(code: 'SPRINGSALE', imageName: 'voucher.png', description: 'Discount 40% Product', deliveryDiscount: 0, productDiscount: 40, maxDiscount: 10000),
     Voucher(code: 'FREEDELIVERY', imageName: 'voucher.png', description: 'Free Delivery', deliveryDiscount: 100, productDiscount: 0, maxDiscount: 100000),
@@ -106,12 +106,16 @@ class _VoucherPageState extends State<VoucherPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Column(
+                            Expanded(
+                                child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(_filteredVoucherCodes[index].code),
-                                Text('${_filteredVoucherCodes[index].description}'),
+                                Text('${_filteredVoucherCodes[index].description}',
+                                  overflow: TextOverflow.ellipsis,
+                                  )
                               ],
+                            ),
                             ),
                             if (widget.fromCheckout)
                               ElevatedButton(
