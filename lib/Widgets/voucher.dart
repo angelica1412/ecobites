@@ -118,7 +118,8 @@ class _VoucherState extends State<VoucherState> {
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white, backgroundColor: Colors.green,
               ),
-              child: isVoucherUsed?  Text('Remove'):Text('Use Voucher'),
+              child: isVoucherUsed?  Text('Remove'):
+                  widget.fromCheckout? Text('Use Voucher'): Text('See Voucher'),
             ),
           ],
         ),

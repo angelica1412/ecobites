@@ -1,8 +1,10 @@
+import 'package:ecobites/Widgets/voucher.dart';
+import 'package:flutter/material.dart';
 import 'package:ecobites/Store.dart';
+import 'package:ecobites/Widgets/storeCard.dart';
 import 'package:ecobites/historypage.dart';
 import 'package:ecobites/profile.dart';
 import 'package:ecobites/voucherPage.dart';
-import 'package:flutter/material.dart';
 
 import 'UploadBarang.dart';
 
@@ -14,15 +16,45 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String? usedVoucherCode;
   bool isVoucherUsed = false;
-  Color searchIconColor = Colors.grey;// State variable for search icon color
+  Color searchIconColor = Colors.grey; // State variable for search icon color
+  TextEditingController searchController = TextEditingController();
+  String searchQuery = "";
+
+  List<Store> stores = [
+    Store(
+      name: 'Store 1',
+      description: 'Description for Store 1',
+      imageURL: 'assets/product1.png',
+    ),
+    Store(
+      name: 'Store 2',
+      description: 'Description for Store 2',
+      imageURL: 'assets/product1.png',
+    ),
+    Store(
+      name: 'Store 3',
+      description: 'Description for Store 3',
+      imageURL: 'assets/product1.png',
+    ),
+    Store(
+      name: 'Store 4',
+      description: 'Description for Store 4',
+      imageURL: 'assets/product1.png',
+    ),
+    // Add more stores as needed
+  ];
+
   void _handleVoucherUsed(Voucher voucher) {
     setState(() {
       isVoucherUsed = false;
-      usedVoucherCode='';
+      usedVoucherCode = '';
     });
   }
+
   @override
   Widget build(BuildContext context) {
+    final double halfScreenHeight = MediaQuery.of(context).size.height / 2;
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -64,10 +96,16 @@ class _HomePageState extends State<HomePage> {
               ),
               const SizedBox(height: 20),
               TextFormField(
+                controller: searchController,
+                onChanged: (value) {
+                  setState(() {
+                    searchQuery = value;
+                  });
+                },
                 onTap: () {
                   setState(() {
                     searchIconColor =
-                        const Color(0xFF92E3A9); // Change color when tapped
+                    const Color(0xFF92E3A9); // Change color when tapped
                   });
                 },
                 decoration: InputDecoration(
@@ -78,104 +116,92 @@ class _HomePageState extends State<HomePage> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide:
-                        BorderSide(color: Color(0xFF92E3A9), width: 2.0),
+                    BorderSide(color: Color(0xFF92E3A9), width: 2.0),
                   ),
                 ),
               ),
               const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Expanded(
-                    child:
-                    GestureDetector(
-                  onTap:(){ Navigator.push(context, MaterialPageRoute(builder: (context)=> StorePage()));},
-                child: Container(
-                      width: 160,
-                      height: 200,
-                      child: Card(
-                        elevation: 5,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset('assets/food.png',
-                                height: 80, width: 80),
-                            const SizedBox(height: 8),
-                            const Text('Food'),
-                          ],
-                        ),
-                      ),
-                    ),
-                    ),
+              if (searchQuery.isEmpty) ...[
+                // Display StoreCards with image on top and smaller size when search query is empty
+                Text(
+                    'Recently Viewed',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
                   ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Container(
-                      width: 160,
-                      height: 200,
-                      child: Card(
-                        elevation: 5,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset('assets/daurulang.png',
-                                height: 80, width: 80),
-                            const SizedBox(height: 8),
-                            const Text('Bahan Daur Ulang'),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Center(
-                child: Container(
-                  width: 160,
+                ),
+                SizedBox(
                   height: 200,
-                  child: Card(
-                    elevation: 5,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset('assets/pupuk.png', height: 80, width: 80),
-                        const SizedBox(height: 8),
-                        const Text('Fertilizer'),
-                      ],
-                    ),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: stores.length,
+                    itemBuilder: (context, index) {
+                      final store = stores[index];
+                      return SizedBox(
+                        width: 150,
+                        child: StoreCard(store: store, imageOnTop: true),
+                      );
+                    },
                   ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              Center(
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        const Color(0xFF92E3A9)),
+                const SizedBox(height: 20),
+                Center(
+                  child: VoucherState(fromCheckout: false, onVoucherUsed: (Voucher) {  },),
+
+                ),
+                const SizedBox(height: 20),
+
+                Text(
+                  'Most Viewed',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => VoucherPage(fromCheckout: false, onVoucherUsed: _handleVoucherUsed,)),
-                    );
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  height: 200,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: stores.length,
+                    itemBuilder: (context, index) {
+                      final store = stores[index];
+                      return SizedBox(
+                        width: 150,
+                        child: StoreCard(store: store, imageOnTop: true),
+                      );
+                    },
+                  ),
+                ),
+              ] else ...[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                      'Menunjukkan hasil "$searchQuery"',
+                  style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  ),
+                  ),
+                ),
+                // Display StoreCards in default layout after searching
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: stores.length,
+                  itemBuilder: (context, index) {
+                    final store = stores[index];
+                    if (store.name.toLowerCase().contains(searchQuery.toLowerCase())) {
+                      return StoreCard(store: store);
+                    } else {
+                      return SizedBox.shrink(); // Return an empty widget if store does not match search query
+                    }
                   },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'Voucher',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                      SizedBox(width: 130, height: 60),
-                      Icon(Icons.arrow_forward),
-                    ],
-                  ),
                 ),
-              ),
+              ],
+              const SizedBox(height: 20),
             ],
           ),
         ),
