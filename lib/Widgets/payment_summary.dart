@@ -1,4 +1,4 @@
-import 'package:ecobites/Widgets/payment_detail_row.dart';
+import 'package:ecobites/Widgets/Payment_detail_row.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

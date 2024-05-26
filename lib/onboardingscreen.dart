@@ -1,9 +1,9 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'AppColor.dart';
+import 'appColor.dart';
 import 'ImagesPath.dart';
-import 'DotsIndicator.dart';
+import 'dotsIndicator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'login.dart';
 

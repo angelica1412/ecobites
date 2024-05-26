@@ -1,7 +1,7 @@
-import 'package:ecobites/UploadBarang.dart';
+import 'package:ecobites/uploadBarang.dart';
 import 'package:ecobites/Widgets/HistoryPembelian.dart';
 import 'package:ecobites/Widgets/HistoryPenjualan.dart';
-import 'package:ecobites/Widgets/secondarytabbar.dart';
+import 'package:ecobites/Widgets/Secondarytabbar.dart';
 import 'package:ecobites/homepage.dart';
 import 'package:flutter/material.dart';
 
@@ -19,13 +19,14 @@ class _HistoryPageState extends State<HistoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          child: Text('History Page',
-              style: TextStyle(
-                  color: Colors.black, fontWeight: FontWeight.bold)),
+         title: const Text(
+          'History Page',
+          style: TextStyle(color: Colors.black,
+          fontWeight: FontWeight.bold),
         ),
+        centerTitle: true,
         elevation: 0,
-        backgroundColor: Color(0xFFFAFAFA),
+        backgroundColor: const Color(0xFFFAFAFA),
       ),
       body: Column(
         children: [
@@ -111,7 +112,7 @@ class _HistoryPageState extends State<HistoryPage> {
               );
               break;
             case 2:
-            Navigator.pushReplacement(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => HistoryPage()),
               );

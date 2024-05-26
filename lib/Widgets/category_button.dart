@@ -5,11 +5,12 @@ class CategoryButton extends StatelessWidget {
   final String selectedCategory;
   final Function onPressed;
 
-  const CategoryButton({super.key,
+  const CategoryButton({
+    Key? key,
     required this.category,
     required this.selectedCategory,
     required this.onPressed,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +21,15 @@ class CategoryButton extends StatelessWidget {
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
           if (selectedCategory == category) {
-            return Colors.greenAccent;
+            return const Color(0xFF92E3A9);
           }
-          return Colors.white;
+          return const Color.fromARGB(255, 173, 169, 169);
+        }),
+        textStyle: MaterialStateProperty.resolveWith<TextStyle>((Set<MaterialState> states) {
+          if (selectedCategory == category) {
+            return TextStyle(fontWeight: FontWeight.bold);
+          }
+          return TextStyle(fontWeight: FontWeight.normal);
         }),
       ),
       child: Text(category),

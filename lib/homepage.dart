@@ -1,10 +1,10 @@
-import 'package:ecobites/Store.dart';
+import 'package:ecobites/store.dart';
 import 'package:ecobites/historypage.dart';
 import 'package:ecobites/profile.dart';
 import 'package:ecobites/voucher.dart';
 import 'package:flutter/material.dart';
 
-import 'UploadBarang.dart';
+import 'uploadBarang.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -17,23 +17,43 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          color: Color.fromARGB(255, 255, 255, 255),
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Image.asset(
-                    'assets/logo.png',
-                    height: 80,
-                    width: 80,
+      appBar: PreferredSize(
+        preferredSize:
+            Size.fromHeight(80.0), // Ketinggian AppBar yang disesuaikan
+        child: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          flexibleSpace: Padding(
+            padding:
+                const EdgeInsets.only(top: 24.0), // Menambahkan padding di atas
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 16.0), // Menambahkan padding di kiri
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        'assets/logo.png',
+                        height: 70,
+                        width: 70,
+                      ),
+                      const Text(
+                        'Ecobites',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
-                  Container(
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      right: 16.0), // Menambahkan padding di kanan
+                  child: Container(
                     padding: EdgeInsets.all(
                         2), // Menambahkan padding untuk memusatkan ikon
                     decoration: BoxDecoration(
@@ -42,7 +62,7 @@ class _HomePageState extends State<HomePage> {
                       shape: BoxShape.circle, // Latar belakang bulat
                     ),
                     child: IconButton(
-                      icon: Icon(Icons.person, size: 32),
+                      icon: Icon(Icons.person, size: 28),
                       color: Colors.black,
                       onPressed: () {
                         Navigator.push(
@@ -53,9 +73,20 @@ class _HomePageState extends State<HomePage> {
                       },
                     ),
                   ),
-                ],
-              ),
-              const SizedBox(height: 20),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          color: Color.fromARGB(255, 255, 255, 255),
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 20),
               TextFormField(
                 onTap: () {
                   setState(() {
@@ -80,25 +111,29 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Expanded(
-                    child:
-                    GestureDetector(
-                  onTap:(){ Navigator.push(context, MaterialPageRoute(builder: (context)=> StorePage()));},
-                child: Container(
-                      width: 160,
-                      height: 200,
-                      child: Card(
-                        elevation: 5,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset('assets/food.png',
-                                height: 80, width: 80),
-                            const SizedBox(height: 8),
-                            const Text('Food'),
-                          ],
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => StorePage()));
+                      },
+                      child: Container(
+                        width: 160,
+                        height: 200,
+                        child: Card(
+                          elevation: 5,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset('assets/food.png',
+                                  height: 80, width: 80),
+                              const SizedBox(height: 8),
+                              const Text('Food'),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
                     ),
                   ),
                   const SizedBox(width: 16),

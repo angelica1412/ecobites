@@ -18,7 +18,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const LoginPage(), // Splash screen sebagai halaman awal
+      home: HomePage(), // Splash screen sebagai halaman awal
+      // home: ChatPage(),
       debugShowCheckedModeBanner: false,
       routes: {
         '/detail': (context) => HomePage(), // Routing untuk Onboarding Screen

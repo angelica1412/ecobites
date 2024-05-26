@@ -59,7 +59,8 @@ class _UploadBarangState extends State<UploadBarang> {
       appBar: AppBar(
         title: const Text(
           'Upload Barang',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black,
+          fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         elevation: 0,

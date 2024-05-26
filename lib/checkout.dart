@@ -1,9 +1,9 @@
-import 'package:ecobites/Widgets/payment_method.dart';
-import 'package:ecobites/Widgets/secondarytabbar.dart';
-import 'package:ecobites/Widgets/voucher.dart';
+import 'package:ecobites/Widgets/Payment_method.dart';
+import 'package:ecobites/Widgets/Secondarytabbar.dart';
+import 'package:ecobites/Widgets/Voucher.dart';
 import 'package:flutter/material.dart';
 import 'Widgets/ProductCard.dart';
-import 'Widgets/payment_summary.dart';
+import 'Widgets/Payment_summary.dart';
 
 class OrderPage extends StatefulWidget {
   const OrderPage({
