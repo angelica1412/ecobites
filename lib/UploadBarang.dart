@@ -5,8 +5,13 @@ import 'package:ecobites/Widgets/customTextfield.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'historypage.dart';
+import 'homepage.dart';
+
 class UploadBarang extends StatefulWidget {
-  const UploadBarang({super.key});
+  const UploadBarang({super.key, required this.fromHome, required this.fromUserToko});
+  final bool fromHome;
+  final bool fromUserToko;
 
   @override
   _UploadBarangState createState() => _UploadBarangState();
@@ -56,7 +61,8 @@ class _UploadBarangState extends State<UploadBarang> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Upload Barang'),
-        leading: IconButton(
+        leading: widget.fromUserToko
+            ? IconButton(
           icon: const Icon(
             Icons.arrow_back,
             color: Color(0xFF000000),
@@ -64,7 +70,8 @@ class _UploadBarangState extends State<UploadBarang> {
           onPressed: () {
             Navigator.pop(context);
           },
-        ),
+        )
+            : null, // Berikan null jika tidak ada leading icon yang diinginkan
         elevation: 0,
         backgroundColor: const Color(0xFFFAFAFA),
       ),
@@ -515,6 +522,45 @@ class _UploadBarangState extends State<UploadBarang> {
           ),
         ),
       ),
+      bottomNavigationBar: widget.fromHome? BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.upload),
+            label: 'Upload',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history),
+            label: 'Activity',
+          ),
+        ],
+        currentIndex: 1, // Menetapkan indeks saat ini ke halaman Upload
+        onTap: (int index) {
+          switch (index) {
+            case 0:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage()),
+              );
+              break;
+            case 1:
+              break;
+            case 2:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => HistoryPage()),
+              ); // Pindah ke halaman History
+              break;
+          }
+        },
+        selectedItemColor: const Color(
+            0xFF92E3A9), // Mengubah warna item yang dipilih menjadi hijau
+        unselectedItemColor: Colors
+            .grey, // Mengubah warna item yang tidak dipilih menjadi abu-abu
+      ) : null
     );
   }
 

@@ -1,10 +1,8 @@
 import 'package:ecobites/Widgets/voucher.dart';
 import 'package:flutter/material.dart';
-import 'package:ecobites/Store.dart';
 import 'package:ecobites/Widgets/storeCard.dart';
 import 'package:ecobites/historypage.dart';
 import 'package:ecobites/profile.dart';
-import 'package:ecobites/voucherPage.dart';
 
 import 'UploadBarang.dart';
 
@@ -44,16 +42,9 @@ class _HomePageState extends State<HomePage> {
     // Add more stores as needed
   ];
 
-  void _handleVoucherUsed(Voucher voucher) {
-    setState(() {
-      isVoucherUsed = false;
-      usedVoucherCode = '';
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
-    final double halfScreenHeight = MediaQuery.of(context).size.height / 2;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -225,15 +216,11 @@ class _HomePageState extends State<HomePage> {
         onTap: (int index) {
           switch (index) {
             case 0:
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => HomePage()),
-              );
               break;
             case 1:
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => UploadBarang()),
+                MaterialPageRoute(builder: (context) => UploadBarang(fromHome: true, fromUserToko: false,)),
               ); // Pindah ke halaman Upload
               break;
             case 2:

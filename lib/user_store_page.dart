@@ -284,7 +284,7 @@ class _StorePageState extends State<userStorePage> {
             child: FloatingActionButton(
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => UploadBarang()));
+                    MaterialPageRoute(builder: (context) => UploadBarang(fromHome: false, fromUserToko: true,)));
               },
               child: Icon(Icons.add),
               backgroundColor: Colors.green,
