@@ -1,14 +1,21 @@
 import 'dart:io';
 
 import 'package:ecobites/Widgets/customTextfield.dart';
-import 'package:ecobites/historypage.dart';
-import 'package:ecobites/homepage.dart';
 // import 'package:ecobites/Widgets/SliderWithLabel.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'Widgets/ProductCard.dart';
+import 'historypage.dart';
+import 'homepage.dart';
+
 class UploadBarang extends StatefulWidget {
-  const UploadBarang({super.key});
+  const UploadBarang({super.key, required this.fromHome, required this.fromUserToko, required this.isEdit, this.product});
+  final bool fromHome;
+  final bool fromUserToko;
+  final bool isEdit;
+  final Product? product;
+
 
   @override
   _UploadBarangState createState() => _UploadBarangState();
@@ -53,16 +60,29 @@ class _UploadBarangState extends State<UploadBarang> {
     super.dispose();
   }
 
+  void initState() {
+    super.initState();
+    if (widget.isEdit && widget.product != null) {
+      _namaBarang.text = widget.product!.name;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Upload Barang',
-          style: TextStyle(color: Colors.black,
-          fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
+        title: widget.isEdit? Text('Edit Barang'):const Text('Upload Barang'),
+        leading: widget.fromUserToko
+            ? IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Color(0xFF000000),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        )
+            : null, // Berikan null jika tidak ada leading icon yang diinginkan
         elevation: 0,
         backgroundColor: const Color(0xFFFAFAFA),
       ),
@@ -211,6 +231,7 @@ class _UploadBarangState extends State<UploadBarang> {
                   );
                 }).toList(),
               ),
+// Kualitas Barang end
               const SizedBox(
                 height: 20,
               ),
@@ -512,7 +533,7 @@ class _UploadBarangState extends State<UploadBarang> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: widget.fromHome? BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -527,7 +548,7 @@ class _UploadBarangState extends State<UploadBarang> {
             label: 'Activity',
           ),
         ],
-        currentIndex: 1,
+        currentIndex: 1, // Menetapkan indeks saat ini ke halaman Upload
         onTap: (int index) {
           switch (index) {
             case 0:
@@ -537,22 +558,20 @@ class _UploadBarangState extends State<UploadBarang> {
               );
               break;
             case 1:
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => UploadBarang()),
-              );
               break;
             case 2:
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => HistoryPage()),
-              );
+              ); // Pindah ke halaman History
               break;
           }
         },
-        selectedItemColor: const Color(0xFF92E3A9),
-        unselectedItemColor: Colors.grey,
-      ),
+        selectedItemColor: const Color(
+            0xFF92E3A9), // Mengubah warna item yang dipilih menjadi hijau
+        unselectedItemColor: Colors
+            .grey, // Mengubah warna item yang tidak dipilih menjadi abu-abu
+      ) : null
     );
   }
 

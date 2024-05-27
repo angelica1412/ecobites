@@ -51,14 +51,14 @@ import 'package:ecobites/checkout.dart';
         name: 'Product 3',
         description: 'Description for Product 2',
         price: 20000,
-        imageURL: 'assets/product2.png',
+        imageURL: 'assets/bahandaur.jpg',
         category: 'Bahan',
       ),
       Product(
         name: 'Product 2',
         description: 'Description for Product 2',
         price: 5000,
-        imageURL: 'assets/product3.png',
+        imageURL: 'assets/pupuk.png',
           category: 'Daur',
 
       ),
@@ -66,7 +66,7 @@ import 'package:ecobites/checkout.dart';
         name: 'Product 4',
         description: 'Description for Product 2',
         price: 7000,
-        imageURL: 'assets/login.png',
+        imageURL: 'assets/bahandaur.jpg',
           category: 'Bahan',
 
       ),
@@ -74,22 +74,22 @@ import 'package:ecobites/checkout.dart';
         name: 'Product 4',
         description: 'Description for Product 2',
         price: 2000,
-        imageURL: 'assets/login.png',
+        imageURL: 'assets/pupukjualan.jpg',
           category: 'Daur',
       ),
       Product(
         name: 'Product 4',
         description: 'Description for Product 2',
         price: 1000,
-        imageURL: 'assets/login.png',
-          category: 'Daur',
+        imageURL: 'assets/sosis.jpg',
+          category: 'Food',
       ),
       Product(
         name: 'Product 4',
         description: 'Description for Product 2',
         price: 2305,
-        imageURL: 'assets/login.png',
-          category: 'Daur',
+        imageURL: 'assets/kentang.jpg',
+          category: 'Food',
       ),
       // Add more products as needed
     ];
@@ -160,11 +160,11 @@ import 'package:ecobites/checkout.dart';
                   height: MediaQuery
                       .of(context)
                       .size
-                      .height * 0.2, // Tinggi 1/10 dari layar
+                      .height * 0.25, // Tinggi 1/10 dari layar
                   width: double.infinity, // Lebar penuh
                   decoration: const BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/login.png'), // Ganti dengan path foto Anda
+                      image: AssetImage('assets/shop2.png'), // Ganti dengan path foto Anda
                       fit: BoxFit.cover,
                     ),
                   ),

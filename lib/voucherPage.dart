@@ -3,32 +3,44 @@ import 'package:flutter/material.dart';
 class Voucher {
   String code;
   String imageName;
+  String description;
+  double productDiscount;
+  double deliveryDiscount;
+  double maxDiscount;
 
-  Voucher({required this.code, required this.imageName});
+
+  Voucher({required this.code, required this.imageName, required this.description,required this.deliveryDiscount, required this.productDiscount, required this.maxDiscount});
 }
 
 class VoucherPage extends StatefulWidget {
-  const VoucherPage({Key? key}) : super(key: key);
+  final bool fromCheckout;
+  final void Function(Voucher) onVoucherUsed;
+
+
+  const VoucherPage({Key? key, required this.fromCheckout, required this.onVoucherUsed}) : super(key: key);
 
   @override
   _VoucherPageState createState() => _VoucherPageState();
 }
 
 class _VoucherPageState extends State<VoucherPage> {
+  Voucher? usedVoucherCode; // Deklarasi variabel di sini
+  bool isVoucherUsed = false;
+  Voucher? selectedVoucher;
   final TextEditingController _searchController = TextEditingController();
   final List<Voucher> _voucherCodes = [
-    Voucher(code: 'VOUCHER123', imageName: 'voucher.png'),
-    Voucher(code: 'ECO456', imageName: 'voucher.png'),
-    Voucher(code: 'SAVE50', imageName: 'voucher.png'),
-    Voucher(code: 'SPRINGSALE', imageName: 'voucher.png'),
-    Voucher(code: 'FREEDELIVERY', imageName: 'voucher.png'),
+    Voucher(code: 'VOUCHER123', imageName: 'voucher.png', description: 'Discount 50% Product', deliveryDiscount: 0, productDiscount: 50, maxDiscount: 10000),
+    Voucher(code: 'ECO456', imageName: 'voucher.png', description: 'Discount 20% Product & 30% Deliveryyyyyyyyyyyyfvdfvfdevdfevyyyyyyy', deliveryDiscount: 30, productDiscount: 20, maxDiscount: 10000),
+    Voucher(code: 'SAVE50', imageName: 'voucher.png', description: 'Discount 30% Product', deliveryDiscount: 0, productDiscount: 30, maxDiscount: 20000),
+    Voucher(code: 'SPRINGSALE', imageName: 'voucher.png', description: 'Discount 40% Product', deliveryDiscount: 0, productDiscount: 40, maxDiscount: 10000),
+    Voucher(code: 'FREEDELIVERY', imageName: 'voucher.png', description: 'Free Delivery', deliveryDiscount: 100, productDiscount: 0, maxDiscount: 100000),
   ];
-  final List<Voucher> _filteredVoucherCodes = [];
+  List<Voucher> _filteredVoucherCodes = [];
 
   @override
   void initState() {
     super.initState();
-    _filteredVoucherCodes.addAll(_voucherCodes);
+    _filteredVoucherCodes = List.from(_voucherCodes);
   }
 
   void _filterVouchers(String query) {
@@ -40,6 +52,18 @@ class _VoucherPageState extends State<VoucherPage> {
     }
     setState(() {});
   }
+
+  void _useVoucher(Voucher voucher) {
+    // Add functionality when "Pakai" button is pressed
+    setState(() {
+      isVoucherUsed= true;
+      usedVoucherCode=voucher;
+      selectedVoucher=voucher;
+    });
+    widget.onVoucherUsed(voucher);
+    Navigator.pop(context);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -82,26 +106,31 @@ class _VoucherPageState extends State<VoucherPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Column(
+                            Expanded(
+                                child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(_filteredVoucherCodes[index].code),
-                                const Text('Discount or Offer Description'),
-
+                                Text('${_filteredVoucherCodes[index].description}',
+                                  overflow: TextOverflow.ellipsis,
+                                  )
                               ],
                             ),
-                            ElevatedButton(
-                              onPressed: () {
-                                // Add functionality when the "Pakai" button is tapped
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF92E3A9),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                              ),
-                              child: const Text('Pakai'),
                             ),
+                            if (widget.fromCheckout)
+                              ElevatedButton(
+                                onPressed: () {
+                                  _useVoucher(_filteredVoucherCodes[index]);
+
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFF92E3A9),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                                child: const Text('Pakai'),
+                              ),
                           ],
                         ),
                       ],

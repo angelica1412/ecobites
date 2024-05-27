@@ -1,10 +1,12 @@
-import 'package:ecobites/store.dart';
+import 'package:ecobites/Widgets/voucher.dart';
+import 'package:flutter/material.dart';
+import 'package:ecobites/Store.dart';
+import 'package:ecobites/Widgets/storeCard.dart';
 import 'package:ecobites/historypage.dart';
 import 'package:ecobites/profile.dart';
-import 'package:ecobites/voucher.dart';
-import 'package:flutter/material.dart';
+import 'package:ecobites/voucherPage.dart';
 
-import 'uploadBarang.dart';
+import 'UploadBarang.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -12,57 +14,84 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String? usedVoucherCode;
+  bool isVoucherUsed = false;
   Color searchIconColor = Colors.grey; // State variable for search icon color
+  TextEditingController searchController = TextEditingController();
+  String searchQuery = "";
+
+  List<Store> stores = [
+    Store(
+      name: 'Store 1',
+      description: 'Description for Store 1',
+      imageURL: 'assets/product1.png',
+    ),
+    Store(
+      name: 'Store 2',
+      description: 'Description for Store 2',
+      imageURL: 'assets/product1.png',
+    ),
+    Store(
+      name: 'Store 3',
+      description: 'Description for Store 3',
+      imageURL: 'assets/product1.png',
+    ),
+    Store(
+      name: 'Store 4',
+      description: 'Description for Store 4',
+      imageURL: 'assets/product1.png',
+    ),
+    // Add more stores as needed
+  ];
+
+  void _handleVoucherUsed(Voucher voucher) {
+    setState(() {
+      isVoucherUsed = false;
+      usedVoucherCode = '';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final double halfScreenHeight = MediaQuery.of(context).size.height / 2;
+
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize:
-            Size.fromHeight(80.0), // Ketinggian AppBar yang disesuaikan
-        child: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          flexibleSpace: Padding(
-            padding:
-                const EdgeInsets.only(top: 24.0), // Menambahkan padding di atas
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 16.0), // Menambahkan padding di kiri
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        'assets/logo.png',
-                        height: 70,
-                        width: 70,
-                      ),
-                      const Text(
-                        'Ecobites',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      right: 16.0), // Menambahkan padding di kanan
-                  child: Container(
-                    padding: EdgeInsets.all(
-                        2), // Menambahkan padding untuk memusatkan ikon
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(
-                          255, 178, 178, 178), // Warna latar belakang
-                      shape: BoxShape.circle, // Latar belakang bulat
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AppBar(
+               backgroundColor: const Color(0xFFFAFAFA),
+               elevation: 0,
+                title: Row(
+                  children: [
+                    Image.asset(
+                      'assets/logo.png',
+                      height: 60,
+                      width: 60,
                     ),
+                    Text(
+                      'Ecobites',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
+                ),
+                actions: [
+                  Container(
+                    alignment: Alignment.center, // Menengahkan ikon di dalam container
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 178, 178, 178),
+                      shape: BoxShape.circle,
+                    ),
+                    width: 48,  // Menyesuaikan diameter lingkaran agar ikon muat sempurna
+                    height: 48, // Menyesuaikan diameter lingkaran agar ikon muat sempurna
                     child: IconButton(
-                      icon: Icon(Icons.person, size: 28),
+                      icon: Icon(Icons.person, size: 24), // Menyesuaikan ukuran ikon agar tidak keluar dari lingkaran
                       color: Colors.black,
                       onPressed: () {
                         Navigator.push(
@@ -73,25 +102,20 @@ class _HomePageState extends State<HomePage> {
                       },
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          color: Color.fromARGB(255, 255, 255, 255),
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 20),
+                ],
+              ),
+              const SizedBox(height: 20),
               TextFormField(
+                controller: searchController,
+                onChanged: (value) {
+                  setState(() {
+                    searchQuery = value;
+                  });
+                },
                 onTap: () {
                   setState(() {
                     searchIconColor =
-                        const Color(0xFF92E3A9); // Change color when tapped
+                    const Color(0xFF92E3A9); // Change color when tapped
                   });
                 },
                 decoration: InputDecoration(
@@ -102,108 +126,93 @@ class _HomePageState extends State<HomePage> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide:
-                        BorderSide(color: Color(0xFF92E3A9), width: 2.0),
+                    BorderSide(color: Color(0xFF92E3A9), width: 2.0),
                   ),
                 ),
               ),
               const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => StorePage()));
-                      },
-                      child: Container(
-                        width: 160,
-                        height: 200,
-                        child: Card(
-                          elevation: 5,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset('assets/food.png',
-                                  height: 80, width: 80),
-                              const SizedBox(height: 8),
-                              const Text('Food'),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+              if (searchQuery.isEmpty) ...[
+                // Display StoreCards with image on top and smaller size when search query is empty
+                Text(
+                    'Recently Viewed',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
                   ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Container(
-                      width: 160,
-                      height: 200,
-                      child: Card(
-                        elevation: 5,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset('assets/daurulang.png',
-                                height: 80, width: 80),
-                            const SizedBox(height: 8),
-                            const Text('Bahan Daur Ulang'),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Center(
-                child: Container(
-                  width: 160,
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
                   height: 200,
-                  child: Card(
-                    elevation: 5,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset('assets/pupuk.png', height: 80, width: 80),
-                        const SizedBox(height: 8),
-                        const Text('Fertilizer'),
-                      ],
-                    ),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: stores.length,
+                    itemBuilder: (context, index) {
+                      final store = stores[index];
+                      return SizedBox(
+                        width: 150,
+                        child: StoreCard(store: store, imageOnTop: true),
+                      );
+                    },
                   ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              Center(
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        const Color(0xFF92E3A9)),
+                const SizedBox(height: 20),
+                Center(
+                  child: VoucherState(fromCheckout: false, onVoucherUsed: (Voucher) {  },),
+
+                ),
+                const SizedBox(height: 20),
+
+                Text(
+                  'Most Viewed',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => VoucherPage()),
-                    );
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  height: 200,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: stores.length,
+                    itemBuilder: (context, index) {
+                      final store = stores[index];
+                      return SizedBox(
+                        width: 150,
+                        child: StoreCard(store: store, imageOnTop: true),
+                      );
+                    },
+                  ),
+                ),
+              ] else ...[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                      'Menunjukkan hasil "$searchQuery"',
+                  style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  ),
+                  ),
+                ),
+                // Display StoreCards in default layout after searching
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: stores.length,
+                  itemBuilder: (context, index) {
+                    final store = stores[index];
+                    if (store.name.toLowerCase().contains(searchQuery.toLowerCase())) {
+                      return StoreCard(store: store);
+                    } else {
+                      return SizedBox.shrink(); // Return an empty widget if store does not match search query
+                    }
                   },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'Voucher',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                      SizedBox(width: 130, height: 60),
-                      Icon(Icons.arrow_forward),
-                    ],
-                  ),
                 ),
-              ),
+              ],
+              const SizedBox(height: 20),
             ],
           ),
         ),
@@ -235,7 +244,7 @@ class _HomePageState extends State<HomePage> {
             case 1:
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => UploadBarang()),
+               MaterialPageRoute(builder: (context) => UploadBarang(fromHome: true, fromUserToko: false, isEdit: false,)),
               ); // Pindah ke halaman Upload
               break;
             case 2:
