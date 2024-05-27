@@ -5,13 +5,17 @@ import 'package:ecobites/Widgets/customTextfield.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'Widgets/ProductCard.dart';
 import 'historypage.dart';
 import 'homepage.dart';
 
 class UploadBarang extends StatefulWidget {
-  const UploadBarang({super.key, required this.fromHome, required this.fromUserToko});
+  const UploadBarang({super.key, required this.fromHome, required this.fromUserToko, required this.isEdit, this.product});
   final bool fromHome;
   final bool fromUserToko;
+  final bool isEdit;
+  final Product? product;
+
 
   @override
   _UploadBarangState createState() => _UploadBarangState();
@@ -56,11 +60,18 @@ class _UploadBarangState extends State<UploadBarang> {
     super.dispose();
   }
 
+  void initState() {
+    super.initState();
+    if (widget.isEdit && widget.product != null) {
+      _namaBarang.text = widget.product!.name;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Upload Barang'),
+        title: widget.isEdit? Text('Edit Barang'):const Text('Upload Barang'),
         leading: widget.fromUserToko
             ? IconButton(
           icon: const Icon(

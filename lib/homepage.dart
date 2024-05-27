@@ -220,7 +220,7 @@ class _HomePageState extends State<HomePage> {
             case 1:
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => UploadBarang(fromHome: true, fromUserToko: false,)),
+                MaterialPageRoute(builder: (context) => UploadBarang(fromHome: true, fromUserToko: false, isEdit: false,)),
               ); // Pindah ke halaman Upload
               break;
             case 2:

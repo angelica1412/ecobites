@@ -104,7 +104,7 @@ class _HistoryPageState extends State<HistoryPage> {
               case 1:
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => UploadBarang(fromHome: true, fromUserToko: false ,)),
+                  MaterialPageRoute(builder: (context) => UploadBarang(fromHome: true, fromUserToko: false, isEdit: false,)),
                 );
                 break;
               case 2:
