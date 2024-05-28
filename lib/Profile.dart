@@ -14,14 +14,13 @@ class ProfileScreen extends StatelessWidget {
         title: Text(
           'Profile',
           style: TextStyle(color: Colors.black,
-          fontWeight: FontWeight.bold, 
-          fontSize: 24),
+          fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: Color(0xFF92E3A9),
+            color: Colors.black,
           ),
           onPressed: () {
             Navigator.pop(context);

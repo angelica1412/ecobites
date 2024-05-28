@@ -22,15 +22,15 @@ class _PaymentMethodState extends State<PaymentMethod> {
     'Dana',
     'OVO',
     'LinkAja',
-    '-',
+    'MasterCard'
   ];
   List<String> paymentMethodPictures = [
-    'assets/food.png',
-    'assets/logo.png',
-    'assets/login.png',
-    'assets/food.png',
-    'assets/logo.png',
-    'assets/login.png',
+    'assets/shopeepay.png',
+    'assets/gopay.jpg',
+    'assets/dana.png',
+    'assets/ovo.png',
+    'assets/linkaja.png',
+    'assets/master.png',
   ];
   @override
   Widget build(BuildContext context) {

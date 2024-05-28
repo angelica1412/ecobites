@@ -40,7 +40,7 @@ class _PaymentMethodBoxState extends State<PaymentMethodBox> {
                   aspectRatio: 1,
                   child: Image.asset(
                     widget.imageURL,
-                    fit: BoxFit.cover,
+                    // fit: BoxFit.cover,
                   ),
                 ),
               ),
