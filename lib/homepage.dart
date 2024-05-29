@@ -140,6 +140,7 @@ class _HomePageState extends State<HomePage> {
                                 name: store['namaToko'] ?? '',
                                 description: store['deskripsi'] ?? '',
                                 imageURL: store['logo'] ?? '',
+                                storeID: store['id'] ??'',
                               ), imageOnTop: true),
                             );
                           },
@@ -172,6 +173,7 @@ class _HomePageState extends State<HomePage> {
                                 name: store['namaToko'] ?? '',
                                 description: store['deskripsi'] ?? '',
                                 imageURL: store['logo'] ?? '',
+                                storeID: store['id'] ?? '',
                               ), imageOnTop: true),
                             );
                           },
@@ -200,6 +202,7 @@ class _HomePageState extends State<HomePage> {
                               name: store['namaToko'] ?? '',
                               description: store['deskripsi'] ?? '',
                               imageURL: store['logo'] ?? '',
+                              storeID: store['id'] ?? '',
                             ));
                           } else {
                             return SizedBox.shrink(); // Return an empty widget if store does not match search query

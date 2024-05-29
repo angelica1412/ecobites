@@ -5,12 +5,15 @@ import 'package:ecobites/checkout.dart';
   import 'package:ecobites/Widgets/category_button.dart';
   import 'package:ecobites/Widgets/share_widget.dart';
   import 'Widgets/MapsContainer.dart';
+  import 'package:ecobites/authenticate/Controller/storeController.dart';
 
 
   class StorePage extends StatefulWidget {
-    const StorePage({super.key});
+    final String storeID;
+    const StorePage({super.key, required this.storeID});
 
     @override
+
     _StorePageState createState() => _StorePageState();
   }
 
@@ -21,6 +24,8 @@ import 'package:ecobites/checkout.dart';
     bool _showCheckoutButton = false;// Untuk melacak apakah harus menampilkan tombol checkout
     int _totalProducts = 0;
     double _totalPrice =0.0;
+    Map<String, String> _storeData = {};
+    bool _isLoading = true;
 
     void _setSelectedCategory(String category) {
       setState(() {
@@ -35,6 +40,24 @@ import 'package:ecobites/checkout.dart';
 
     List<Product> get productsWithQuantity {
       return products.where((product) => product.quantity > 0).toList();
+    }
+    Future<void> _fetchStoreData() async {
+      setState(() {
+        _isLoading = true; // Mulai memuat data
+      });
+      final storeData = await getStorebyID(widget.storeID);
+      if (storeData != null) {
+        setState(() {
+          _storeData = storeData;
+          _isLoading = false; // Data selesai dimuat
+        });
+      } else {
+        // Handle the case where the store data could not be fetched
+        print('Failed to fetch store data');
+        setState(() {
+          _isLoading = false; // Gagal memuat data
+        });
+      }
     }
 
 
@@ -96,6 +119,10 @@ import 'package:ecobites/checkout.dart';
 
 
     @override
+    void initState() {
+      super.initState();
+      _fetchStoreData();
+    }
     Widget build(BuildContext context) {
       return Scaffold(
         appBar: AppBar(
@@ -154,7 +181,9 @@ import 'package:ecobites/checkout.dart';
         ),
         body: Stack(
           children: [
-            ListView(
+            _isLoading? Center(child: CircularProgressIndicator())
+          :
+      ListView(
               children: [
                 Container(
                   height: MediaQuery
@@ -162,9 +191,9 @@ import 'package:ecobites/checkout.dart';
                       .size
                       .height * 0.25, // Tinggi 1/10 dari layar
                   width: double.infinity, // Lebar penuh
-                  decoration: const BoxDecoration(
+                  decoration:  BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/shop2.png'), // Ganti dengan path foto Anda
+                      image: AssetImage(_storeData['logo'] ?? ''), // Ganti dengan path foto Anda
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -206,9 +235,8 @@ import 'package:ecobites/checkout.dart';
                                           .height * 0.03,
                                       height: 1.5,
                                     ),
-                                    children: const [
-                                      TextSpan(text: 'Nama '),
-                                      TextSpan(text: 'Toko', style: TextStyle(fontWeight: FontWeight.bold)),
+                                    children:  [
+                                      TextSpan(text: _storeData['namaToko'] ?? 'Nama Toko', style: TextStyle(fontWeight: FontWeight.bold)),
                                     ],
                                   ),
                                 ),
@@ -225,13 +253,13 @@ import 'package:ecobites/checkout.dart';
                                   ],
                                 ),
                               ),
-                              const Row(
+                               Row(
                                 children: [
                                   Padding(
                                     padding: EdgeInsets.only(right: 8.0),
                                     child: Icon(Icons.location_on),
                                   ),
-                                  Text('Alamat'),
+                                  Text(_storeData['alamat'] ?? ''),
                                 ],
                               ),
                             ],
@@ -454,7 +482,7 @@ import 'package:ecobites/checkout.dart';
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 20),
-                MapsContainer(storeName: 'gohanku sangir'),
+                MapsContainer(storeName: _storeData['namaToko'] ?? '', storeAddress: _storeData['alamat'] ?? '',),
                   Container(
                   padding: const EdgeInsets.all(15),
                   decoration: BoxDecoration(
@@ -489,14 +517,13 @@ import 'package:ecobites/checkout.dart';
                                         .height * 0.03,
                                     height: 1.5,
                                   ),
-                                  children: const [
-                                    TextSpan(text: 'Nama '),
-                                    TextSpan(text: 'Toko', style: TextStyle(fontWeight: FontWeight.bold)),
+                                  children:  [
+                                    TextSpan(text: _storeData['namaToko'] ?? 'Nama Toko', style: TextStyle(fontWeight: FontWeight.bold)),
                                   ],
                                 ),
                               ),
                             ),
-                            const Padding(
+                             Padding(
                               padding: EdgeInsets.only(bottom: 8.0),
                               child:Row(
                                 children: [
@@ -504,7 +531,7 @@ import 'package:ecobites/checkout.dart';
                                     padding: EdgeInsets.only(right: 8.0),
                                     child: Icon(Icons.location_on),
                                   ),
-                                  Text('Alamat'),
+                                  Text(_storeData['alamat'] ?? ''),
                                 ],
                               ),
 

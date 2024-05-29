@@ -4,13 +4,15 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 class MapsContainer extends StatelessWidget {
   final String storeName;
+  final String storeAddress;
 
-  const MapsContainer({super.key, required this.storeName});
+  const MapsContainer({super.key, required this.storeName, required this.storeAddress});
 
   void _launchMaps() async {
-    final encodedQuery = Uri.encodeFull(storeName);
+    final encodedQueryName = Uri.encodeFull(storeName);
+    final encodedQueryAddress = Uri.encodeFull(storeAddress);
     // Format URL untuk melakukan pencarian di Google Maps berdasarkan nama toko
-    String googleMapsUrl = 'https://www.google.com/maps/search/?api=1&query=$encodedQuery';
+    String googleMapsUrl = 'https://www.google.com/maps/search/?api=1&query=$encodedQueryName $encodedQueryAddress';
 
     if (await launch(googleMapsUrl)) {
       await launch(googleMapsUrl);
@@ -44,19 +46,4 @@ class MapsContainer extends StatelessWidget {
       ),
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: Scaffold(
-      appBar: AppBar(
-        title: const Text('Contoh Container ke Google Maps'),
-      ),
-      body: const Center(
-        child: MapsContainer(
-          storeName: 'Toko Contoh', // Ganti dengan nama toko yang ingin Anda cari
-        ),
-      ),
-    ),
-  ));
 }

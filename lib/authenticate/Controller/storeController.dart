@@ -25,12 +25,14 @@ Future<List<Map<String, String>>?> getAllStores() async {
         final deskripsi = data['deskripsi'] ?? '';
         final logo = data['logo'] ?? '';
         final namaToko = data['namaToko'] ?? '';
+        final id = doc.id;
 
         stores.add({
           'alamat': alamat,
           'deskripsi': deskripsi,
           'logo': logo,
           'namaToko': namaToko,
+          'id' : id,
         });
       }
 
@@ -73,12 +75,28 @@ Future<Map<String, String>?> getStorebyID(String storeId) async {
     return null;
   }
 }
+Future<void> getStoreID() async {
+  try {
+    // Ganti 'stores' dengan nama koleksi Anda
+    DocumentSnapshot storeDoc = await FirebaseFirestore.instance.collection('Stores').doc('storeId').get();
 
+    if (storeDoc.exists) {
+      String storeID = storeDoc.id;
+      print('Store ID: $storeID');
+      // Lakukan sesuatu dengan storeID, seperti melewatinya ke fungsi atau widget lainnya
+    } else {
+      print('Store document does not exist');
+    }
+  } catch (e) {
+    print('Error getting store document: $e');
+  }
+}
 
 //Update Store Data by ID
 Future<void> updateStorebyID(Map<String, dynamic> updatedData) async {
 
 }
+
 
 // Delete Store Data by ID
 // Future<void> deleteStoreFromFirestore(String userId) async {
