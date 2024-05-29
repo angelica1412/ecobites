@@ -41,55 +41,55 @@ import 'package:ecobites/checkout.dart';
 
     List<Product> products = [
       Product(
-        name: 'Product 1',
-        description: 'Description for Product 1',
+        name: 'Martabak',
+        description: 'Makanan yang terbuat dari telur dan daun bawang',
         price: 15000,
-        imageURL: 'assets/product1.png',
+        imageURL: 'assets/martabak.jpg',
         category: 'Food',
       ),
       Product(
-        name: 'Product 3',
-        description: 'Description for Product 2',
+        name: 'Terang Bulan',
+        description: 'Makanan yang manis dapat menambahkan mood',
         price: 20000,
-        imageURL: 'assets/product2.png',
-        category: 'Bahan',
+        imageURL: 'assets/terangbulan.jpg',
+        category: 'Food',
       ),
       Product(
-        name: 'Product 2',
-        description: 'Description for Product 2',
+        name: 'Pupuk Urea',
+        description: 'Pupuk ini dapat mempercepat pertumbuhan tanaman',
         price: 5000,
-        imageURL: 'assets/product3.png',
+        imageURL: 'assets/pupukurea.jpg',
           category: 'Daur',
 
       ),
       Product(
-        name: 'Product 4',
-        description: 'Description for Product 2',
+        name: 'Roti Berjamur',
+        description: 'Bahan ini dapat digunakan sebagai bahan daur pupuk untuk tanaman tomat ',
         price: 7000,
-        imageURL: 'assets/login.png',
+        imageURL: 'assets/rotiberjamur.jpg',
           category: 'Bahan',
 
       ),
       Product(
-        name: 'Product 4',
+        name: 'Pisang Goreng',
         description: 'Description for Product 2',
         price: 2000,
-        imageURL: 'assets/login.png',
-          category: 'Daur',
+        imageURL: 'assets/product1.png',
+          category: 'Food',
       ),
       Product(
-        name: 'Product 4',
-        description: 'Description for Product 2',
+        name: 'Pupuk',
+        description: 'Pupuk yang tinggi kualitas karbon',
         price: 1000,
-        imageURL: 'assets/login.png',
+        imageURL: 'assets/pupuk.png',
           category: 'Daur',
       ),
       Product(
-        name: 'Product 4',
-        description: 'Description for Product 2',
+        name: 'Sosis Bakar',
+        description: 'Sosis ini berkhasiat tinggi',
         price: 2305,
-        imageURL: 'assets/login.png',
-          category: 'Daur',
+        imageURL: 'assets/sosis.jpg',
+          category: 'Food',
       ),
       // Add more products as needed
     ];
@@ -160,11 +160,11 @@ import 'package:ecobites/checkout.dart';
                   height: MediaQuery
                       .of(context)
                       .size
-                      .height * 0.2, // Tinggi 1/10 dari layar
+                      .height * 0.25, // Tinggi 1/10 dari layar
                   width: double.infinity, // Lebar penuh
                   decoration: const BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/login.png'), // Ganti dengan path foto Anda
+                      image: AssetImage('assets/shop2.png'), // Ganti dengan path foto Anda
                       fit: BoxFit.cover,
                     ),
                   ),

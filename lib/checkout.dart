@@ -1,10 +1,12 @@
 import 'package:ecobites/Widgets/payment_method.dart';
 import 'package:ecobites/Widgets/secondarytabbar.dart';
-import 'package:ecobites/Widgets/voucher.dart';
+import 'package:ecobites/Widgets/Voucher.dart';
+import 'package:ecobites/aftercheckout.dart';
 import 'package:ecobites/voucherPage.dart';
 import 'package:flutter/material.dart';
 import 'Widgets/ProductCard.dart';
 import 'Widgets/payment_summary.dart';
+import 'aftercheckout.dart';
 
 class OrderPage extends StatefulWidget {
   const OrderPage({
@@ -26,7 +28,6 @@ class _OrderPageState extends State<OrderPage> {
   bool isDelivery = true;
   Voucher? selectedVoucher;
 
-
   @override
   void dispose() {
     _addressController.dispose();
@@ -38,11 +39,12 @@ class _OrderPageState extends State<OrderPage> {
       selectedVoucher = voucher;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+         backgroundColor: const Color(0xFFFAFAFA),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -58,6 +60,7 @@ class _OrderPageState extends State<OrderPage> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        centerTitle: true,
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(4.0),
           child: Container(
@@ -76,7 +79,7 @@ class _OrderPageState extends State<OrderPage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding:  EdgeInsets.all(20.0),
+          padding: EdgeInsets.all(20.0),
           child: Column(
             children: [
               TextField(
@@ -90,14 +93,13 @@ class _OrderPageState extends State<OrderPage> {
               SecondaryTabbar(
                   onTabSelected: (index) {
                     setState(() {
-                      if(index == 0){
+                      if (index == 0) {
                         setState(() {
-                          isDelivery=true;
+                          isDelivery = true;
                         });
-                      }
-                      else{
+                      } else {
                         setState(() {
-                          isDelivery=false;
+                          isDelivery = false;
                         });
                       }
                     });
@@ -106,12 +108,11 @@ class _OrderPageState extends State<OrderPage> {
                   title2: 'Pick Up'),
               SizedBox(height: 20),
               Divider(),
-
               Row(
                 children: [
                   Expanded(
                     child: Text(
-                      'Nama Toko',
+                      'KFC Rumah Makan',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -131,12 +132,12 @@ class _OrderPageState extends State<OrderPage> {
                     ),
                     style: TextButton.styleFrom(
                       backgroundColor: Colors.blue,
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     ),
                   ),
                 ],
               ),
-              
               Divider(),
               SizedBox(height: 20),
               ListView.builder(
@@ -153,12 +154,18 @@ class _OrderPageState extends State<OrderPage> {
               ),
               SizedBox(height: 20),
               Divider(),
-              VoucherState(fromCheckout: true, onVoucherUsed: _onVoucherUsed,),
+              VoucherState(
+                fromCheckout: true,
+                onVoucherUsed: _onVoucherUsed,
+              ),
               SizedBox(height: 10),
-
               Divider(),
               SizedBox(height: 20),
-              PaymentSummary(totalPrice: widget.totalprice, isDelivery: isDelivery , selectedVoucher: selectedVoucher,),
+              PaymentSummary(
+                totalPrice: widget.totalprice,
+                isDelivery: isDelivery,
+                selectedVoucher: selectedVoucher,
+              ),
               SizedBox(height: 20),
               Divider(),
               SizedBox(height: 20),
@@ -166,23 +173,29 @@ class _OrderPageState extends State<OrderPage> {
               SizedBox(height: 20),
               Divider(),
               SizedBox(height: 20),
-
-
-              Container(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    print(selectedVoucher);
-                    // Handle checkout action
-                  },
-                  child: Text('Checkout'),
-                  style: ElevatedButton.styleFrom(
-                    textStyle: TextStyle(fontSize: 18),
+              Center(
+                child: Container(
+                  width: 167, // Lebar yang diinginkan
+                  height: 50, // Tinggi yang diinginkan
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                context,
+               MaterialPageRoute(builder: (context) => CheckoutPage(isDelivery: isDelivery)),
+              ); // Pindah ke halaman Upload
+                      // Navigator.pushNamed(context, '/aftercheckout');
+                      print('$isDelivery');
+                    },
+                    child: Text('Checkout'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF92E3A9),
+                      textStyle:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
               ),
               SizedBox(height: 20),
-
             ],
           ),
         ),

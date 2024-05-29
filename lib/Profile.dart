@@ -11,11 +11,16 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: Text(
+          'Profile',
+          style: TextStyle(color: Colors.black,
+          fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: Color(0xFF92E3A9),
+            color: Colors.black,
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -46,18 +51,18 @@ class ProfileScreen extends StatelessWidget {
                 'Your Name',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 30,
+                  fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               SizedBox(
-                height: 15,
+                height: 10,
               ),
               Text(
                 'youremail@ecobites.com',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 20,
+                  fontSize: 18,
                   fontWeight: FontWeight.normal,
                 ),
               ),
@@ -68,7 +73,7 @@ class ProfileScreen extends StatelessWidget {
                 '+62yourphonenumber',
                 style: TextStyle(
                   color: Colors.grey,
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: FontWeight.normal,
                 ),
               ),
@@ -87,7 +92,7 @@ class ProfileScreen extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                      backgroundColor: const Color(0xFF92E3A9),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
@@ -101,14 +106,14 @@ class ProfileScreen extends StatelessWidget {
                             'Pengaturan Akun',
                             style: TextStyle(
                               fontSize: 18,
-                              color: Colors.black,
+                              color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Icon(
                             CupertinoIcons.right_chevron,
                             size: 20,
-                            color: Colors.black,
+                            color: Colors.white,
                           ),
                         ],
                       ),
@@ -126,12 +131,12 @@ class ProfileScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>  userStorePage(),
+                          builder: (context) => userStorePage(),
                         ),
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 179, 229, 193),
+                      backgroundColor: const Color(0xFF92E3A9),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
@@ -143,7 +148,8 @@ class ProfileScreen extends StatelessWidget {
                         children: [
                           Text(
                             'Toko Saya',
-                            style: TextStyle(fontSize: 18),
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                           Icon(
                             CupertinoIcons.right_chevron,

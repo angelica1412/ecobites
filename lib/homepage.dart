@@ -1,8 +1,10 @@
 import 'package:ecobites/Widgets/voucher.dart';
 import 'package:flutter/material.dart';
+import 'package:ecobites/Store.dart';
 import 'package:ecobites/Widgets/storeCard.dart';
 import 'package:ecobites/historypage.dart';
 import 'package:ecobites/profile.dart';
+import 'package:ecobites/voucherPage.dart';
 
 import 'UploadBarang.dart';
 
@@ -20,72 +22,95 @@ class _HomePageState extends State<HomePage> {
 
   List<Store> stores = [
     Store(
-      name: 'Store 1',
-      description: 'Description for Store 1',
-      imageURL: 'assets/product1.png',
+      name: 'Toko Matahari',
+      description: 'Yukss silahkan dibelanja',
+      imageURL: 'assets/matahari.jpg',
     ),
     Store(
-      name: 'Store 2',
-      description: 'Description for Store 2',
-      imageURL: 'assets/product1.png',
+      name: 'Toko Cahaya',
+      description: 'Toko ini menjual barang-barang yang kurang kebih dibutuhkan oleh pengguna',
+      imageURL: 'assets/cahyaa.jpg',
     ),
     Store(
-      name: 'Store 3',
-      description: 'Description for Store 3',
-      imageURL: 'assets/product1.png',
+      name: 'Seven Eleven',
+      description: 'Toko ini menjual barang seperti bahan-bahan daur',
+      imageURL: 'assets/seveneleven.jpg',
     ),
     Store(
-      name: 'Store 4',
-      description: 'Description for Store 4',
-      imageURL: 'assets/product1.png',
+      name: 'Toko Indonesia',
+      description: 'Semangat Beli Barang di toko ini',
+      imageURL: 'assets/tokoindonesia.jpg',
     ),
-    // Add more stores as needed
   ];
 
+  void _handleVoucherUsed(Voucher voucher) {
+    setState(() {
+      isVoucherUsed = false;
+      usedVoucherCode = '';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final double halfScreenHeight = MediaQuery.of(context).size.height / 2;
 
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80.0), // Tinggi total AppBar termasuk padding atas
+        child: Padding(
+          padding: EdgeInsets.only(top: 20.0), // Jarak di atas AppBar
+          child: AppBar(
+            backgroundColor: const Color(0xFFFAFAFA),
+            elevation: 0,
+            title: Row(
+              children: [
+                Image.asset(
+                  'assets/logo.png',
+                  height: 75,
+                  width: 75,
+                ),
+                Text(
+                  'Ecobites',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              Container(
+                alignment: Alignment.center, // Menengahkan ikon di dalam container
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 178, 178, 178),
+                  shape: BoxShape.circle,
+                ),
+                width: 48,  // Menyesuaikan diameter lingkaran agar ikon muat sempurna
+                height: 48, // Menyesuaikan diameter lingkaran agar ikon muat sempurna
+                margin: EdgeInsets.only(right: 20), // Menambahkan jarak di sebelah kanan
+                child: IconButton(
+                  icon: Icon(Icons.person, size: 24), // Menyesuaikan ukuran ikon agar tidak keluar dari lingkaran
+                  color: Colors.black,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ProfileScreen()),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Container(
-          color: Color.fromARGB(255, 255, 255, 255),
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Image.asset(
-                    'assets/logo.png',
-                    height: 80,
-                    width: 80,
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(
-                        2), // Menambahkan padding untuk memusatkan ikon
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(
-                          255, 178, 178, 178), // Warna latar belakang
-                      shape: BoxShape.circle, // Latar belakang bulat
-                    ),
-                    child: IconButton(
-                      icon: Icon(Icons.person, size: 32),
-                      color: Colors.black,
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProfileScreen()),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 5),
               TextFormField(
                 controller: searchController,
                 onChanged: (value) {
@@ -115,12 +140,13 @@ class _HomePageState extends State<HomePage> {
               if (searchQuery.isEmpty) ...[
                 // Display StoreCards with image on top and smaller size when search query is empty
                 Text(
-                    'Recently Viewed',
+                  'Recently Viewed',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
                   ),
                 ),
+                const SizedBox(height: 20),
                 SizedBox(
                   height: 200,
                   child: ListView.builder(
@@ -139,10 +165,8 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: 20),
                 Center(
                   child: VoucherState(fromCheckout: false, onVoucherUsed: (Voucher) {  },),
-
                 ),
                 const SizedBox(height: 20),
-
                 Text(
                   'Most Viewed',
                   style: TextStyle(
@@ -170,11 +194,11 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                      'Menunjukkan hasil "$searchQuery"',
-                  style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  ),
+                    'Menunjukkan hasil "$searchQuery"',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
                   ),
                 ),
                 // Display StoreCards in default layout after searching
@@ -216,6 +240,10 @@ class _HomePageState extends State<HomePage> {
         onTap: (int index) {
           switch (index) {
             case 0:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage()),
+              );
               break;
             case 1:
               Navigator.pushReplacement(

@@ -44,6 +44,8 @@ class _SecondaryTabbarState extends State<SecondaryTabbar> {
                       widget.title,
                       style: TextStyle(
                         color: _selectedIndex == 0 ? Colors.white : Colors.grey,
+                        fontWeight: _selectedIndex == 0 ? FontWeight.bold : FontWeight.normal,
+                        fontSize: _selectedIndex == 0 ? 14 : 12,
                       ),
                     ),
                   ),
@@ -68,6 +70,8 @@ class _SecondaryTabbarState extends State<SecondaryTabbar> {
                       widget.title2,
                       style: TextStyle(
                         color: _selectedIndex == 1 ? Colors.white : Colors.grey,
+                        fontWeight: _selectedIndex == 1 ? FontWeight.bold : FontWeight.normal,
+                        fontSize: _selectedIndex == 1 ? 14 : 12,
                       ),
                     ),
                   ),

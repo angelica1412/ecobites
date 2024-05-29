@@ -30,10 +30,10 @@ class _VoucherPageState extends State<VoucherPage> {
   final TextEditingController _searchController = TextEditingController();
   final List<Voucher> _voucherCodes = [
     Voucher(code: 'VOUCHER123', imageName: 'voucher.png', description: 'Discount 50% Product', deliveryDiscount: 0, productDiscount: 50, maxDiscount: 10000),
-    Voucher(code: 'ECO456', imageName: 'voucher.png', description: 'Discount 20% Product & 30% Deliveryyyyyyyyyyyyfvdfvfdevdfevyyyyyyy', deliveryDiscount: 30, productDiscount: 20, maxDiscount: 10000),
-    Voucher(code: 'SAVE50', imageName: 'voucher.png', description: 'Discount 30% Product', deliveryDiscount: 0, productDiscount: 30, maxDiscount: 20000),
-    Voucher(code: 'SPRINGSALE', imageName: 'voucher.png', description: 'Discount 40% Product', deliveryDiscount: 0, productDiscount: 40, maxDiscount: 10000),
-    Voucher(code: 'FREEDELIVERY', imageName: 'voucher.png', description: 'Free Delivery', deliveryDiscount: 100, productDiscount: 0, maxDiscount: 100000),
+    Voucher(code: 'ECO456', imageName: 'voucher25.png', description: 'Discount 20% Product & 30% Deliveryyyyyyyyyyyyfvdfvfdevdfevyyyyyyy', deliveryDiscount: 30, productDiscount: 20, maxDiscount: 10000),
+    Voucher(code: 'SAVE50', imageName: 'voucher45.png', description: 'Discount 30% Product', deliveryDiscount: 0, productDiscount: 30, maxDiscount: 20000),
+    Voucher(code: 'SPRINGSALE', imageName: 'voucher50.png', description: 'Discount 40% Product', deliveryDiscount: 0, productDiscount: 40, maxDiscount: 10000),
+    Voucher(code: 'FREEDELIVERY', imageName: 'voucherchinese.png', description: 'Free Delivery', deliveryDiscount: 100, productDiscount: 0, maxDiscount: 100000),
   ];
   List<Voucher> _filteredVoucherCodes = [];
 
@@ -69,8 +69,18 @@ class _VoucherPageState extends State<VoucherPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Voucher Page'),
-        backgroundColor: const Color(0xFF92E3A9), // Change app bar color to green
+        title: const Text('Voucher Page', style: TextStyle(color: Colors.black),),
+        centerTitle: true,
+        backgroundColor: const Color(0xFFFAFAFA),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: Column(
         children: [

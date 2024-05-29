@@ -158,7 +158,7 @@ class _ProductCardState extends State<ProductCard> {
         children: [
           InkWell(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> UploadBarang(fromHome: false, fromUserToko: true, isEdit: true,product: widget.product)));
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> UploadBarang(fromHome: false, fromUserToko: true, isEdit: true,product: widget.product)));
               // Tindakan yang akan dijalankan ketika tombol di klik
               // Misalnya, tampilkan dialog edit, navigasi ke halaman edit, dll.
             },
