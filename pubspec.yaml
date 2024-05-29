@@ -75,6 +75,22 @@ flutter:
   - assets/linkaja.png
   - assets/gopay.jpg
   - assets/dana.png
+  - assets/onboarding1.png
+  - assets/onboarding2.png
+  - assets/onboarding3.png
+  - assets/pupukurea.jpg
+  - assets/rotiberjamur.jpg
+  - assets/terangbulan.jpg
+  - assets/martabak.jpg
+  - assets/cahyaa.jpg
+  - assets/matahari.jpg
+  - assets/mirasa.jpg
+  - assets/tokoindonesia.jpg
+  - assets/seveneleven.jpg
+  - assets/voucher25.png
+  - assets/voucher50.png
+  - assets/voucherchinese.png
+  - assets/voucher45.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

@@ -23,7 +23,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: Color(0xFF92E3A9),
+            color: Colors.black,
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -51,6 +51,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           right: 0,
           child: Container(
             padding: const EdgeInsets.all(16.0),
+            margin: const EdgeInsets.only(bottom: 20.0),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: const BorderRadius.only(
@@ -72,64 +73,33 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 Row(
                   children: [
                     const CircleAvatar(
-                      radius: 20.0,
+                      radius: 30.0, // increased radius for a bigger profile picture
                       backgroundImage: AssetImage(
                           'assets/driver.png'), // Add your driver image asset
                     ),
-                    const SizedBox(width: 8.0),
+                    const SizedBox(width: 16.0),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
                           'DD6396PR',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
                         ),
-                        const Text('Hasrul Muhammad'),
+                        const SizedBox(height: 4.0),
+                        const Text('Hasrul Muhammad', style: TextStyle(fontSize: 16.0)),
+                        const SizedBox(height: 4.0),
                         Row(
                           children: const [
                             Icon(Icons.star,
                                 color: Colors.yellow, size: 16.0),
+                            SizedBox(width: 4.0),
                             Text('5.0'),
                           ],
                         ),
                       ],
                     ),
                     const Spacer(),
-                    const Text('4 mnt'),
-                  ],
-                ),
-                const SizedBox(height: 16.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: const Text('Oke'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: const Text('Saya di depan'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: const Text('Ya'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: const Text('Oke, ditunggu'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                      ),
-                    ),
+                    const Text('4 mnt', style: TextStyle(fontSize: 16.0)),
                   ],
                 ),
               ],

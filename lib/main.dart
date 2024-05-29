@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:ecobites/homepage.dart';
 import 'package:ecobites/login.dart';
+import 'package:ecobites/onboardingscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'aftercheckout.dart'; // Import AfterCheckoutPage
@@ -24,12 +25,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: HomePage(), // Splash screen sebagai halaman awal
-      // home: ChatPage(),
-      debugShowCheckedModeBanner: false,
+      home: SplashScreen(),
       routes: {
-        '/detail': (context) => HomePage(), // Routing untuk Onboarding Screen
-        // '/aftercheckout': (context) => CheckoutPage(), // Add AfterCheckoutPage route
+        '/onboardingscreen': (context) => OnBoardingScreen(),
       },
     );
   }
