@@ -39,6 +39,7 @@ class _RegisterPageState extends State<RegisterPage> {
         'email': emailController.text.trim(),
         'address': addressController.text.trim(),
         'phone': phoneController.text.trim(),
+        'provinces' : selectedProvince,
       };
       await Auth.registerUser(
           context, emailController.text.trim(), passController.text.trim());

@@ -1,14 +1,54 @@
 import 'package:ecobites/user_store_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'authenticate/Controller/userController.dart';
 
 import 'PengaturanAkun.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
+
   const ProfileScreen({super.key});
 
   @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  String? userFirstName;
+  String? userLastName;
+  String? userEmail;
+  String? userPhoneNumber;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserDetails();
+  }
+  Future<void> fetchUserDetails() async {
+    try {
+      final userDetails = await getUserDetailsbyUID();
+      if (userDetails != null) {
+        print('User Details: $userDetails');
+        setState(() {
+          userEmail = userDetails['email'];
+          userFirstName = userDetails['firstName'];
+          userLastName = userDetails['lastName'];
+          userPhoneNumber = userDetails['phone'];
+        });
+      } else {
+        print('User details not found');
+      }
+    } catch (e) {
+      print('Error fetching user details: $e');
+    }
+  }
+
+
   Widget build(BuildContext context) {
+
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -48,7 +88,7 @@ class ProfileScreen extends StatelessWidget {
                 height: 20,
               ),
               Text(
-                'Your Name',
+                '$userFirstName $userLastName',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 22,
@@ -59,7 +99,7 @@ class ProfileScreen extends StatelessWidget {
                 height: 10,
               ),
               Text(
-                'youremail@ecobites.com',
+                '$userEmail',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 18,
@@ -70,7 +110,7 @@ class ProfileScreen extends StatelessWidget {
                 height: 10,
               ),
               Text(
-                '+62yourphonenumber',
+                '$userPhoneNumber',
                 style: TextStyle(
                   color: Colors.grey,
                   fontSize: 14,

@@ -7,6 +7,10 @@ Future<void> addUserDetailsToFirestore(Map<String, dynamic> userData) async {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final User? user = auth.currentUser;
   final myUid = user?.uid;
+  if (user == null) {
+    print('User is not authenticated');
+    return;
+  }
   final FirebaseFirestore db = FirebaseFirestore.instance;
   try {
     final CollectionReference addusers = db.collection('Users');
@@ -33,11 +37,13 @@ Future<Map<String, String>?> getUserDetailsbyUID() async {
       final email = data['email'] ?? '';
       final firstName = data['firstName'] ?? '';
       final lastName = data['lastName'] ?? '';
+      final phone = data['phone']??'';
 
       return {
         'email': email,
         'firstName': firstName,
         'lastName': lastName,
+        'phone' : phone,
       };
     } else {
       print('Document does not exist');
