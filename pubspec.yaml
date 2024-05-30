@@ -91,6 +91,7 @@ flutter:
   - assets/voucher50.png
   - assets/voucherchinese.png
   - assets/voucher45.png
+  - assets/mapsContainer.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
