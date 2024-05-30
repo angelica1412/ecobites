@@ -82,7 +82,7 @@ class _StorePageState extends State<StorePage> {
       description: 'Pupuk ini dapat mempercepat pertumbuhan tanaman',
       price: 5000,
       imageURL: 'assets/pupukurea.jpg',
-      category: 'Daur',
+      category: 'Hasil Daur',
     ),
     Product(
       name: 'Roti Berjamur',
@@ -90,7 +90,7 @@ class _StorePageState extends State<StorePage> {
           'Bahan ini dapat digunakan sebagai bahan daur pupuk untuk tanaman tomat ',
       price: 7000,
       imageURL: 'assets/rotiberjamur.jpg',
-      category: 'Bahan',
+      category: 'Bahan Daur',
     ),
     // Product(
     //   name: 'Pisang Goreng',
@@ -104,7 +104,7 @@ class _StorePageState extends State<StorePage> {
     //   description: 'Pupuk yang tinggi kualitas karbon',
     //   price: 1000,
     //   imageURL: 'assets/pupuk.png',
-    //     category: 'Daur',
+    //     category: 'Hasil Daur',
     // ),
     // Product(
     //   name: 'Sosis Bakar',
@@ -296,6 +296,8 @@ class _StorePageState extends State<StorePage> {
                         ],
                       ),
                     ),
+
+                    const SizedBox(height: 15),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 5.0),
                       child: Card(
@@ -304,7 +306,7 @@ class _StorePageState extends State<StorePage> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(15.0),
+                          padding: const EdgeInsets.all(8.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -332,6 +334,7 @@ class _StorePageState extends State<StorePage> {
                         ),
                       ),
                     ),
+
                     const SizedBox(height: 20),
                     //Tombol kategori
                     Row(
@@ -343,12 +346,12 @@ class _StorePageState extends State<StorePage> {
                           onPressed: _setSelectedCategory,
                         ),
                         CategoryButton(
-                          category: 'Bahan',
+                          category: 'Bahan Daur',
                           selectedCategory: _selectedCategory,
                           onPressed: _setSelectedCategory,
                         ),
                         CategoryButton(
-                          category: 'Daur',
+                          category: 'Hasil Daur',
                           selectedCategory: _selectedCategory,
                           onPressed: _setSelectedCategory,
                         ),

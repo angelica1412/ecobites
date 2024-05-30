@@ -5,12 +5,11 @@ class CategoryButton extends StatelessWidget {
   final String selectedCategory;
   final Function onPressed;
 
-  const CategoryButton({
-    Key? key,
+  const CategoryButton({super.key,
     required this.category,
     required this.selectedCategory,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,18 +20,25 @@ class CategoryButton extends StatelessWidget {
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
           if (selectedCategory == category) {
-            return const Color(0xFF92E3A9);
+            return const Color(0xFF92E3A9); // Warna background ketika kategori terpilih
           }
-          return const Color.fromARGB(255, 173, 169, 169);
+          return Color.fromARGB(255, 182, 174, 174); // Warna background default
         }),
-        textStyle: MaterialStateProperty.resolveWith<TextStyle>((Set<MaterialState> states) {
+        foregroundColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
           if (selectedCategory == category) {
-            return TextStyle(fontWeight: FontWeight.bold);
+            return Colors.white; // Warna teks ketika kategori terpilih
           }
-          return TextStyle(fontWeight: FontWeight.normal);
+          return Colors.black; // Warna teks default
         }),
       ),
-      child: Text(category),
+      child: Text(
+        category,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: selectedCategory == category ? 16 : 14, // Ukuran teks berubah
+          fontWeight: selectedCategory == category ? FontWeight.bold : FontWeight.normal, // Ketebalan teks berubah
+        ),
+      ),
     );
   }
 }

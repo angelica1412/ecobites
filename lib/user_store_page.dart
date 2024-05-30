@@ -27,53 +27,55 @@ class _StorePageState extends State<userStorePage> {
 
   List<Product> products = [
     Product(
-      name: 'Product 1',
-      description: 'Description for Product 1',
+      name: 'Martabak',
+      description: 'Makanan yang terbuat dari telur dan daun bawang',
       price: 15000,
+      imageURL: 'assets/martabak.jpg',
+      category: 'Food',
+    ),
+    Product(
+      name: 'Terang Bulan',
+      description: 'Makanan yang manis dapat menambahkan mood',
+      price: 20000,
+      imageURL: 'assets/terangbulan.jpg',
+      category: 'Food',
+    ),
+    Product(
+      name: 'Pupuk Urea',
+      description: 'Pupuk ini dapat mempercepat pertumbuhan tanaman',
+      price: 5000,
+      imageURL: 'assets/pupukurea.jpg',
+      category: 'Hasil Daur',
+
+    ),
+    Product(
+      name: 'Roti Berjamur',
+      description: 'Bahan ini dapat digunakan sebagai bahan daur pupuk untuk tanaman tomat ',
+      price: 7000,
+      imageURL: 'assets/rotiberjamur.jpg',
+      category: 'Bahan Daur',
+
+    ),
+    Product(
+      name: 'Pisang Goreng',
+      description: 'Description for Product 2',
+      price: 2000,
       imageURL: 'assets/product1.png',
       category: 'Food',
     ),
     Product(
-      name: 'Product 3',
-      description: 'Description for Product 2',
-      price: 20000,
-      imageURL: 'assets/product2.png',
-      category: 'Bahan',
-    ),
-    Product(
-      name: 'Product 2',
-      description: 'Description for Product 2',
-      price: 5000,
-      imageURL: 'assets/product3.png',
-      category: 'Daur',
-    ),
-    Product(
-      name: 'Product 4',
-      description: 'Description for Product 2',
-      price: 7000,
-      imageURL: 'assets/login.png',
-      category: 'Bahan',
-    ),
-    Product(
-      name: 'Product 4',
-      description: 'Description for Product 2',
-      price: 2000,
-      imageURL: 'assets/login.png',
-      category: 'Daur',
-    ),
-    Product(
-      name: 'Product 4',
-      description: 'Description for Product 2',
+      name: 'Pupuk',
+      description: 'Pupuk yang tinggi kualitas karbon',
       price: 1000,
-      imageURL: 'assets/login.png',
-      category: 'Daur',
+      imageURL: 'assets/pupuk.png',
+      category: 'Hasil Daur',
     ),
     Product(
-      name: 'Product 4',
-      description: 'Description for Product 2',
+      name: 'Sosis Bakar',
+      description: 'Sosis ini berkhasiat tinggi',
       price: 2305,
-      imageURL: 'assets/login.png',
-      category: 'Daur',
+      imageURL: 'assets/sosis.jpg',
+      category: 'Food',
     ),
     // Add more products as needed
   ];
