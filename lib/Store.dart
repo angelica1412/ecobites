@@ -84,7 +84,7 @@ import 'package:ecobites/checkout.dart';
         description: 'Pupuk ini dapat mempercepat pertumbuhan tanaman',
         price: 5000,
         imageURL: 'assets/pupukurea.jpg',
-          category: 'Daur',
+          category: 'Hasil Daur',
 
       ),
       Product(
@@ -92,7 +92,7 @@ import 'package:ecobites/checkout.dart';
         description: 'Bahan ini dapat digunakan sebagai bahan daur pupuk untuk tanaman tomat ',
         price: 7000,
         imageURL: 'assets/rotiberjamur.jpg',
-          category: 'Bahan',
+          category: 'Bahan Daur',
 
       ),
       Product(
@@ -107,7 +107,7 @@ import 'package:ecobites/checkout.dart';
         description: 'Pupuk yang tinggi kualitas karbon',
         price: 1000,
         imageURL: 'assets/pupuk.png',
-          category: 'Daur',
+          category: 'Hasil Daur',
       ),
       Product(
         name: 'Sosis Bakar',
@@ -307,12 +307,12 @@ import 'package:ecobites/checkout.dart';
                       onPressed: _setSelectedCategory,
                     ),
                     CategoryButton(
-                      category: 'Bahan',
+                      category: 'Bahan Daur',
                       selectedCategory: _selectedCategory,
                       onPressed: _setSelectedCategory,
                     ),
                     CategoryButton(
-                      category: 'Daur',
+                      category: 'Hasil Daur',
                       selectedCategory: _selectedCategory,
                       onPressed: _setSelectedCategory,
                     ),

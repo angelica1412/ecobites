@@ -25,7 +25,10 @@ class CategoryButton extends StatelessWidget {
           return Colors.white;
         }),
       ),
-      child: Text(category),
+      child: Text(
+        category,
+        textAlign: TextAlign.center,
+        ),
     );
   }
 }
