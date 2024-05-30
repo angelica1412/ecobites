@@ -19,6 +19,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String? userLastName;
   String? userEmail;
   String? userPhoneNumber;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -35,12 +36,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
           userFirstName = userDetails['firstName'];
           userLastName = userDetails['lastName'];
           userPhoneNumber = userDetails['phone'];
+          _isLoading=false;
         });
       } else {
         print('User details not found');
+        setState(() {
+          _isLoading = false; // Mengubah status loading menjadi false jika data tidak ditemukan
+        });
       }
     } catch (e) {
       print('Error fetching user details: $e');
+      setState(() {
+        _isLoading = false; // Mengubah status loading menjadi false jika terjadi error
+      });
     }
   }
 
@@ -69,7 +77,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         elevation: 0,
         backgroundColor: Color(0xFFFAFAFA),
       ),
-      body: SingleChildScrollView(
+      body: _isLoading?  Center(child: CircularProgressIndicator())
+      :
+      SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(10),
           child: Column(

@@ -18,7 +18,7 @@ import 'package:ecobites/checkout.dart';
   }
 
   class _StorePageState extends State<StorePage> {
-    String _selectedCategory = 'All';
+    String _selectedCategory = 'Food';
     bool _searching = false; // Untuk melacak apakah sedang dalam mode pencarian
     bool _isFavorite = false; // Untuk melacak apakah toko ini merupakan favorit
     bool _showCheckoutButton = false;// Untuk melacak apakah harus menampilkan tombol checkout
@@ -26,6 +26,8 @@ import 'package:ecobites/checkout.dart';
     double _totalPrice =0.0;
     Map<String, String> _storeData = {};
     bool _isLoading = true;
+    String searchQuery= "";
+    final FocusNode _searchFocusNode = FocusNode();
 
     void _setSelectedCategory(String category) {
       setState(() {
@@ -123,33 +125,46 @@ import 'package:ecobites/checkout.dart';
       super.initState();
       _fetchStoreData();
     }
+
+    @override
+    void dispose() {
+      _searchController.dispose();
+      _searchFocusNode.dispose();
+      super.dispose();
+    }
+
     Widget build(BuildContext context) {
       return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 0,
-          leading: _searching
-              ? IconButton(
-            icon: const Icon(Icons.arrow_back),
-            color: Colors.black,
-            onPressed: () {
-              // Keluar dari mode pencarian
-              setState(() {
-                _searching = false;
-              });
-            },
-          )
-              : IconButton(
-            icon: const Icon(Icons.arrow_back),
-            color: Colors.black,
-            onPressed: () {
-              // Kembali ke halaman sebelumnya
-              Navigator.of(context).pop();
-            },
-          ),
+          actions: _buildActions(),
+          leading: _searching?
+              IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.black),
+                onPressed: () {
+                  setState(() {
+                    _searching=false;
+                  }); // Kembali ke halaman sebelumnya
+                },
+              )
+          :
+              IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.black),
+                onPressed: () {
+                  Navigator.pop(context); // Kembali ke halaman sebelumnya
+                },
+              ),
           title: _searching
               ? TextField(
             controller: _searchController,
+            focusNode: _searchFocusNode,
+            onChanged: (value){
+              setState(() {
+                searchQuery = value;
+              });
+              _searchFocusNode.requestFocus();
+            },
             decoration: const InputDecoration(
               hintText: 'Cari...',
               border: InputBorder.none,
@@ -162,7 +177,6 @@ import 'package:ecobites/checkout.dart';
               fontWeight: FontWeight.bold,
             ),
           ),
-          actions: _buildActions(),
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(4.0), // Tinggi bayangan
             child: Container(
@@ -288,11 +302,6 @@ import 'package:ecobites/checkout.dart';
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     CategoryButton(
-                      category: 'All',
-                      selectedCategory: _selectedCategory,
-                      onPressed: _setSelectedCategory,
-                    ),
-                    CategoryButton(
                       category: 'Food',
                       selectedCategory: _selectedCategory,
                       onPressed: _setSelectedCategory,
@@ -310,12 +319,13 @@ import 'package:ecobites/checkout.dart';
                   ],
                 ),
                 const SizedBox(height: 20),
-                ListView.builder(
+                if(searchQuery.isEmpty)...[
+                  ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: _selectedCategory == 'All' ? products.length : _getProductsByCategory(_selectedCategory).length,
+                  itemCount:  _getProductsByCategory(_selectedCategory).length,
                   itemBuilder: (context, index) {
-                    final product = _selectedCategory == 'All' ? products[index] : _getProductsByCategory(_selectedCategory)[index];
+                    final product =  _getProductsByCategory(_selectedCategory)[index];
                     return ProductCard(
                       product: product,
                       onQuantityChanged: () {
@@ -328,6 +338,29 @@ import 'package:ecobites/checkout.dart';
                     );
                   },
                 ),
+                ]
+                else...[
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: _getProductsByCategory(_selectedCategory).length,
+                    itemBuilder: (context, index) {
+                      final product = _getProductsByCategory(_selectedCategory)[index];
+                      if(product.name.toLowerCase().contains(searchQuery.toLowerCase()))
+                        return ProductCard(
+                          product: product,
+                          onQuantityChanged: () {
+                            _handleShowCheckoutButton();
+                            for (var product in products) {
+                              _totalProducts += product.quantity;
+                              _totalPrice += product.quantity * product.price;
+                            }
+                          },
+                        );
+                    },
+                  ),
+                ],
+
                 const SizedBox(height: 60),
 
               ],
@@ -440,6 +473,7 @@ import 'package:ecobites/checkout.dart';
               setState(() {
                 _searching = true;
               });
+              _searchFocusNode.requestFocus();
             },
           ),
           IconButton(

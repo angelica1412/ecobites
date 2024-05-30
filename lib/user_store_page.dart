@@ -12,8 +12,10 @@ class userStorePage extends StatefulWidget {
 }
 
 class _StorePageState extends State<userStorePage> {
-  String _selectedCategory = 'All';
-  bool _searching = false; // Untuk melacak apakah sedang dalam mode pencarian
+  String _selectedCategory = 'Food';
+  bool _searching = false;
+  String searchQuery= "";
+  final FocusNode _searchFocusNode = FocusNode();// Untuk melacak apakah sedang dalam mode pencarian
 
   void _setSelectedCategory(String category) {
     setState(() {
@@ -75,6 +77,12 @@ class _StorePageState extends State<userStorePage> {
     ),
     // Add more products as needed
   ];
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _searchFocusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,29 +94,33 @@ class _StorePageState extends State<userStorePage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        // Remove shadow
-        leading: _searching
-            ? IconButton(
-                icon: const Icon(Icons.arrow_back),
-                color: Colors.black,
-                onPressed: () {
-                  // Keluar dari mode pencarian
-                  setState(() {
-                    _searching = false;
-                  });
-                },
-              )
-            : IconButton(
-                icon: const Icon(Icons.arrow_back),
-                color: Colors.black,
-                onPressed: () {
-                  // Kembali ke halaman sebelumnya
-                  Navigator.of(context).pop();
-                },
-              ),
+        actions: _buildActions(),
+        leading: _searching?
+        IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            setState(() {
+              _searching=false;
+            }); // Kembali ke halaman sebelumnya
+          },
+        )
+            :
+        IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pop(context); // Kembali ke halaman sebelumnya
+          },
+        ),
         title: _searching
             ? TextField(
                 controller: _searchController,
+                focusNode: _searchFocusNode,
+                onChanged: (value){
+                  setState(() {
+                    searchQuery = value;
+                  });
+                  _searchFocusNode.requestFocus();
+                },
                 decoration: const InputDecoration(
                   hintText: 'Cari...',
                   border: InputBorder.none,
@@ -122,7 +134,7 @@ class _StorePageState extends State<userStorePage> {
                 ),
               ),
         centerTitle: true,
-        actions: _buildActions(),
+
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(4.0), // Tinggi bayangan
           child: Container(
@@ -240,11 +252,6 @@ class _StorePageState extends State<userStorePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   CategoryButton(
-                    category: 'All',
-                    selectedCategory: _selectedCategory,
-                    onPressed: _setSelectedCategory,
-                  ),
-                  CategoryButton(
                     category: 'Food',
                     selectedCategory: _selectedCategory,
                     onPressed: _setSelectedCategory,
@@ -262,22 +269,35 @@ class _StorePageState extends State<userStorePage> {
                 ],
               ),
               const SizedBox(height: 20),
-              ListView.builder(
+              if(searchQuery.isEmpty)...[
+                ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: _selectedCategory == 'All'
-                    ? products.length
-                    : _getProductsByCategory(_selectedCategory).length,
+                itemCount: _getProductsByCategory(_selectedCategory).length,
                 itemBuilder: (context, index) {
-                  final product = _selectedCategory == 'All'
-                      ? products[index]
-                      : _getProductsByCategory(_selectedCategory)[index];
+                  final product = _getProductsByCategory(_selectedCategory)[index];
                   return ProductCard(
                     product: product,
                     isUserStore: true,
                   );
                 },
               ),
+              ]
+              else...[
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: _getProductsByCategory(_selectedCategory).length,
+                  itemBuilder: (context, index) {
+                    final product = _getProductsByCategory(_selectedCategory)[index];
+                    if(product.name.toLowerCase().contains(searchQuery.toLowerCase()))
+                      return ProductCard(
+                        product: product,
+                        isUserStore: true,
+                      );
+                  },
+                ),
+              ],
               const SizedBox(height: 60),
             ],
           ),
@@ -331,6 +351,7 @@ class _StorePageState extends State<userStorePage> {
             setState(() {
               _searching = true;
             });
+            _searchFocusNode.requestFocus();
           },
         ),
         IconButton(
