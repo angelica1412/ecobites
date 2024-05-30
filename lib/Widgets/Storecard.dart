@@ -1,12 +1,14 @@
-import 'package:ecobites/Store.dart';
+import 'package:ecobites/store.dart';
 import 'package:flutter/material.dart';
 
 class Store {
+  final String storeID;
   final String name;
   final String description;
   final String imageURL;
 
   Store({
+    required this.storeID,
     required this.name,
     required this.description,
     required this.imageURL,
@@ -35,7 +37,7 @@ class _StoreCardState extends State<StoreCard> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => StorePage(),
+              builder: (context) => StorePage(storeID: widget.store.storeID,),
             ),
           );
         },

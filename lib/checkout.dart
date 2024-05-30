@@ -1,4 +1,4 @@
-import 'package:ecobites/Widgets/payment_method.dart';
+import 'package:ecobites/Widgets/Payment_method.dart';
 import 'package:ecobites/Widgets/secondarytabbar.dart';
 import 'package:ecobites/Widgets/Voucher.dart';
 import 'package:ecobites/aftercheckout.dart';
@@ -27,6 +27,7 @@ class _OrderPageState extends State<OrderPage> {
   String _searchedAddress = '';
   bool isDelivery = true;
   Voucher? selectedVoucher;
+  String? _selectedPaymentMethod; // Add this line
 
   @override
   void dispose() {
@@ -40,11 +41,17 @@ class _OrderPageState extends State<OrderPage> {
     });
   }
 
+  void _onPaymentMethodSelected(String? paymentMethod) {
+    setState(() {
+      _selectedPaymentMethod = paymentMethod;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-         backgroundColor: const Color(0xFFFAFAFA),
+        backgroundColor: const Color(0xFFFAFAFA),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -91,21 +98,22 @@ class _OrderPageState extends State<OrderPage> {
               ),
               SizedBox(height: 20),
               SecondaryTabbar(
-                  onTabSelected: (index) {
-                    setState(() {
-                      if (index == 0) {
-                        setState(() {
-                          isDelivery = true;
-                        });
-                      } else {
-                        setState(() {
-                          isDelivery = false;
-                        });
-                      }
-                    });
-                  },
-                  title: 'Deliver',
-                  title2: 'Pick Up'),
+                onTabSelected: (index) {
+                  setState(() {
+                    if (index == 0) {
+                      setState(() {
+                        isDelivery = true;
+                      });
+                    } else {
+                      setState(() {
+                        isDelivery = false;
+                      });
+                    }
+                  });
+                },
+                title: 'Deliver',
+                title2: 'Pick Up',
+              ),
               SizedBox(height: 20),
               Divider(),
               Row(
@@ -132,8 +140,7 @@ class _OrderPageState extends State<OrderPage> {
                     ),
                     style: TextButton.styleFrom(
                       backgroundColor: Colors.blue,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     ),
                   ),
                 ],
@@ -169,7 +176,9 @@ class _OrderPageState extends State<OrderPage> {
               SizedBox(height: 20),
               Divider(),
               SizedBox(height: 20),
-              PaymentMethod(),
+              PaymentMethod(
+                onPaymentMethodSelected: _onPaymentMethodSelected,
+              ),
               SizedBox(height: 20),
               Divider(),
               SizedBox(height: 20),
@@ -178,19 +187,17 @@ class _OrderPageState extends State<OrderPage> {
                   width: 167, // Lebar yang diinginkan
                   height: 50, // Tinggi yang diinginkan
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: _selectedPaymentMethod == null ? null : () {
                       Navigator.pushReplacement(
-                context,
-               MaterialPageRoute(builder: (context) => CheckoutPage(isDelivery: isDelivery)),
-              ); // Pindah ke halaman Upload
-                      // Navigator.pushNamed(context, '/aftercheckout');
+                        context,
+                        MaterialPageRoute(builder: (context) => CheckoutPage(isDelivery: isDelivery)),
+                      ); // Pindah ke halaman Upload
                       print('$isDelivery');
                     },
                     child: Text('Checkout'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF92E3A9),
-                      textStyle:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      backgroundColor: _selectedPaymentMethod == null ? Colors.grey : const Color(0xFF92E3A9),
+                      textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),

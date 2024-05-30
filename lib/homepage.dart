@@ -1,7 +1,8 @@
 import 'package:ecobites/Widgets/voucher.dart';
+import 'package:ecobites/authenticate/Controller/storeController.dart';
 import 'package:flutter/material.dart';
-import 'package:ecobites/Store.dart';
-import 'package:ecobites/Widgets/storeCard.dart';
+import 'package:ecobites/store.dart';
+import 'package:ecobites/Widgets/Storecard.dart';
 import 'package:ecobites/historypage.dart';
 import 'package:ecobites/profile.dart';
 import 'package:ecobites/voucherPage.dart';
@@ -20,39 +21,8 @@ class _HomePageState extends State<HomePage> {
   TextEditingController searchController = TextEditingController();
   String searchQuery = "";
 
-  List<Store> stores = [
-    Store(
-      name: 'Toko Matahari',
-      description: 'Yukss silahkan dibelanja',
-      imageURL: 'assets/matahari.jpg',
-    ),
-    Store(
-      name: 'Toko Cahaya',
-      description: 'Toko ini menjual barang-barang yang kurang kebih dibutuhkan oleh pengguna',
-      imageURL: 'assets/cahyaa.jpg',
-    ),
-    Store(
-      name: 'Seven Eleven',
-      description: 'Toko ini menjual barang seperti bahan-bahan daur',
-      imageURL: 'assets/seveneleven.jpg',
-    ),
-    Store(
-      name: 'Toko Indonesia',
-      description: 'Semangat Beli Barang di toko ini',
-      imageURL: 'assets/tokoindonesia.jpg',
-    ),
-  ];
-
-  void _handleVoucherUsed(Voucher voucher) {
-    setState(() {
-      isVoucherUsed = false;
-      usedVoucherCode = '';
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    final double halfScreenHeight = MediaQuery.of(context).size.height / 2;
 
     return Scaffold(
       appBar: PreferredSize(
@@ -104,122 +74,149 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 5),
-              TextFormField(
-                controller: searchController,
-                onChanged: (value) {
-                  setState(() {
-                    searchQuery = value;
-                  });
-                },
-                onTap: () {
-                  setState(() {
-                    searchIconColor =
-                    const Color(0xFF92E3A9); // Change color when tapped
-                  });
-                },
-                decoration: InputDecoration(
-                  hintText: 'Search for food...',
-                  prefixIcon: Icon(Icons.search, color: searchIconColor),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black, width: 2.0),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: Color(0xFF92E3A9), width: 2.0),
-                  ),
+      body: FutureBuilder<List<Map<String, String>>?>(
+        future: getAllStores(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(child: Text('No stores found'));
+          } else {
+            final stores = snapshot.data!;
+            return SingleChildScrollView(
+              child: Container(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 5),
+                    TextFormField(
+                      controller: searchController,
+                      onChanged: (value) {
+                        setState(() {
+                          searchQuery = value;
+                        });
+                      },
+                      onTap: () {
+                        setState(() {
+                          searchIconColor = const Color(0xFF92E3A9); // Change color when tapped
+                        });
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Search for food...',
+                        prefixIcon: Icon(Icons.search, color: searchIconColor),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black, width: 2.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFF92E3A9), width: 2.0),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    if (searchQuery.isEmpty) ...[
+                      // Display StoreCards with image on top and smaller size when search query is empty
+                      Text(
+                        'Recently Viewed',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      SizedBox(
+                        height: 200,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: stores.length,
+                          itemBuilder: (context, index) {
+                            final store = stores[index];
+                            return SizedBox(
+                              width: 150,
+                              child: StoreCard(store: Store(
+                                name: store['namaToko'] ?? '',
+                                description: store['deskripsi'] ?? '',
+                                imageURL: store['logo'] ?? '',
+                                storeID: store['id'] ??'',
+                              ), imageOnTop: true),
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Center(
+                        child: VoucherState(fromCheckout: false, onVoucherUsed: (Voucher) {}),
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        'Most Viewed',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      SizedBox(
+                        height: 200,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: stores.length,
+                          itemBuilder: (context, index) {
+                            final store = stores[index];
+                            return SizedBox(
+                              width: 150,
+                              child: StoreCard(store: Store(
+                                name: store['namaToko'] ?? '',
+                                description: store['deskripsi'] ?? '',
+                                imageURL: store['logo'] ?? '',
+                                storeID: store['id'] ?? '',
+                              ), imageOnTop: true),
+                            );
+                          },
+                        ),
+                      ),
+                    ] else ...[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Menunjukkan hasil "$searchQuery"',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ),
+                      // Display StoreCards in default layout after searching
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: stores.length,
+                        itemBuilder: (context, index) {
+                          final store = stores[index];
+                          if (store['namaToko']!.toLowerCase().contains(searchQuery.toLowerCase())) {
+                            return StoreCard(store: Store(
+                              name: store['namaToko'] ?? '',
+                              description: store['deskripsi'] ?? '',
+                              imageURL: store['logo'] ?? '',
+                              storeID: store['id'] ?? '',
+                            ));
+                          } else {
+                            return SizedBox.shrink(); // Return an empty widget if store does not match search query
+                          }
+                        },
+                      ),
+                    ],
+                    const SizedBox(height: 20),
+                  ],
                 ),
               ),
-              const SizedBox(height: 20),
-              if (searchQuery.isEmpty) ...[
-                // Display StoreCards with image on top and smaller size when search query is empty
-                Text(
-                  'Recently Viewed',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                SizedBox(
-                  height: 200,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: stores.length,
-                    itemBuilder: (context, index) {
-                      final store = stores[index];
-                      return SizedBox(
-                        width: 150,
-                        child: StoreCard(store: store, imageOnTop: true),
-                      );
-                    },
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Center(
-                  child: VoucherState(fromCheckout: false, onVoucherUsed: (Voucher) {  },),
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  'Most Viewed',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                SizedBox(
-                  height: 200,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: stores.length,
-                    itemBuilder: (context, index) {
-                      final store = stores[index];
-                      return SizedBox(
-                        width: 150,
-                        child: StoreCard(store: store, imageOnTop: true),
-                      );
-                    },
-                  ),
-                ),
-              ] else ...[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Menunjukkan hasil "$searchQuery"',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
-                // Display StoreCards in default layout after searching
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: stores.length,
-                  itemBuilder: (context, index) {
-                    final store = stores[index];
-                    if (store.name.toLowerCase().contains(searchQuery.toLowerCase())) {
-                      return StoreCard(store: store);
-                    } else {
-                      return SizedBox.shrink(); // Return an empty widget if store does not match search query
-                    }
-                  },
-                ),
-              ],
-              const SizedBox(height: 20),
-            ],
-          ),
-        ),
+            );
+          }
+        },
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
