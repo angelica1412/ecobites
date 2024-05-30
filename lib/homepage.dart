@@ -1,11 +1,12 @@
 import 'package:ecobites/Widgets/voucher.dart';
 import 'package:ecobites/authenticate/Controller/storeController.dart';
 import 'package:flutter/material.dart';
-import 'package:ecobites/store.dart';
-import 'package:ecobites/Widgets/Storecard.dart';
+import 'package:ecobites/Store.dart';
+import 'package:ecobites/Widgets/storeCard.dart';
 import 'package:ecobites/historypage.dart';
 import 'package:ecobites/profile.dart';
 import 'package:ecobites/voucherPage.dart';
+import 'package:get/get.dart';
 
 import 'UploadBarang.dart';
 
@@ -20,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   Color searchIconColor = Colors.grey; // State variable for search icon color
   TextEditingController searchController = TextEditingController();
   String searchQuery = "";
+
 
   @override
   Widget build(BuildContext context) {
@@ -77,14 +79,8 @@ class _HomePageState extends State<HomePage> {
       body: FutureBuilder<List<Map<String, String>>?>(
         future: getAllStores(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No stores found'));
-          } else {
-            final stores = snapshot.data!;
+
+            final stores = snapshot.data?? [];
             return SingleChildScrollView(
               child: Container(
                 padding: const EdgeInsets.all(16.0),
@@ -99,11 +95,11 @@ class _HomePageState extends State<HomePage> {
                           searchQuery = value;
                         });
                       },
-                      onTap: () {
-                        setState(() {
-                          searchIconColor = const Color(0xFF92E3A9); // Change color when tapped
-                        });
-                      },
+                      // onTap: () {
+                      //   setState(() {
+                      //     searchIconColor = const Color(0xFF92E3A9); // Change color when tapped
+                      //   });
+                      // },
                       decoration: InputDecoration(
                         hintText: 'Search for food...',
                         prefixIcon: Icon(Icons.search, color: searchIconColor),
@@ -116,6 +112,14 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     const SizedBox(height: 20),
+                    if (snapshot.connectionState == ConnectionState.waiting)
+                      Center(child: CircularProgressIndicator())
+                    else if(snapshot.hasError)
+                      Center(child: Text('Error: ${snapshot.error}'))
+                    else if(!snapshot.hasData || snapshot.data!.isEmpty)
+                      Center(child: Text('No stores found'))
+                    else
+
                     if (searchQuery.isEmpty) ...[
                       // Display StoreCards with image on top and smaller size when search query is empty
                       Text(
@@ -196,17 +200,19 @@ class _HomePageState extends State<HomePage> {
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: stores.length,
                         itemBuilder: (context, index) {
-                          final store = stores[index];
-                          if (store['namaToko']!.toLowerCase().contains(searchQuery.toLowerCase())) {
-                            return StoreCard(store: Store(
-                              name: store['namaToko'] ?? '',
-                              description: store['deskripsi'] ?? '',
-                              imageURL: store['logo'] ?? '',
-                              storeID: store['id'] ?? '',
-                            ));
-                          } else {
-                            return SizedBox.shrink(); // Return an empty widget if store does not match search query
+                          final filteredStores = stores.where((store) => store["namaToko"]!.toLowerCase().contains(searchQuery.toLowerCase())).toList();
+                          if (index < 0 || index >= filteredStores.length) {
+                            return SizedBox(); // Atau widget lain yang sesuai dengan kebutuhan Anda
                           }
+                          final store = filteredStores[index];
+                          return StoreCard(
+                              store: Store(
+                                name: store['namaToko'] ?? '',
+                                description: store['deskripsi'] ?? '',
+                                imageURL: store['logo'] ?? '',
+                                storeID: store['id'] ?? '',
+                              )
+                          );
                         },
                       ),
                     ],
@@ -216,7 +222,6 @@ class _HomePageState extends State<HomePage> {
               ),
             );
           }
-        },
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[

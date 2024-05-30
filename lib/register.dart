@@ -273,11 +273,13 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: ElevatedButton(
                     onPressed: () => registration(context),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF92E3A9),
-                      minimumSize: Size(
-                          200, 50), // Menetapkan ukuran minimum untuk button
+                      backgroundColor: const Color(0xFF92E3A9),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      fixedSize: const Size(300, 50), // Menetapkan ukuran tombol
                     ),
-                    child: Text('Sign Up', style: TextStyle(fontSize: 20)),
+                    child: Text('Sign Up', style: TextStyle(fontSize: 18)),
                   ),
                 ),
                 const SizedBox(height: 20),
