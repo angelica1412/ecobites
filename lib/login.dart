@@ -176,9 +176,10 @@ class _LoginPageState extends State<LoginPage> {
                     GestureDetector(
                       onTap: () {
                         // Navigate to the registration page
-                        Navigator.push(
+                        Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(builder: (context) => RegisterPage()),
+                              (Route<dynamic> route) => false,
                         );
                       },
                       child: const Text(

@@ -42,9 +42,9 @@ class _UploadBarangState extends State<UploadBarang> {
 
   String? _selectedCategory;
   final List<String> _categoryOptions = [
-    'Makanan',
-    'Daur Ulang',
-    'Bahan Daur Ulang',
+    'Food',
+    'Bahan Daur',
+    'Hasil Daur',
   ];
 
   String? _selectedUnit;
@@ -68,8 +68,14 @@ class _UploadBarangState extends State<UploadBarang> {
     super.initState();
     if (widget.isEdit && widget.product != null) {
       _namaBarang.text = widget.product!.name;
+      _deskBarang.text = widget.product!.description;
+      _hargaAsliController.text = widget.product!.price.toString();
+      _selectedCategory = widget.product!.category;
+      _imageFile = File(widget.product!.imageURL); // Asumsi imageURL adalah path file lokal
+      // Jika imageURL adalah URL online, Anda perlu menggunakan mekanisme yang berbeda untuk memuat gambar
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -594,6 +600,7 @@ class _UploadBarangState extends State<UploadBarang> {
     setState(() {
       if (pickedFile != null) {
         _imageFile = File(pickedFile.path);
+        print(_imageFile);
       }
     });
   }

@@ -31,15 +31,15 @@ class _HistoryPageState extends State<HistoryPage> {
   String? _selectedDropdown2;
 
   List<ActivityCard> salesData = [
-    ActivityCard(date: '2021-12-01', status: 'On Progress', imageName: 'assets/product1.png', productName: 'Product A', quantity: 3),
-    ActivityCard(date: '2021-12-02', status: 'Done', imageName: 'assets/product2.png', productName: 'Product B', quantity: 2),
-    ActivityCard(date: '2021-12-03', status: 'Cancelled', imageName: 'assets/product3.png', productName: 'Product C', quantity: 5),
+    ActivityCard(date: '2021-12-01', status: 'On Progress', imageName: 'assets/martabak.jpg', productName: 'Martabak', quantity: 3),
+    ActivityCard(date: '2021-12-02', status: 'Done', imageName: 'assets/pupuk.png', productName: 'Pupuk Kualitas bagus', quantity: 2),
+    ActivityCard(date: '2021-12-03', status: 'Cancelled', imageName: 'assets/sosis.jpg', productName: 'Sosis Bakar', quantity: 5),
     // Tambahkan lebih banyak data sesuai kebutuhan
   ];
 
   List<ActivityCard> purchaseData = [
-    ActivityCard(date: '2021-12-01', status: 'Done', imageName: 'assets/product2.png', productName: 'Product D', quantity: 1),
-    ActivityCard(date: '2021-12-04', status: 'On Progress', imageName: 'assets/product3.png', productName: 'Product E', quantity: 4),
+    ActivityCard(date: '2021-12-01', status: 'Done', imageName: 'assets/pupuk.png', productName: 'Pupuk Kualitas bagus', quantity: 1),
+    ActivityCard(date: '2021-12-04', status: 'On Progress', imageName: 'assets/sosis.jpg', productName: 'Sosis Bakar', quantity: 4),
     // Tambahkan lebih banyak data sesuai kebutuhan
   ];
 

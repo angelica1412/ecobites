@@ -220,7 +220,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 TextFormField(
                   controller: phoneController,
                   decoration: const InputDecoration(
-                    hintText: '0862372476249',
+                    hintText: '08***********',
                     focusedBorder: OutlineInputBorder(
                       borderSide:
                           BorderSide(color: Color(0xFF92E3A9), width: 2.0),
@@ -292,10 +292,10 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
+                        Navigator.pushAndRemoveUntil(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => const LoginPage()),
+                          MaterialPageRoute(builder: (context) => LoginPage()),
+                              (Route<dynamic> route) => false,
                         );
                       },
                       child: const Text(

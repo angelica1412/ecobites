@@ -23,21 +23,23 @@ class ShareWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   _buildShareItem(
-                      'WhatsApp',
-                      Icons.share,
-                      Colors.green.withOpacity(0.3),
-                          () {
-                        // Action to share on WhatsApp
-                        print('Sharing on WhatsApp');
-                      }),
+                    'WhatsApp',
+                    'assets/whatsapp.png', // Gambar logo WhatsApp
+                    Colors.green.withOpacity(0.3),
+                        () {
+                      // Action to share on WhatsApp
+                      print('Sharing on WhatsApp');
+                    },
+                  ),
                   _buildShareItem(
-                      'Instagram',
-                      Icons.share,
-                      Colors.pinkAccent.withOpacity(0.3),
-                          () {
-                        // Action to share on Instagram
-                        print('Sharing on Instagram');
-                      }),
+                    'Instagram',
+                    'assets/instagram.png', // Gambar logo Instagram
+                    Colors.pinkAccent.withOpacity(0.3),
+                        () {
+                      // Action to share on Instagram
+                      print('Sharing on Instagram');
+                    },
+                  ),
                 ],
               ),
             ],
@@ -47,9 +49,9 @@ class ShareWidget {
     );
   }
 
-  static Widget _buildShareItem(String text, IconData icon, Color backgroundColor, Function onTap) {
+  static Widget _buildShareItem(String text, String imagePath, Color backgroundColor, VoidCallback onTap) {
     return InkWell(
-      onTap:(){},
+      onTap: onTap,
       child: Column(
         children: [
           Container(
@@ -60,13 +62,13 @@ class ShareWidget {
                 Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: backgroundColor, // Mengatur warna latar belakang bulat
+                    color: backgroundColor,
                   ),
                   padding: const EdgeInsets.all(10),
-                  child: Icon(
-                    icon,
-                    color: Colors
-                        .black, // Anda juga dapat menyesuaikan warna ikon jika perlu
+                  child: Image.asset(
+                    imagePath, // Path gambar
+                    height: 30, // Tinggi gambar
+                    width: 30, // Lebar gambar
                   ),
                 ),
               ],
@@ -79,7 +81,7 @@ class ShareWidget {
                 fontSize: 12,
               ),
             ),
-          )
+          ),
         ],
       ),
     );
