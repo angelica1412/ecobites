@@ -84,15 +84,11 @@ class _HistoryPageState extends State<HistoryPage> {
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.upload),
-              label: 'Upload',
-            ),
-            BottomNavigationBarItem(
               icon: Icon(Icons.history),
               label: 'Activity',
             ),
           ],
-          currentIndex: 2,
+          currentIndex: 1,
           onTap: (int index) {
             switch (index) {
               case 0:
@@ -102,12 +98,6 @@ class _HistoryPageState extends State<HistoryPage> {
                 );
                 break;
               case 1:
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => UploadBarang(fromHome: true, fromUserToko: false, isEdit: false,)),
-                );
-                break;
-              case 2:
                 break;
             }
           },
