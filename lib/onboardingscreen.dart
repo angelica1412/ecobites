@@ -1,9 +1,9 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'appColor.dart';
+import 'AppColor.dart';
 import 'ImagesPath.dart';
-import 'dotsIndicator.dart';
+import 'DotsIndicator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'login.dart';
 
@@ -93,27 +93,29 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           const SizedBox(height: 30),
           Padding(
             padding: const EdgeInsets.only(left: 25, right: 23, bottom: 36),
-            child: PrimaryButton(
-              elevation: 0,
-              onTap: () {
-                if (_currentIndex == onBoardinglist.length - 1) {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()), // Pindah ke halaman login
-                  );
-                } else {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()), // Pindah ke halaman login
-                  );
-                }
-              },
-              text:"Get Started",
-              bgColor: AppColor.kPrimary,
-              borderRadius: 20,
-              height: 46,
-              width: 327,
-              textColor: AppColor.kWhite,
+            child: Center(
+              child: PrimaryButton(
+                elevation: 0,
+                onTap: () {
+                  if (_currentIndex == onBoardinglist.length - 1) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => const LoginPage()), // Pindah ke halaman login
+                    );
+                  } else {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => const LoginPage()), // Pindah ke halaman login
+                    );
+                  }
+                },
+                text:"Get Started",
+                bgColor: AppColor.kPrimary,
+                borderRadius: 20,
+                height: 46,
+                width: 327,
+                textColor: AppColor.kWhite,
+              ),
             ),
           ),
         ],

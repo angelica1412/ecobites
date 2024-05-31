@@ -26,7 +26,7 @@ class ShareWidget {
                     'WhatsApp',
                     'assets/whatsapp.png', // Gambar logo WhatsApp
                     Colors.green.withOpacity(0.3),
-                    () {
+                        () {
                       // Action to share on WhatsApp
                       print('Sharing on WhatsApp');
                     },
@@ -35,7 +35,7 @@ class ShareWidget {
                     'Instagram',
                     'assets/instagram.png', // Gambar logo Instagram
                     Colors.pinkAccent.withOpacity(0.3),
-                    () {
+                        () {
                       // Action to share on Instagram
                       print('Sharing on Instagram');
                     },
