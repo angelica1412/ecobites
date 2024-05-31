@@ -166,7 +166,7 @@ class _StorePageState extends State<userStorePage> {
                 decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(
-                        'assets/shop2.png'), // Ganti dengan path foto Anda
+                        'assets/grande.jpg'), // Ganti dengan path foto Anda
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -186,66 +186,87 @@ class _StorePageState extends State<userStorePage> {
                   ],
                 ),
                 child: Row(
-                  mainAxisSize:
-                      MainAxisSize.min, // Menyesuaikan tinggi dengan konten
+                  mainAxisSize: MainAxisSize.min, // Menyesuaikan tinggi dengan konten
                   children: [
                     Expanded(
                       flex: 3,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 8.0),
-                              child: RichText(
-                                text: TextSpan(
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize:
-                                        MediaQuery.of(context).size.height *
-                                            0.03,
-                                    height: 1.5,
-                                  ),
-                                  children: const [
-                                    TextSpan(text: 'Nama '),
-                                    TextSpan(
-                                        text: 'Toko',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold)),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.only(bottom: 8.0),
-                              child: Row(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 8.0),
-                                    child:
-                                        Icon(Icons.star, color: Colors.yellow),
-                                  ),
-                                  Text('5.0 | Jarak'),
-                                ],
-                              ),
-                            ),
-                            const Row(
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(right: 8.0),
-                                  child: Icon(Icons.rate_review_outlined),
+                                  padding: const EdgeInsets.only(bottom: 8.0),
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: MediaQuery.of(context).size.height * 0.03,
+                                        height: 1.5,
+                                      ),
+                                      children: const [
+                                        TextSpan(
+                                          text: 'Grande',
+                                          style: TextStyle(fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                                Text('128 reviews'),
+                                const Padding(
+                                  padding: EdgeInsets.only(bottom: 8.0),
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(right: 8.0),
+                                        child: Icon(Icons.star, color: Colors.yellow),
+                                      ),
+                                      Text('5.0'),
+                                    ],
+                                  ),
+                                ),
+                                const Row(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(right: 8.0),
+                                      child: Icon(Icons.rate_review_outlined),
+                                    ),
+                                    Text('128 reviews'),
+                                  ],
+                                ),
                               ],
+                            ),
+                            Spacer(),
+                            GestureDetector(
+                              onTap: (){
+
+                              },
+                              child: Container(
+                                  child:
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.edit_note_outlined,
+                                        ),
+                                        Text('Edit'),
+                                      ],
+                                    ),
+                                  )
+                              ) ,
+
                             ),
                           ],
                         ),
                       ),
                     ),
-                    const Spacer(),
                   ],
-                ),
+                )
+
               ),
 
               const SizedBox(height: 20),
@@ -259,12 +280,12 @@ class _StorePageState extends State<userStorePage> {
                     onPressed: _setSelectedCategory,
                   ),
                   CategoryButton(
-                    category: 'Bahan',
+                    category: 'Bahan Daur',
                     selectedCategory: _selectedCategory,
                     onPressed: _setSelectedCategory,
                   ),
                   CategoryButton(
-                    category: 'Daur',
+                    category: 'Hasil Daur',
                     selectedCategory: _selectedCategory,
                     onPressed: _setSelectedCategory,
                   ),

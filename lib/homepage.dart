@@ -230,10 +230,6 @@ class _HomePageState extends State<HomePage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.upload),
-            label: 'Upload',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.history),
             label: 'Activity',
           ),
@@ -248,12 +244,6 @@ class _HomePageState extends State<HomePage> {
               );
               break;
             case 1:
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => UploadBarang(fromHome: true, fromUserToko: false, isEdit: false,)),
-              ); // Pindah ke halaman Upload
-              break;
-            case 2:
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => HistoryPage()),
