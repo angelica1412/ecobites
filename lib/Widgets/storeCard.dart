@@ -1,4 +1,4 @@
-import 'package:ecobites/Store.dart';
+import 'package:ecobites/store.dart';
 import 'package:flutter/material.dart';
 
 class Store {

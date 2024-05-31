@@ -1,5 +1,3 @@
-
-
 //Add Store Data ro Cloud FireStore
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -96,9 +94,3 @@ Future<void> getStoreID() async {
 Future<void> updateStorebyID(Map<String, dynamic> updatedData) async {
 
 }
-
-
-// Delete Store Data by ID
-// Future<void> deleteStoreFromFirestore(String userId) async {
-//
-// }

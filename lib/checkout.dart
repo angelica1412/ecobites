@@ -1,4 +1,4 @@
-import 'package:ecobites/Widgets/payment_method.dart';
+import 'package:ecobites/Widgets/Payment_method.dart';
 import 'package:ecobites/Widgets/secondarytabbar.dart';
 import 'package:ecobites/Widgets/Voucher.dart';
 import 'package:ecobites/aftercheckout.dart';
@@ -210,4 +210,3 @@ class _OrderPageState extends State<OrderPage> {
     );
   }
 }
-

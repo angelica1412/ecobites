@@ -20,15 +20,25 @@ class CategoryButton extends StatelessWidget {
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
           if (selectedCategory == category) {
-            return Colors.greenAccent;
+            return const Color(0xFF92E3A9); // Warna background ketika kategori terpilih
           }
-          return Colors.white;
+          return Color.fromARGB(255, 182, 174, 174); // Warna background default
+        }),
+        foregroundColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+          if (selectedCategory == category) {
+            return Colors.white; // Warna teks ketika kategori terpilih
+          }
+          return Colors.black; // Warna teks default
         }),
       ),
       child: Text(
         category,
         textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: selectedCategory == category ? 16 : 14, // Ukuran teks berubah
+          fontWeight: selectedCategory == category ? FontWeight.bold : FontWeight.normal, // Ketebalan teks berubah
         ),
+      ),
     );
   }
 }
