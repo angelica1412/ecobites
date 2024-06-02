@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:ecobites/PengaturanAkun.dart';
 import 'package:ecobites/Profile.dart';
 import 'package:ecobites/UploadBarang.dart';
 import 'package:ecobites/detailproduk.dart';
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
-      home: UploadPage(),
+      home: const PengaturanAkun(),
       routes: {
         '/onboardingscreen': (context) => const OnBoardingScreen(),
       },

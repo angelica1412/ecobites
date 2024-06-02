@@ -10,10 +10,12 @@ class MapsContainer extends StatelessWidget {
   void _launchMaps() async {
     final encodedQuery = Uri.encodeFull(storeName);
     // Format URL untuk melakukan pencarian di Google Maps berdasarkan nama toko
-    String googleMapsUrl = 'https://www.google.com/maps/search/?api=1&query=$encodedQuery';
+    String googleMapsUrl =
+        'https://www.google.com/maps/search/?api=1&query=$encodedQuery';
+    final Uri url = Uri.parse(googleMapsUrl);
 
-    if (await launch(googleMapsUrl)) {
-      await launch(googleMapsUrl);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
     } else {
       throw 'Could not launch $googleMapsUrl';
     }
@@ -54,7 +56,8 @@ void main() {
       ),
       body: const Center(
         child: MapsContainer(
-          storeName: 'Toko Contoh', // Ganti dengan nama toko yang ingin Anda cari
+          storeName:
+              'Toko Contoh', // Ganti dengan nama toko yang ingin Anda cari
         ),
       ),
     ),
