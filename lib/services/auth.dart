@@ -14,7 +14,7 @@ class Auth {
           email: email, password: password);
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
+        MaterialPageRoute(builder: (context) => HomePage()),
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -85,7 +85,7 @@ class Auth {
         // Misalnya:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(builder: (context) => HomePage()),
         );
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
@@ -135,7 +135,7 @@ class Auth {
     if (user != null) {
       // Jika pengguna sudah masuk sebelumnya, arahkan ke layar beranda
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const HomePage()),
+        MaterialPageRoute(builder: (context) => HomePage()),
       );
     } else{
       // Jika pengguna belum masuk, arahkan ke layar login

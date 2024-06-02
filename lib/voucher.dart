@@ -79,8 +79,31 @@ class _VoucherPageState extends State<VoucherPage> {
                           width: double.infinity, // Make the image full width
                         ),
                         const SizedBox(height: 8),
-                        Text(_filteredVoucherCodes[index].code),
-                        const Text('Discount or Offer Description'),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(_filteredVoucherCodes[index].code),
+                                const Text('Discount or Offer Description'),
+
+                              ],
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                // Add functionality when the "Pakai" button is tapped
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF92E3A9),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                              ),
+                              child: const Text('Pakai'),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                     onTap: () {

@@ -1,12 +1,8 @@
 import 'dart:async';
-import 'package:ecobites/PengaturanAkun.dart';
-import 'package:ecobites/Profile.dart';
-import 'package:ecobites/UploadBarang.dart';
-import 'package:ecobites/detailproduk.dart';
-import 'package:ecobites/uploadpage.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:ecobites/homepage.dart';
+import 'package:ecobites/login.dart';
 import 'package:flutter/material.dart';
-import 'onboardingscreen.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,21 +13,22 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key});
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
-      home: const PengaturanAkun(),
+    return MaterialApp(
+      home: const LoginPage(), // Splash screen sebagai halaman awal
+      debugShowCheckedModeBanner: false,
       routes: {
-        '/onboardingscreen': (context) => const OnBoardingScreen(),
+        '/detail': (context) => HomePage(), // Routing untuk Onboarding Screen
       },
     );
   }
 }
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  const SplashScreen({Key? key});
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -46,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(
       const Duration(seconds: 3),
       () {
-        Navigator.pushReplacementNamed(context, '/onboardingscreen');
+        Navigator.pushReplacementNamed(context, '/onboardingscreen'); // Navigasi ke Onboarding Screen setelah beberapa waktu
       },
     );
   }
@@ -59,9 +56,9 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Image.asset(
-              'assets/logo.png', // Replace 'logo.png' with your actual logo image path
-              width: 180.0, // Adjust the width as needed
-              height: 180.0, // Adjust the height as needed
+              'assets/logo.png', // Ganti dengan path logo yang sesuai
+              width: 180.0, // Sesuaikan lebar logo
+              height: 180.0, // Sesuaikan tinggi logo
             ),
             const SizedBox(height: 16.0),
             const Text.rich(
@@ -70,19 +67,17 @@ class _SplashScreenState extends State<SplashScreen> {
                   TextSpan(
                     text: 'Eco',
                     style: TextStyle(
-                      color: Colors.black, // Warna untuk bagian "Eco"
-                      fontSize: 24, // Ukuran teks untuk bagian "Eco"
-                      fontWeight:
-                          FontWeight.bold, // Ketebalan teks untuk bagian "Eco"
+                      color: Colors.black, // Warna untuk "Eco"
+                      fontSize: 24, // Ukuran teks untuk "Eco"
+                      fontWeight: FontWeight.bold, // Ketebalan teks untuk "Eco"
                     ),
                   ),
                   TextSpan(
                     text: 'Bites',
                     style: TextStyle(
-                      color: Colors.green, // Warna untuk bagian "Bites"
-                      fontSize: 24, // Ukuran teks untuk bagian "Bites"
-                      fontWeight: FontWeight
-                          .bold, // Ketebalan teks untuk bagian "Bites"
+                      color: Colors.green, // Warna untuk "Bites"
+                      fontSize: 24, // Ukuran teks untuk "Bites"
+                      fontWeight: FontWeight.bold, // Ketebalan teks untuk "Bites"
                     ),
                   ),
                 ],
@@ -94,3 +89,4 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
+
