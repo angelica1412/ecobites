@@ -24,6 +24,17 @@ if (flutterVersionName == null) {
 }
 
 android {
+
+    compileSdkVersion 34
+
+    defaultConfig {
+        applicationId "com.example.ecobites"
+        minSdkVersion 21
+        targetSdkVersion 34
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+    }
+    
     namespace "com.example.ecobites"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion

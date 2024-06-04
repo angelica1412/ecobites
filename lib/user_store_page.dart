@@ -12,8 +12,10 @@ class userStorePage extends StatefulWidget {
 }
 
 class _StorePageState extends State<userStorePage> {
-  String _selectedCategory = 'All';
-  bool _searching = false;// Untuk melacak apakah sedang dalam mode pencarian
+  String _selectedCategory = 'Food';
+  bool _searching = false;
+  String searchQuery= "";
+  final FocusNode _searchFocusNode = FocusNode();// Untuk melacak apakah sedang dalam mode pencarian
 
   void _setSelectedCategory(String category) {
     setState(() {
@@ -25,89 +27,102 @@ class _StorePageState extends State<userStorePage> {
 
   List<Product> products = [
     Product(
-      name: 'Product 1',
-      description: 'Description for Product 1',
+      name: 'Martabak',
+      description: 'Makanan yang terbuat dari telur dan daun bawang',
       price: 15000,
+      imageURL: 'assets/martabak.jpg',
+      category: 'Food',
+    ),
+    Product(
+      name: 'Terang Bulan',
+      description: 'Makanan yang manis dapat menambahkan mood',
+      price: 20000,
+      imageURL: 'assets/terangbulan.jpg',
+      category: 'Food',
+    ),
+    Product(
+      name: 'Pupuk Urea',
+      description: 'Pupuk ini dapat mempercepat pertumbuhan tanaman',
+      price: 5000,
+      imageURL: 'assets/pupukurea.jpg',
+      category: 'Hasil Daur',
+
+    ),
+    Product(
+      name: 'Roti Berjamur',
+      description: 'Bahan ini dapat digunakan sebagai bahan daur pupuk untuk tanaman tomat ',
+      price: 7000,
+      imageURL: 'assets/rotiberjamur.jpg',
+      category: 'Bahan Daur',
+
+    ),
+    Product(
+      name: 'Pisang Goreng',
+      description: 'Description for Product 2',
+      price: 2000,
       imageURL: 'assets/product1.png',
       category: 'Food',
     ),
     Product(
-      name: 'Product 3',
-      description: 'Description for Product 2',
-      price: 20000,
-      imageURL: 'assets/product2.png',
-      category: 'Bahan',
-    ),
-    Product(
-      name: 'Product 2',
-      description: 'Description for Product 2',
-      price: 5000,
-      imageURL: 'assets/product3.png',
-      category: 'Daur',
-    ),
-    Product(
-      name: 'Product 4',
-      description: 'Description for Product 2',
-      price: 7000,
-      imageURL: 'assets/login.png',
-      category: 'Bahan',
-    ),
-    Product(
-      name: 'Product 4',
-      description: 'Description for Product 2',
-      price: 2000,
-      imageURL: 'assets/login.png',
-      category: 'Daur',
-    ),
-    Product(
-      name: 'Product 4',
-      description: 'Description for Product 2',
+      name: 'Pupuk',
+      description: 'Pupuk yang tinggi kualitas karbon',
       price: 1000,
-      imageURL: 'assets/login.png',
-      category: 'Daur',
+      imageURL: 'assets/pupuk.png',
+      category: 'Hasil Daur',
     ),
     Product(
-      name: 'Product 4',
-      description: 'Description for Product 2',
+      name: 'Sosis Bakar',
+      description: 'Sosis ini berkhasiat tinggi',
       price: 2305,
-      imageURL: 'assets/login.png',
-      category: 'Daur',
+      imageURL: 'assets/sosis.jpg',
+      category: 'Food',
     ),
     // Add more products as needed
   ];
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _searchFocusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     List<Product> _getProductsByCategory(String category) {
       return products.where((product) => product.category == category).toList();
     }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        // Remove shadow
-        leading: _searching
-            ? IconButton(
-                icon: const Icon(Icons.arrow_back),
-                color: Colors.black,
-                onPressed: () {
-                  // Keluar dari mode pencarian
-                  setState(() {
-                    _searching = false;
-                  });
-                },
-              )
-            : IconButton(
-                icon: const Icon(Icons.arrow_back),
-                color: Colors.black,
-                onPressed: () {
-                  // Kembali ke halaman sebelumnya
-                  Navigator.of(context).pop();
-                },
-              ),
+        actions: _buildActions(),
+        leading: _searching?
+        IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            setState(() {
+              _searching=false;
+            }); // Kembali ke halaman sebelumnya
+          },
+        )
+            :
+        IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pop(context); // Kembali ke halaman sebelumnya
+          },
+        ),
         title: _searching
             ? TextField(
                 controller: _searchController,
+                focusNode: _searchFocusNode,
+                onChanged: (value){
+                  setState(() {
+                    searchQuery = value;
+                  });
+                  _searchFocusNode.requestFocus();
+                },
                 decoration: const InputDecoration(
                   hintText: 'Cari...',
                   border: InputBorder.none,
@@ -120,7 +135,8 @@ class _StorePageState extends State<userStorePage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-        actions: _buildActions(),
+        centerTitle: true,
+
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(4.0), // Tinggi bayangan
           child: Container(
@@ -144,16 +160,13 @@ class _StorePageState extends State<userStorePage> {
           ListView(
             children: [
               Container(
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.2, // Tinggi 1/10 dari layar
+                height: MediaQuery.of(context).size.height *
+                    0.25, // Tinggi 1/10 dari layar
                 width: double.infinity, // Lebar penuh
                 decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(
-                        'assets/login.png'
-                    ), // Ganti dengan path foto Anda
+                        'assets/grande.jpg'), // Ganti dengan path foto Anda
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -179,58 +192,81 @@ class _StorePageState extends State<userStorePage> {
                       flex: 3,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 8.0),
-                              child: RichText(
-                                text: TextSpan(
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: MediaQuery
-                                        .of(context)
-                                        .size
-                                        .height * 0.03,
-                                    height: 1.5,
-                                  ),
-                                  children: const [
-                                    TextSpan(text: 'Nama '),
-                                    TextSpan(
-                                        text: 'Toko',
-                                        style: TextStyle(fontWeight: FontWeight.bold)),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.only(bottom: 8.0),
-                              child: Row(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 8.0),
-                                    child: Icon(Icons.star, color: Colors.yellow),
-                                  ),
-                                  Text('5.0 | Jarak'),
-                                ],
-                              ),
-                            ),
-                            const Row(
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(right: 8.0),
-                                  child: Icon(Icons.rate_review_outlined),
+                                  padding: const EdgeInsets.only(bottom: 8.0),
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: MediaQuery.of(context).size.height * 0.03,
+                                        height: 1.5,
+                                      ),
+                                      children: const [
+                                        TextSpan(
+                                          text: 'Grande',
+                                          style: TextStyle(fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                                Text('128 reviews'),
+                                const Padding(
+                                  padding: EdgeInsets.only(bottom: 8.0),
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(right: 8.0),
+                                        child: Icon(Icons.star, color: Colors.yellow),
+                                      ),
+                                      Text('5.0'),
+                                    ],
+                                  ),
+                                ),
+                                const Row(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(right: 8.0),
+                                      child: Icon(Icons.rate_review_outlined),
+                                    ),
+                                    Text('128 reviews'),
+                                  ],
+                                ),
                               ],
+                            ),
+                            Spacer(),
+                            GestureDetector(
+                              onTap: (){
+
+                              },
+                              child: Container(
+                                  child:
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.edit_note_outlined,
+                                        ),
+                                        Text('Edit'),
+                                      ],
+                                    ),
+                                  )
+                              ) ,
+
                             ),
                           ],
                         ),
                       ),
                     ),
-                    const Spacer(),
                   ],
-                ),
+                )
+
               ),
 
               const SizedBox(height: 20),
@@ -239,43 +275,53 @@ class _StorePageState extends State<userStorePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   CategoryButton(
-                    category: 'All',
-                    selectedCategory: _selectedCategory,
-                    onPressed: _setSelectedCategory,
-                  ),
-                  CategoryButton(
                     category: 'Food',
                     selectedCategory: _selectedCategory,
                     onPressed: _setSelectedCategory,
                   ),
                   CategoryButton(
-                    category: 'Bahan',
+                    category: 'Bahan Daur',
                     selectedCategory: _selectedCategory,
                     onPressed: _setSelectedCategory,
                   ),
                   CategoryButton(
-                    category: 'Daur',
+                    category: 'Hasil Daur',
                     selectedCategory: _selectedCategory,
                     onPressed: _setSelectedCategory,
                   ),
                 ],
               ),
               const SizedBox(height: 20),
-              ListView.builder(
+              if(searchQuery.isEmpty)...[
+                ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: _selectedCategory == 'All' ? products.length : _getProductsByCategory(_selectedCategory).length,
+                itemCount: _getProductsByCategory(_selectedCategory).length,
                 itemBuilder: (context, index) {
-                  final product = _selectedCategory == 'All' ? products[index] : _getProductsByCategory(_selectedCategory)[index];
+                  final product = _getProductsByCategory(_selectedCategory)[index];
                   return ProductCard(
                     product: product,
                     isUserStore: true,
                   );
                 },
               ),
+              ]
+              else...[
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: _getProductsByCategory(_selectedCategory).length,
+                  itemBuilder: (context, index) {
+                    final product = _getProductsByCategory(_selectedCategory)[index];
+                    if(product.name.toLowerCase().contains(searchQuery.toLowerCase()))
+                      return ProductCard(
+                        product: product,
+                        isUserStore: true,
+                      );
+                  },
+                ),
+              ],
               const SizedBox(height: 60),
-
-
             ],
           ),
           Positioned(
@@ -283,8 +329,14 @@ class _StorePageState extends State<userStorePage> {
             right: 16.0, // Atur posisi horizontal dari kanan layar
             child: FloatingActionButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => UploadBarang()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => UploadBarang(
+                              fromHome: false,
+                              fromUserToko: true,
+                              isEdit: false,
+                            )));
               },
               child: Icon(Icons.add),
               backgroundColor: Colors.green,
@@ -322,6 +374,7 @@ class _StorePageState extends State<userStorePage> {
             setState(() {
               _searching = true;
             });
+            _searchFocusNode.requestFocus();
           },
         ),
         IconButton(

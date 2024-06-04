@@ -1,13 +1,20 @@
 import 'dart:async';
 import 'package:ecobites/homepage.dart';
 import 'package:ecobites/login.dart';
+import 'package:ecobites/onboardingscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'aftercheckout.dart'; // Import AfterCheckoutPage
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    options: const FirebaseOptions(apiKey: 'AIzaSyCEmE75DispSxV_17bFkeRCTdhXFn5e60U', appId: '1:187615014655:android:278a9f8db6c682264be6ca', messagingSenderId: '187615014655', projectId: "ecobites-57b68"),
+    options: const FirebaseOptions(
+      apiKey: 'AIzaSyCEmE75DispSxV_17bFkeRCTdhXFn5e60U',
+      appId: '1:187615014655:android:278a9f8db6c682264be6ca',
+      messagingSenderId: '187615014655',
+      projectId: "ecobites-57b68",
+    ),
   );
   runApp(const MyApp());
 }
@@ -18,10 +25,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const LoginPage(), // Splash screen sebagai halaman awal
+      home: SplashScreen(),
       debugShowCheckedModeBanner: false,
       routes: {
-        '/detail': (context) => HomePage(), // Routing untuk Onboarding Screen
+        '/onboardingscreen': (context) => OnBoardingScreen(),
       },
     );
   }
@@ -89,4 +96,3 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
-

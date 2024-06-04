@@ -39,6 +39,7 @@ class _RegisterPageState extends State<RegisterPage> {
         'email': emailController.text.trim(),
         'address': addressController.text.trim(),
         'phone': phoneController.text.trim(),
+        'provinces': selectedProvince,
       };
       await Auth.registerUser(
           context, emailController.text.trim(), passController.text.trim());
@@ -49,11 +50,6 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Register'),
-        elevation: 0,
-        backgroundColor: const Color(0xFFFAFAFA),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -92,12 +88,16 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 10), // Added space
                 TextFormField(
                   controller: firstNameController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelStyle: TextStyle(fontSize: 16),
+                  decoration: const InputDecoration(
+                    hintText: 'First Name',
                     focusedBorder: OutlineInputBorder(
                       borderSide:
                           BorderSide(color: Color(0xFF92E3A9), width: 2.0),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black, width: 2.0),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     ),
                   ),
                   validator: (value) {
@@ -114,12 +114,16 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 10), // Added space
                 TextFormField(
                   controller: lastNameController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelStyle: TextStyle(fontSize: 16),
+                  decoration: const InputDecoration(
+                    hintText: 'Last Name',
                     focusedBorder: OutlineInputBorder(
                       borderSide:
                           BorderSide(color: Color(0xFF92E3A9), width: 2.0),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black, width: 2.0),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     ),
                   ),
                   validator: (value) {
@@ -136,12 +140,12 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 10), // Added space
                 TextFormField(
                   controller: emailController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelStyle: TextStyle(fontSize: 16),
+                  decoration: const InputDecoration(
+                    hintText: 'emailanda@gmail.com',
                     focusedBorder: OutlineInputBorder(
                       borderSide:
                           BorderSide(color: Color(0xFF92E3A9), width: 2.0),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black, width: 2.0),
@@ -163,12 +167,16 @@ class _RegisterPageState extends State<RegisterPage> {
                 TextFormField(
                   controller: passController,
                   obscureText: true,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelStyle: TextStyle(fontSize: 16),
+                  decoration: const InputDecoration(
+                    hintText: 'Password',
                     focusedBorder: OutlineInputBorder(
                       borderSide:
                           BorderSide(color: Color(0xFF92E3A9), width: 2.0),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black, width: 2.0),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     ),
                   ),
                   validator: (value) {
@@ -185,12 +193,16 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 10), // Added space
                 TextFormField(
                   controller: addressController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelStyle: TextStyle(fontSize: 16),
+                  decoration: const InputDecoration(
+                    hintText: 'Address',
                     focusedBorder: OutlineInputBorder(
                       borderSide:
                           BorderSide(color: Color(0xFF92E3A9), width: 2.0),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black, width: 2.0),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     ),
                   ),
                   validator: (value) {
@@ -207,12 +219,16 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 10), // Added space
                 TextFormField(
                   controller: phoneController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelStyle: TextStyle(fontSize: 16),
+                  decoration: const InputDecoration(
+                    hintText: '08***********',
                     focusedBorder: OutlineInputBorder(
                       borderSide:
                           BorderSide(color: Color(0xFF92E3A9), width: 2.0),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black, width: 2.0),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     ),
                   ),
                   validator: (value) {
@@ -240,13 +256,15 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: Text(province),
                     );
                   }).toList(),
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                    labelStyle: TextStyle(fontSize: 16),
+                  decoration: const InputDecoration(
                     focusedBorder: OutlineInputBorder(
                       borderSide:
                           BorderSide(color: Color(0xFF92E3A9), width: 2.0),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black, width: 2.0),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     ),
                   ),
                 ),
@@ -255,11 +273,13 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: ElevatedButton(
                     onPressed: () => registration(context),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF92E3A9),
-                      minimumSize: Size(
-                          200, 50), // Menetapkan ukuran minimum untuk button
+                      backgroundColor: const Color(0xFF92E3A9),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      fixedSize: const Size(300, 50), // Menetapkan ukuran tombol
                     ),
-                    child: Text('Sign Up', style: TextStyle(fontSize: 20)),
+                    child: Text('Sign Up', style: TextStyle(fontSize: 18)),
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -272,10 +292,10 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
+                        Navigator.pushAndRemoveUntil(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => const LoginPage()),
+                          MaterialPageRoute(builder: (context) => LoginPage()),
+                              (Route<dynamic> route) => false,
                         );
                       },
                       child: const Text(

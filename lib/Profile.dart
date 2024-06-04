@@ -1,21 +1,74 @@
 import 'package:ecobites/user_store_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'authenticate/Controller/userController.dart';
 
 import 'PengaturanAkun.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
+
   const ProfileScreen({super.key});
 
   @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  String? userFirstName;
+  String? userLastName;
+  String? userEmail;
+  String? userPhoneNumber;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserDetails();
+  }
+  Future<void> fetchUserDetails() async {
+    try {
+      final userDetails = await getUserDetailsbyUID();
+      if (userDetails != null) {
+        print('User Details: $userDetails');
+        setState(() {
+          userEmail = userDetails['email'];
+          userFirstName = userDetails['firstName'];
+          userLastName = userDetails['lastName'];
+          userPhoneNumber = userDetails['phone'];
+          _isLoading=false;
+        });
+      } else {
+        print('User details not found');
+        setState(() {
+          _isLoading = false; // Mengubah status loading menjadi false jika data tidak ditemukan
+        });
+      }
+    } catch (e) {
+      print('Error fetching user details: $e');
+      setState(() {
+        _isLoading = false; // Mengubah status loading menjadi false jika terjadi error
+      });
+    }
+  }
+
+
   Widget build(BuildContext context) {
+
+
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: Text(
+          'Profile',
+          style: TextStyle(color: Colors.black,
+          fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: Color(0xFF92E3A9),
+            color: Colors.black,
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -24,7 +77,9 @@ class ProfileScreen extends StatelessWidget {
         elevation: 0,
         backgroundColor: Color(0xFFFAFAFA),
       ),
-      body: SingleChildScrollView(
+      body: _isLoading?  Center(child: CircularProgressIndicator())
+      :
+      SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(10),
           child: Column(
@@ -43,21 +98,21 @@ class ProfileScreen extends StatelessWidget {
                 height: 20,
               ),
               Text(
-                'Your Name',
+                '$userFirstName $userLastName',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 30,
+                  fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               SizedBox(
-                height: 15,
+                height: 10,
               ),
               Text(
-                'youremail@ecobites.com',
+                '$userEmail',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 20,
+                  fontSize: 18,
                   fontWeight: FontWeight.normal,
                 ),
               ),
@@ -65,10 +120,10 @@ class ProfileScreen extends StatelessWidget {
                 height: 10,
               ),
               Text(
-                '+62yourphonenumber',
+                '$userPhoneNumber',
                 style: TextStyle(
                   color: Colors.grey,
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: FontWeight.normal,
                 ),
               ),
@@ -87,7 +142,7 @@ class ProfileScreen extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                      backgroundColor: const Color(0xFF92E3A9),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
@@ -101,14 +156,14 @@ class ProfileScreen extends StatelessWidget {
                             'Pengaturan Akun',
                             style: TextStyle(
                               fontSize: 18,
-                              color: Colors.black,
+                              color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Icon(
                             CupertinoIcons.right_chevron,
                             size: 20,
-                            color: Colors.black,
+                            color: Colors.white,
                           ),
                         ],
                       ),
@@ -126,12 +181,12 @@ class ProfileScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>  userStorePage(),
+                          builder: (context) => userStorePage(),
                         ),
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 179, 229, 193),
+                      backgroundColor: const Color(0xFF92E3A9),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
@@ -143,7 +198,8 @@ class ProfileScreen extends StatelessWidget {
                         children: [
                           Text(
                             'Toko Saya',
-                            style: TextStyle(fontSize: 18),
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                           Icon(
                             CupertinoIcons.right_chevron,

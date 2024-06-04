@@ -4,15 +4,18 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 class MapsContainer extends StatelessWidget {
   final String storeName;
+  final String storeAddress;
 
-  const MapsContainer({super.key, required this.storeName});
+  const MapsContainer(
+      {super.key, required this.storeName, required this.storeAddress});
 
   void _launchMaps() async {
-    final encodedQuery = Uri.encodeFull(storeName);
+    final encodedQueryName = Uri.encodeFull(storeName);
+    final encodedQueryAddress = Uri.encodeFull(storeAddress);
     // Format URL untuk melakukan pencarian di Google Maps berdasarkan nama toko
-    String googleMapsUrl =
-        'https://www.google.com/maps/search/?api=1&query=$encodedQuery';
-    final Uri url = Uri.parse(googleMapsUrl);
+    String googleMapsUrl = 'https://www.google.com/maps/search/?api=1&query=$encodedQueryName $encodedQueryAddress';
+
+    Uri url = Uri.parse(googleMapsUrl);
 
     if (await canLaunchUrl(url)) {
       await launchUrl(url, mode: LaunchMode.externalApplication);
@@ -26,40 +29,29 @@ class MapsContainer extends StatelessWidget {
     return GestureDetector(
       onTap: _launchMaps,
       child: Container(
-        padding: const EdgeInsets.all(12.0),
         width: double.infinity,
         height: 150,
         decoration: BoxDecoration(
-          color: Colors.blue,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Center(
-          child: Text(
-            storeName,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
+          color: Colors.blue, // Background color if the image has transparency
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: Offset(0, 3), // changes position of shadow
             ),
+          ],
+          borderRadius: BorderRadius.circular(8),
+          image: DecorationImage(
+            image: AssetImage('assets/mapsContainer.png'),
+            fit: BoxFit.cover, // Adjust the image to cover the container
           ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: null, // Add any child widget if needed
         ),
       ),
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: Scaffold(
-      appBar: AppBar(
-        title: const Text('Contoh Container ke Google Maps'),
-      ),
-      body: const Center(
-        child: MapsContainer(
-          storeName:
-              'Toko Contoh', // Ganti dengan nama toko yang ingin Anda cari
-        ),
-      ),
-    ),
-  ));
 }
