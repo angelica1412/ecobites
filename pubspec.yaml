@@ -15,7 +15,7 @@ dependencies:
   google_fonts: ^5.1.0
   iconsax: ^0.0.8
   dots_indicator: ^3.0.0
-  get: ^4.6.1
+  get: ^4.6.6
   image_picker: ^1.0.8
 
 
@@ -31,10 +31,7 @@ dependencies:
   latlong2: ^0.9.1
 
 dev_dependencies:
-<<<<<<< HEAD
   flutter_lints: ^4.0.0
-=======
->>>>>>> 22ac20d7193352ca23ba58d484f49999d727024b
   flutter_test:
     sdk: flutter
 
@@ -43,8 +40,6 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
-
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
