@@ -101,7 +101,7 @@ class _HomePageState extends State<HomePage> {
                       //   });
                       // },
                       decoration: InputDecoration(
-                        hintText: 'Search for food...',
+                        hintText: 'Search for store...',
                         prefixIcon: Icon(Icons.search, color: searchIconColor),
                         border: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.black, width: 2.0),
