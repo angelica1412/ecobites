@@ -48,7 +48,7 @@ class _UploadBarangState extends State<UploadBarang> {
   ];
 
   String? _selectedUnit;
-  final List<String> _unitOptions = ['Kg', 'g'];
+  final List<String> _unitOptions = ['pcs','porsi','Kg', 'g'];
 
   final _hargaAsliController = TextEditingController();
   final _hargaDiskonController = TextEditingController();

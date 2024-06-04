@@ -44,6 +44,11 @@ class _RegisterPageState extends State<RegisterPage> {
       await Auth.registerUser(
           context, emailController.text.trim(), passController.text.trim());
       await addUserDetailsToFirestore(userData);
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LoginPage()),
+        (Route<dynamic> route) => false,
+      );
     }
   }
 
@@ -234,6 +239,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Please enter your phone number';
+                    } else if (value.length < 11) {
+                      return 'Phone number must be at least 11 digits';
+                    } else if (value.length > 13) {
+                      return 'Phone number must be at most 13 digits';
                     }
                     return null;
                   },
@@ -277,7 +286,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),
-                      fixedSize: const Size(300, 50), // Menetapkan ukuran tombol
+                      fixedSize:
+                          const Size(300, 50), // Menetapkan ukuran tombol
                     ),
                     child: Text('Sign Up', style: TextStyle(fontSize: 18)),
                   ),
@@ -295,7 +305,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(builder: (context) => LoginPage()),
-                              (Route<dynamic> route) => false,
+                          (Route<dynamic> route) => false,
                         );
                       },
                       child: const Text(
