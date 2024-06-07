@@ -3,6 +3,8 @@ import 'package:ecobites/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../authenticate/Controller/storeController.dart';
+import '../authenticate/Controller/userController.dart';
 import '../login.dart';
 
 class Auth {
@@ -12,9 +14,10 @@ class Auth {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: email, password: password);
-      Navigator.pushReplacement(
+      Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
+            (Route<dynamic> route) => false,
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -65,7 +68,7 @@ class Auth {
     }
   }
   //Register application
-  static Future<void> registerUser(BuildContext context, String email, String password) async {
+  static Future<void> registerUser(BuildContext context, String email, String password, Map<String, dynamic> storeData, Map<String, dynamic> userData) async {
 
       try {
         UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -83,9 +86,12 @@ class Auth {
         );
         // Setelah registrasi berhasil, Anda dapat melakukan navigasi ke halaman beranda atau yang diinginkan
         // Misalnya:
-        Navigator.push(
+        await addUserDetailsToFirestore(userData);
+        await addStoreToFireStore(storeData);
+        await Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => HomePage()),
+          MaterialPageRoute(builder: (context) => LoginPage()),
+              (Route<dynamic> route) => false,
         );
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
@@ -108,6 +114,19 @@ class Auth {
               ),
             ),
           );
+        }else if(e.code == "invalid-email"){
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              backgroundColor: Colors.amber,
+              content: Text(
+                "Email address is Badly Formatted",
+                style: TextStyle(fontSize: 20.0),
+              ),
+            ),
+          );
+        }
+        else{
+          print(e);
         }
       }
   }

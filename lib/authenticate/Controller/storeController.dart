@@ -2,8 +2,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-Future<void> addStoreToFireStore(Map<String, dynamic> userData) async {
-
+Future<void> addStoreToFireStore(Map<String, dynamic> storeData) async {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final User? user = auth.currentUser;
+  final myUid = user?.uid;
+  if (user == null) {
+    print('User is not authenticated');
+    return;
+  }
+  final FirebaseFirestore db = FirebaseFirestore.instance;
+  try{
+    final CollectionReference addStores = db.collection('Stores');
+    addStores.doc(myUid).set(storeData);
+    print('Store added to Firestore');
+  }catch(e){
+    print('Error adding store to Firestore: $e');
+  }
 }
 
 
