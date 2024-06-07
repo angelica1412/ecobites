@@ -1,11 +1,15 @@
 import 'package:ecobites/UploadBarang.dart';
+import 'package:ecobites/authenticate/Controller/userController.dart';
 import 'package:flutter/material.dart';
 import 'package:ecobites/Widgets/ProductCard.dart';
 import 'package:ecobites/Widgets/category_button.dart';
 import 'package:ecobites/Widgets/share_widget.dart';
 
+import 'authenticate/Controller/storeController.dart';
+
 class userStorePage extends StatefulWidget {
-  const userStorePage({super.key});
+  final String storeID;
+  const userStorePage({super.key, required this.storeID});
 
   @override
   _StorePageState createState() => _StorePageState();
@@ -16,11 +20,34 @@ class _StorePageState extends State<userStorePage> {
   bool _searching = false;
   String searchQuery= "";
   final FocusNode _searchFocusNode = FocusNode();// Untuk melacak apakah sedang dalam mode pencarian
+  bool _isLoading = true;
+  Map<String, String> _storeData = {};
+
+
 
   void _setSelectedCategory(String category) {
     setState(() {
       _selectedCategory = category;
     });
+  }
+
+  Future<void> _fetchStoreData() async {
+    setState(() {
+      _isLoading = true; // Mulai memuat data
+    });
+    final storeData = await getStorebyID(widget.storeID);
+    if (storeData != null) {
+      setState(() {
+        _storeData = storeData;
+        _isLoading = false; // Data selesai dimuat
+      });
+    } else {
+      // Handle the case where the store data could not be fetched
+      print('Failed to fetch store data');
+      setState(() {
+        _isLoading = false; // Gagal memuat data
+      });
+    }
   }
 
   final TextEditingController _searchController = TextEditingController();
@@ -79,6 +106,13 @@ class _StorePageState extends State<userStorePage> {
     ),
     // Add more products as needed
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchStoreData();
+  }
+
   @override
   void dispose() {
     _searchController.dispose();
@@ -157,16 +191,19 @@ class _StorePageState extends State<userStorePage> {
       ),
       body: Stack(
         children: [
-          ListView(
+          _isLoading
+          ?Center(child: CircularProgressIndicator())
+          : ListView(
             children: [
               Container(
                 height: MediaQuery.of(context).size.height *
                     0.25, // Tinggi 1/10 dari layar
                 width: double.infinity, // Lebar penuh
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(
-                        'assets/grande.jpg'), // Ganti dengan path foto Anda
+                        _storeData['logo'] ??
+                            'assets/shop.png'), // Ganti dengan path foto Anda
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -207,9 +244,9 @@ class _StorePageState extends State<userStorePage> {
                                         fontSize: MediaQuery.of(context).size.height * 0.03,
                                         height: 1.5,
                                       ),
-                                      children: const [
+                                      children: [
                                         TextSpan(
-                                          text: 'Grande',
+                                          text: _storeData['namaToko']?? '-',
                                           style: TextStyle(fontWeight: FontWeight.bold),
                                         ),
                                       ],

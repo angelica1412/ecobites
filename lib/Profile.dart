@@ -178,13 +178,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   width: 300,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => userStorePage(),
-                        ),
-                      );
+                      final currentUser = FirebaseAuth.instance.currentUser;
+                      if (currentUser != null) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => userStorePage(storeID: currentUser.uid),
+                          ),
+                        );
+                      } else {
+                        // Handle the case where the user is not logged in
+                        // For example, show a dialog or navigate to a login screen
+                        print('User not logged in');
+                      }
                     },
+
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF92E3A9),
                       shape: RoundedRectangleBorder(
