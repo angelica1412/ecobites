@@ -33,10 +33,10 @@ Future<List<Map<String, String>>?> getAllStores() async {
 
       for (var doc in querySnapshot.docs) {
         final data = doc.data() as Map<String, dynamic>;
-        final alamat = data['alamat'] ?? '';
-        final deskripsi = data['deskripsi'] ?? '';
-        final logo = data['logo'] ?? '';
-        final namaToko = data['namaToko'] ?? '';
+        final alamat = data['alamat'] ?? 'no address';
+        final deskripsi = data['deskripsi'] ?? 'no desc';
+        final logo = data['logo'] ?? 'assets/shop.png';
+        final namaToko = data['namaToko'] ?? '-';
         final id = doc.id;
 
         stores.add({
@@ -67,10 +67,10 @@ Future<Map<String, String>?> getStorebyID(String storeId) async {
 
     if (doc.exists) {
       final data = doc.data() as Map<String, dynamic>;
-      final alamat = data['alamat'] ?? '';
-      final deskripsi = data['deskripsi'] ?? '';
-      final logo = data['logo'] ?? '';
-      final namaToko = data['namaToko'] ?? '';
+      final alamat = data['alamat'] ?? 'no address';
+      final deskripsi = data['deskripsi'] ?? 'no desc';
+      final logo = data['logo'] ?? 'assets/shop.png';
+      final namaToko = data['namaToko'] ?? '-';
 
       return {
         'alamat': alamat,
