@@ -21,8 +21,19 @@ class _HomePageState extends State<HomePage> {
   Color searchIconColor = Colors.grey; // State variable for search icon color
   TextEditingController searchController = TextEditingController();
   String searchQuery = "";
+  Future<List<Map<String, String>>?>? _storeFuture;
 
+  @override
+  void initState() {
+    super.initState();
+    _storeFuture = getAllStores();
+  }
 
+  void _refreshStoreData(){
+    setState(() {
+      _storeFuture = getAllStores();
+    });
+  }
   @override
   Widget build(BuildContext context) {
 
@@ -63,12 +74,18 @@ class _HomePageState extends State<HomePage> {
                 child: IconButton(
                   icon: Icon(Icons.person, size: 24), // Menyesuaikan ukuran ikon agar tidak keluar dari lingkaran
                   color: Colors.black,
-                  onPressed: () {
-                    Navigator.push(
+                  onPressed: () async {
+                    final result = await Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => ProfileScreen()),
+                          builder: (context) => ProfileScreen()
+                      ),
                     );
+                    if (result == true) {
+                      _refreshStoreData();
+                      // If data was saved, reload the store data
+
+                    }
                   },
                 ),
               ),
@@ -77,7 +94,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       body: FutureBuilder<List<Map<String, String>>?>(
-        future: getAllStores(),
+        future: _storeFuture,
         builder: (context, snapshot) {
 
             final stores = snapshot.data?? [];
@@ -143,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                               child: StoreCard(store: Store(
                                 name: store['namaToko'] ?? '',
                                 description: store['deskripsi'] ?? '',
-                                imageURL: store['logo'] ?? '',
+                                imageURL: store['imageURL'] ?? 'assets/shop.png',
                                 storeID: store['id'] ??'',
                               ), imageOnTop: true),
                             );
@@ -176,7 +193,7 @@ class _HomePageState extends State<HomePage> {
                               child: StoreCard(store: Store(
                                 name: store['namaToko'] ?? '',
                                 description: store['deskripsi'] ?? '',
-                                imageURL: store['logo'] ?? '',
+                                imageURL: store['imageURL'] ?? 'assets/shop.png',
                                 storeID: store['id'] ?? '',
                               ), imageOnTop: true),
                             );
@@ -209,7 +226,7 @@ class _HomePageState extends State<HomePage> {
                               store: Store(
                                 name: store['namaToko'] ?? '',
                                 description: store['deskripsi'] ?? '',
-                                imageURL: store['logo'] ?? '',
+                                imageURL: store['imageURL'] ?? 'assets/shop.png',
                                 storeID: store['id'] ?? '',
                               )
                           );

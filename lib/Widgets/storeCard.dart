@@ -30,6 +30,43 @@ class StoreCard extends StatefulWidget {
 }
 
 class _StoreCardState extends State<StoreCard> {
+  Widget _buildImage(String imageUrl) {
+    return imageUrl.startsWith('http')
+        ? SizedBox(
+      height: 120,
+      width: double.infinity,
+      child: Image.network(
+        imageUrl,
+        height: 120,
+        width: double.infinity,
+        fit: BoxFit.cover,
+        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+          if (loadingProgress == null) return child;
+          return Container(
+            height: 120,
+            width: double.infinity,
+            child: Center(
+              child: CircularProgressIndicator(
+                value: loadingProgress.expectedTotalBytes != null
+                    ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                    : null,
+              ),
+            ),
+          );
+        },
+        errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+          return const Icon(Icons.error);
+        },
+      ),
+    )
+        : Image.asset(
+      imageUrl,
+      height: 120,
+      width: double.infinity,
+      fit: BoxFit.cover,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -49,11 +86,7 @@ class _StoreCardState extends State<StoreCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
-                  child: Image.asset(
-                    widget.store.imageURL,
-                    height: 120,
-                    fit: BoxFit.cover,
-                  ),
+                  child: _buildImage(widget.store.imageURL),
                 ),
                 const SizedBox(height: 10),
                 Text(
@@ -77,12 +110,7 @@ class _StoreCardState extends State<StoreCard> {
             // Image
             Expanded(
               flex: 2,
-              child: Image.asset(
-                widget.store.imageURL,
-                width: double.infinity,
-                height: 120,
-                fit: BoxFit.cover,
-              ),
+              child: _buildImage(widget.store.imageURL),
             ),
             const SizedBox(width: 10),
             // Text information

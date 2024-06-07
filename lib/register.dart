@@ -1,6 +1,8 @@
+import 'package:ecobites/authenticate/Controller/storeController.dart';
 import 'package:ecobites/authenticate/Controller/userController.dart';
 import 'package:ecobites/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'login.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -41,16 +43,15 @@ class _RegisterPageState extends State<RegisterPage> {
         'phone': phoneController.text.trim(),
         'provinces': selectedProvince,
       };
-      await Auth.registerUser(
-          context, emailController.text.trim(), passController.text.trim());
-      await addUserDetailsToFirestore(userData);
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => LoginPage()),
-        (Route<dynamic> route) => false,
-      );
+      Map<String, dynamic> storeData ={
+        'alamat': addressController.text.trim(),
+        'namaToko': firstNameController.text.trim(),
+      };
+      await Auth.registerUser(context, emailController.text.trim(), passController.text.trim(), storeData, userData);
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {

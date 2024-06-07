@@ -42,6 +42,10 @@ class ProductDetailPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.star, color: Colors.yellow),
+                  Icon(Icons.star, color: Colors.yellow),
+                  Icon(Icons.star, color: Colors.yellow),
+                  Icon(Icons.star, color: Colors.yellow),
+                  Icon(Icons.star_border, color: Colors.yellow),
                   SizedBox(width: 5),
                   Text(
                     '4.0', // Rating value
