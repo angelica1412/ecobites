@@ -200,14 +200,29 @@ class _StorePageState extends State<userStorePage> {
                 height: MediaQuery.of(context).size.height *
                     0.25, // Tinggi 1/10 dari layar
                 width: double.infinity, // Lebar penuh
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: _storeData['imageURL'] != null
-                        ? NetworkImage(_storeData['imageURL']!)
-                        : const AssetImage('assets/shop.png')
-                    as ImageProvider,
-                    fit: BoxFit.cover,
-                  ),
+                child: _storeData['imageURL'] != null
+                ? Image.network(
+                  _storeData['imageURL']!,
+                  fit: BoxFit.cover,
+                  loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Container(
+                      width: double.infinity,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                              : null,
+                        ),
+                      ),
+                    );
+                  },
+                  errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                    return const Icon(Icons.error);
+                  },
+                ): const Image(
+                  image: AssetImage('assets/shop.png'),
+                  fit: BoxFit.cover,
                 ),
               ),
               //card toko

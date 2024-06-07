@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ecobites/authenticate/Controller/storeController.dart';
 import 'package:image_picker/image_picker.dart';
@@ -21,6 +22,7 @@ class _EditStorePageState extends State<EditStorePage> {
   TextEditingController _addressController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
   File? _imageFile;
+  String? _imageURL;
   bool _isLoading = false;
 
   @override
@@ -39,6 +41,7 @@ class _EditStorePageState extends State<EditStorePage> {
         _storeNameController.text = storeData['namaToko'] ?? '';
         _addressController.text = storeData['alamat'] ?? '';
         _descriptionController.text = storeData['deskripsi'] ?? '';
+        _imageURL = storeData['imageURL']?? 'assets/shop.png';
         _isLoading = false;
       });
     } else {
@@ -148,7 +151,32 @@ class _EditStorePageState extends State<EditStorePage> {
                 height: 200,
                 width: double.infinity,
                 fit: BoxFit.cover,
+              )
+            else if(_imageURL != null)
+              Image.network(
+                _imageURL!,
+                height: 200,
+                width: double.infinity,
+                fit: BoxFit.cover,
+                loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Container(
+                    height: 120,
+                    width: double.infinity,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                            : null,
+                      ),
+                    ),
+                  );
+                },
+                errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                  return const Icon(Icons.error);
+                },
               ),
+
             const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

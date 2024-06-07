@@ -35,14 +35,14 @@ Future<List<Map<String, String>>?> getAllStores() async {
         final data = doc.data() as Map<String, dynamic>;
         final alamat = data['alamat'] ?? 'no address';
         final deskripsi = data['deskripsi'] ?? 'no desc';
-        final logo = data['logo'] ?? 'assets/shop.png';
+        final imageURL = data['imageURL'] ?? 'assets/shop.png';
         final namaToko = data['namaToko'] ?? '-';
         final id = doc.id;
 
         stores.add({
           'alamat': alamat,
           'deskripsi': deskripsi,
-          'logo': logo,
+          'imageURL': imageURL,
           'namaToko': namaToko,
           'id' : id,
         });

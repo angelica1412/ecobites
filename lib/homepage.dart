@@ -160,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                               child: StoreCard(store: Store(
                                 name: store['namaToko'] ?? '',
                                 description: store['deskripsi'] ?? '',
-                                imageURL: store['logo'] ?? '',
+                                imageURL: store['imageURL'] ?? 'assets/shop.png',
                                 storeID: store['id'] ??'',
                               ), imageOnTop: true),
                             );
@@ -193,7 +193,7 @@ class _HomePageState extends State<HomePage> {
                               child: StoreCard(store: Store(
                                 name: store['namaToko'] ?? '',
                                 description: store['deskripsi'] ?? '',
-                                imageURL: store['logo'] ?? '',
+                                imageURL: store['imageURL'] ?? 'assets/shop.png',
                                 storeID: store['id'] ?? '',
                               ), imageOnTop: true),
                             );
@@ -226,7 +226,7 @@ class _HomePageState extends State<HomePage> {
                               store: Store(
                                 name: store['namaToko'] ?? '',
                                 description: store['deskripsi'] ?? '',
-                                imageURL: store['logo'] ?? '',
+                                imageURL: store['imageURL'] ?? 'assets/shop.png',
                                 storeID: store['id'] ?? '',
                               )
                           );
