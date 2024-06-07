@@ -1,5 +1,6 @@
 import 'package:ecobites/UploadBarang.dart';
 import 'package:ecobites/authenticate/Controller/userController.dart';
+import 'package:ecobites/editStorePage.dart';
 import 'package:flutter/material.dart';
 import 'package:ecobites/Widgets/ProductCard.dart';
 import 'package:ecobites/Widgets/category_button.dart';
@@ -201,9 +202,10 @@ class _StorePageState extends State<userStorePage> {
                 width: double.infinity, // Lebar penuh
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage(
-                        _storeData['logo'] ??
-                            'assets/shop.png'), // Ganti dengan path foto Anda
+                    image: _storeData['imageURL'] != null
+                        ? NetworkImage(_storeData['imageURL']!)
+                        : const AssetImage('assets/shop.png')
+                    as ImageProvider,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -278,8 +280,17 @@ class _StorePageState extends State<userStorePage> {
                             ),
                             Spacer(),
                             GestureDetector(
-                              onTap: (){
-
+                              onTap: () async {
+                                final result = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => EditStorePage(storeID: widget.storeID),
+                                  ),
+                                );
+                                if (result == true) {
+                                  // If data was saved, reload the store data
+                                  _fetchStoreData();
+                                }
                               },
                               child: Container(
                                   child:

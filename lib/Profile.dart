@@ -71,7 +71,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             color: Colors.black,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context, true);
           },
         ),
         elevation: 0,

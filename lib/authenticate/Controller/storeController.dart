@@ -69,13 +69,13 @@ Future<Map<String, String>?> getStorebyID(String storeId) async {
       final data = doc.data() as Map<String, dynamic>;
       final alamat = data['alamat'] ?? 'no address';
       final deskripsi = data['deskripsi'] ?? 'no desc';
-      final logo = data['logo'] ?? 'assets/shop.png';
+      final imageURL = data['imageURL'] ?? 'assets/shop.png';
       final namaToko = data['namaToko'] ?? '-';
 
       return {
         'alamat': alamat,
         'deskripsi': deskripsi,
-        'logo': logo,
+        'imageURL': imageURL,
         'namaToko': namaToko,
       };
     } else {
@@ -87,24 +87,15 @@ Future<Map<String, String>?> getStorebyID(String storeId) async {
     return null;
   }
 }
-Future<void> getStoreID() async {
-  try {
-    // Ganti 'stores' dengan nama koleksi Anda
-    DocumentSnapshot storeDoc = await FirebaseFirestore.instance.collection('Stores').doc('storeId').get();
-
-    if (storeDoc.exists) {
-      String storeID = storeDoc.id;
-      print('Store ID: $storeID');
-      // Lakukan sesuatu dengan storeID, seperti melewatinya ke fungsi atau widget lainnya
-    } else {
-      print('Store document does not exist');
-    }
-  } catch (e) {
-    print('Error getting store document: $e');
-  }
-}
 
 //Update Store Data by ID
-Future<void> updateStorebyID(Map<String, dynamic> updatedData) async {
+Future<void> updateStorebyID(String storeID, Map<String, dynamic> updatedData) async {
+  final FirebaseFirestore db = FirebaseFirestore.instance;
 
+  try {
+    await db.collection('Stores').doc(storeID).update(updatedData);
+    print('Store data updated in Firestore');
+  }catch(e){
+    print('Error updating store data: $e');
+  }
 }
