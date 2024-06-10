@@ -399,6 +399,7 @@ class _StorePageState extends State<userStorePage> {
                               fromHome: false,
                               fromUserToko: true,
                               isEdit: false,
+                              storeID: widget.storeID,
                             )));
               },
               child: Icon(Icons.add),
