@@ -1,6 +1,9 @@
 //Add Store Data ro Cloud FireStore
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 Future<void> addStoreToFireStore(Map<String, dynamic> storeData) async {
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -89,13 +92,42 @@ Future<Map<String, String>?> getStorebyID(String storeId) async {
 }
 
 //Update Store Data by ID
-Future<void> updateStorebyID(String storeID, Map<String, dynamic> updatedData) async {
+Future<void> updateStorebyID(String storeID, Map<String, dynamic> updatedData, File? imageFile) async {
   final FirebaseFirestore db = FirebaseFirestore.instance;
+  final FirebaseStorage storage = FirebaseStorage.instance;
 
   try {
-    await db.collection('Stores').doc(storeID).update(updatedData);
-    print('Store data updated in Firestore');
-  }catch(e){
+    // Get the current store document
+    final docSnapshot = await db.collection('Stores').doc(storeID).get();
+    if (docSnapshot.exists) {
+      final currentData = docSnapshot.data() as Map<String, dynamic>;
+      final currentImageUrl = currentData['imageURL'] ?? null;
+
+      // If a new image file is provided, delete the old image and upload the new one
+      if (imageFile != null) {
+        if (currentImageUrl != null && currentImageUrl != 'assets/shop.png') {
+          // Delete the old image from Firebase Storage
+          final oldImageRef = storage.refFromURL(currentImageUrl);
+          await oldImageRef.delete();
+        }
+
+        // Upload the new image to Firebase Storage
+        final storageRef = storage.ref().child('store_images').child('$storeID.jpg');
+        final uploadTask = storageRef.putFile(imageFile);
+        final TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => {});
+        final imageUrl = await taskSnapshot.ref.getDownloadURL();
+
+        // Update the imageURL in the updatedData map
+        updatedData['imageURL'] = imageUrl;
+      }
+
+      // Update Firestore document
+      await db.collection('Stores').doc(storeID).update(updatedData);
+      print('Store data updated in Firestore');
+    } else {
+      print('Store document does not exist');
+    }
+  } catch (e) {
     print('Error updating store data: $e');
   }
 }

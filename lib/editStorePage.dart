@@ -80,36 +80,12 @@ class _EditStorePageState extends State<EditStorePage> {
     setState(() {
       _isLoading = true;
     });
-    // Implement logic to save store data
-    // Get values from text controllers and save them to the database
-    // You can use the updateStoreInfo method from your storeController
-    // Example:
     await updateStorebyID(widget.storeID, {
       'namaToko': _storeNameController.text,
       'alamat': _addressController.text,
       'deskripsi': _descriptionController.text,
       // Add other fields as needed
-    });
-
-    // Upload image to Firebase Storage if an image is picked
-    if (_imageFile != null) {
-      try {
-        String fileName = 'store_images/${DateTime.now().millisecondsSinceEpoch}.jpg';
-        Reference storageRef = FirebaseStorage.instance.ref().child(fileName);
-        UploadTask uploadTask = storageRef.putFile(_imageFile!);
-
-        await uploadTask.whenComplete(() => null);
-
-        String downloadURL = await storageRef.getDownloadURL();
-        print('File URL: $downloadURL');
-
-        // Update store data with image URL
-        await updateStorebyID(widget.storeID, {'imageURL': downloadURL});
-        print('Image URL added to store data');
-      } catch (e) {
-        print('Error uploading image: $e');
-      }
-    }
+    }, _imageFile);
 
     // Show a success message or navigate back to the previous screen
     setState(() {
