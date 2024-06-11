@@ -27,7 +27,6 @@ class _StorePageState extends State<userStorePage> {
   final FocusNode _searchFocusNode =
       FocusNode(); // Untuk melacak apakah sedang dalam mode pencarian
   bool _isLoading = true;
-  Map<String, String> _storeData = {};
   List<Product> _productData =[];
 
 

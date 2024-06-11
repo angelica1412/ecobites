@@ -43,7 +43,7 @@ class _RegisterPageState extends State<RegisterPage> {
       };
       Map<String, dynamic> storeData ={
         'alamat': addressController.text.trim(),
-        'namaToko': firstNameController.text.trim(),
+        'namaToko': userNameController.text.trim(),
       };
       await Auth.registerUser(context, emailController.text.trim(), passController.text.trim(), storeData, userData);
     }
