@@ -6,7 +6,6 @@ import 'package:ecobites/login.dart';
 import 'package:ecobites/onboardingscreen.dart';
 import 'package:ecobites/register.dart';
 import 'package:ecobites/services/auth.dart';
-import 'package:ecobites/testHomepage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'aftercheckout.dart'; // Import AfterCheckoutPage
