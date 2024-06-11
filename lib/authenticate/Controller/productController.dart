@@ -73,6 +73,55 @@ Future<Map<String, String>?> getProductbyID(String productID) async {
 
 }
 
+// Get all Products by Store ID
+Future<List<Map<String, dynamic>>?> getProductsByStoreID(String storeID) async {
+  final FirebaseFirestore db = FirebaseFirestore.instance;
+  try {
+    // Get reference to the store's products collection
+    final storeRef = db.collection('Stores').doc(storeID);
+    final QuerySnapshot querySnapshot = await storeRef.collection("Products").get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      List<Map<String, dynamic>> products = [];
+      for (var doc in querySnapshot.docs) {
+        final data = doc.data() as Map<String, dynamic>;
+        final id=  doc.id; // Add product ID to the data
+        final namaBarang = data['namaBarang']??'';
+        final jumlahBarang = data['jumlahBarang']??'';
+        final satuanBarang = data['satuanBarang']??'';
+        final kualitasBarang = data['kualitasBarang']??'';
+        final hargaAsliBarang = data['hargaAsliBarang']??'';
+        final discount = data['discount']??'';
+        final hargaAkhirBarang = data['hargaAkhirBarang']??'';
+        final kategoriBarang = data['kategoriBarang']??'';
+        final deskripsiBarang = data['deskripsiBarang']??'';
+        final productImageURL = data['productImageURL']??'';
+
+        products.add({
+          'id':id,
+          'namaBarang':namaBarang,
+          'jumlahBarang':jumlahBarang,
+          'satuanBarang':satuanBarang,
+          'kualitasBarang':kualitasBarang,
+          'hargaAsliBarang':hargaAsliBarang,
+          'discount':discount,
+          'hargaAkhirBarang':hargaAkhirBarang,
+          'kategoriBarang':kategoriBarang,
+          'deskripsiBarang':deskripsiBarang,
+          'productImageURL' : productImageURL,
+        });
+      }
+      return products;
+    } else {
+      print('No Products Found for the given store ID');
+      return [];
+    }
+  } catch (e) {
+    print('Error getting products by store ID: $e');
+    return null;
+  }
+}
+
 //Update Product Data by ID
 Future<void> updateProductbyID(String productID, Map<String, dynamic> updatedData, File? imageFile) async {
   final FirebaseFirestore db = FirebaseFirestore.instance;

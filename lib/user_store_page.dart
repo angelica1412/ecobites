@@ -6,6 +6,7 @@ import 'package:ecobites/Widgets/ProductCard.dart';
 import 'package:ecobites/Widgets/category_button.dart';
 import 'package:ecobites/Widgets/share_widget.dart';
 
+import 'authenticate/Controller/productController.dart';
 import 'authenticate/Controller/storeController.dart';
 
 class userStorePage extends StatefulWidget {
@@ -23,6 +24,7 @@ class _StorePageState extends State<userStorePage> {
   final FocusNode _searchFocusNode = FocusNode();// Untuk melacak apakah sedang dalam mode pencarian
   bool _isLoading = true;
   Map<String, String> _storeData = {};
+  List<Product> _productData =[];
 
 
 
@@ -37,9 +39,11 @@ class _StorePageState extends State<userStorePage> {
       _isLoading = true; // Mulai memuat data
     });
     final storeData = await getStorebyID(widget.storeID);
+    final productData= await getProductsByStoreID(widget.storeID);
     if (storeData != null) {
       setState(() {
         _storeData = storeData;
+        _productData = productData!.map((data) => Product.fromMap(data, data['id'])).toList();
         _isLoading = false; // Data selesai dimuat
       });
     } else {
@@ -55,55 +59,70 @@ class _StorePageState extends State<userStorePage> {
 
   List<Product> products = [
     Product(
+      id: "1",
       name: 'Martabak',
       description: 'Makanan yang terbuat dari telur dan daun bawang',
       price: 15000,
       imageURL: 'assets/martabak.jpg',
       category: 'Food',
+      jumlah: 10
     ),
     Product(
+      id: "2",
       name: 'Terang Bulan',
       description: 'Makanan yang manis dapat menambahkan mood',
       price: 20000,
       imageURL: 'assets/terangbulan.jpg',
       category: 'Food',
+      jumlah: 10
+
     ),
     Product(
+      id: "2",
       name: 'Pupuk Urea',
       description: 'Pupuk ini dapat mempercepat pertumbuhan tanaman',
       price: 5000,
       imageURL: 'assets/pupukurea.jpg',
       category: 'Hasil Daur',
+      jumlah: 10
 
     ),
     Product(
+      id: "2",
       name: 'Roti Berjamur',
       description: 'Bahan ini dapat digunakan sebagai bahan daur pupuk untuk tanaman tomat ',
       price: 7000,
       imageURL: 'assets/rotiberjamur.jpg',
       category: 'Bahan Daur',
+      jumlah: 10
 
     ),
     Product(
+      id: "2",
       name: 'Pisang Goreng',
       description: 'Description for Product 2',
       price: 2000,
       imageURL: 'assets/product1.png',
       category: 'Food',
+      jumlah: 10
     ),
     Product(
+      id: "2",
       name: 'Pupuk',
       description: 'Pupuk yang tinggi kualitas karbon',
       price: 1000,
       imageURL: 'assets/pupuk.png',
       category: 'Hasil Daur',
+      jumlah: 10
     ),
     Product(
+      id: "2",
       name: 'Sosis Bakar',
       description: 'Sosis ini berkhasiat tinggi',
       price: 2305,
       imageURL: 'assets/sosis.jpg',
       category: 'Food',
+      jumlah: 10
     ),
     // Add more products as needed
   ];
@@ -355,32 +374,31 @@ class _StorePageState extends State<userStorePage> {
                 ],
               ),
               const SizedBox(height: 20),
-              if(searchQuery.isEmpty)...[
-                ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: _getProductsByCategory(_selectedCategory).length,
-                itemBuilder: (context, index) {
-                  final product = _getProductsByCategory(_selectedCategory)[index];
-                  return ProductCard(
-                    product: product,
-                    isUserStore: true,
-                  );
-                },
-              ),
-              ]
-              else...[
+              if (searchQuery.isEmpty) ...[
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: _getProductsByCategory(_selectedCategory).length,
+                  itemCount: _productData.where((product) => product.category == _selectedCategory).length,
                   itemBuilder: (context, index) {
-                    final product = _getProductsByCategory(_selectedCategory)[index];
-                    if(product.name.toLowerCase().contains(searchQuery.toLowerCase()))
-                      return ProductCard(
-                        product: product,
-                        isUserStore: true,
-                      );
+                    final product = _productData.where((product) => product.category == _selectedCategory).toList()[index];
+                    return ProductCard(
+                      product: product,
+                      isUserStore: true,
+                    );
+                  },
+                ),
+              ]
+              else ...[
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: _productData.where((product) => product.category == _selectedCategory && product.name.toLowerCase().contains(searchQuery.toLowerCase())).length,
+                  itemBuilder: (context, index) {
+                    final product = _productData.where((product) => product.category == _selectedCategory && product.name.toLowerCase().contains(searchQuery.toLowerCase())).toList()[index];
+                    return ProductCard(
+                      product: product,
+                      isUserStore: true,
+                    );
                   },
                 ),
               ],

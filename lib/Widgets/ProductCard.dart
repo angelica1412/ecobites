@@ -1,22 +1,58 @@
+
 import 'package:ecobites/UploadBarang.dart';
 import 'package:flutter/material.dart';
 
 class Product {
+  final String id;
   final String name;
   final String description;
   final double price;
   final String imageURL;
   final String category;
+  final int jumlah;
   int quantity;
 
   Product({
+    required this.id,
     required this.name,
     required this.description,
     required this.price,
     required this.imageURL,
     required this.category,
+    required this.jumlah,
     this.quantity = 0,
   });
+  factory Product.fromMap(Map<String, dynamic> data, String documentId) {
+    double parseDouble(dynamic value) {
+      if (value is String) {
+        return double.tryParse(value) ?? 0.0;
+      } else if (value is num) {
+        return value.toDouble();
+      } else {
+        return 0.0;
+      }
+    }
+
+    int parseInt(dynamic value) {
+      if (value is String) {
+        return int.tryParse(value) ?? 0;
+      } else if (value is num) {
+        return value.toInt();
+      } else {
+        return 0;
+      }
+    }
+
+    return Product(
+      id: documentId,
+      name: data['namaBarang'] ?? '',
+      description: data['deskripsiBarang'] ?? '',
+      price: parseDouble(data['hargaAkhirBarang']),
+      imageURL: data['productImageURL'] ?? 'assets/shop.png',
+      category: data['kategoriBarang'] ?? 'Other',
+      jumlah: parseInt(data['jumlahBarang']),
+    );
+  }
 }
 
 class ProductCard extends StatefulWidget {
@@ -32,7 +68,42 @@ class ProductCard extends StatefulWidget {
 }
 
 class _ProductCardState extends State<ProductCard> {
-
+  Widget _buildImage(String imageUrl) {
+    return imageUrl.startsWith('http')
+        ? SizedBox(
+      height: 120,
+      width: double.infinity,
+      child: Image.network(
+        imageUrl,
+        height: 120,
+        width: double.infinity,
+        fit: BoxFit.cover,
+        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+          if (loadingProgress == null) return child;
+          return Container(
+            height: 120,
+            width: double.infinity,
+            child: Center(
+              child: CircularProgressIndicator(
+                value: loadingProgress.expectedTotalBytes != null
+                    ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                    : null,
+              ),
+            ),
+          );
+        },
+        errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+          return const Icon(Icons.error);
+        },
+      ),
+    )
+        : Image.asset(
+      imageUrl,
+      height: 120,
+      width: double.infinity,
+      fit: BoxFit.cover,
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -44,12 +115,7 @@ class _ProductCardState extends State<ProductCard> {
             // Gambar produk
             Expanded(
               flex: 2,
-              child: Image.asset(
-                widget.product.imageURL,
-                width: double.infinity,
-                height: 120,
-                fit: BoxFit.cover,
-              ),
+              child: _buildImage(widget.product.imageURL),
             ),
             const SizedBox(width: 10),
             // Informasi produk

@@ -100,9 +100,9 @@ class _UploadBarangState extends State<UploadBarang> {
       });
       Map<String, dynamic> productData = {
         'namaBarang': _namaBarang.text.trim(),
-        'JumlahBarang': _selectedQuantity,
+        'jumlahBarang': _selectedQuantity,
         'satuanBarang': _selectedUnit,
-        'kualitas Barang': _selectedQuality,
+        'kualitasBarang': _selectedQuality,
         'hargaAsliBarang': _hargaAsliController.text.trim(),
         'discount': _selectedDiscount,
         'hargaAkhirBarang': _hargaDiskonController.text.trim(),
