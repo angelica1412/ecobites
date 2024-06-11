@@ -32,6 +32,7 @@ class _HomePageState extends State<HomePage> {
             100, // Mengatur tinggi toolbar (termasuk title dan actions)
         backgroundColor: const Color(0xFFFAFAFA),
         elevation: 0,
+        automaticallyImplyLeading: false,
         title: Row(
           mainAxisAlignment:
               MainAxisAlignment.start, // Menengahkan title secara vertikal

@@ -1,7 +1,12 @@
 import 'dart:async';
+import 'package:ecobites/PengaturanAkun.dart';
+import 'package:ecobites/Profile.dart';
 import 'package:ecobites/homepage.dart';
 import 'package:ecobites/login.dart';
 import 'package:ecobites/onboardingscreen.dart';
+import 'package:ecobites/register.dart';
+import 'package:ecobites/services/auth.dart';
+import 'package:ecobites/testHomepage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'aftercheckout.dart'; // Import AfterCheckoutPage
@@ -24,8 +29,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Auth.checkUserLoginStatus(context);
+
     return MaterialApp(
-      home: SplashScreen(),
+      home: const SplashScreen(),
       debugShowCheckedModeBanner: false,
       routes: {
         '/onboardingscreen': (context) => OnBoardingScreen(),
@@ -50,7 +57,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(
       const Duration(seconds: 3),
       () {
-        Navigator.pushReplacementNamed(context, '/onboardingscreen'); // Navigasi ke Onboarding Screen setelah beberapa waktu
+        Auth.checkUserLoginStatus(context);
       },
     );
   }
@@ -84,7 +91,8 @@ class _SplashScreenState extends State<SplashScreen> {
                     style: TextStyle(
                       color: Colors.green, // Warna untuk "Bites"
                       fontSize: 24, // Ukuran teks untuk "Bites"
-                      fontWeight: FontWeight.bold, // Ketebalan teks untuk "Bites"
+                      fontWeight:
+                          FontWeight.bold, // Ketebalan teks untuk "Bites"
                     ),
                   ),
                 ],

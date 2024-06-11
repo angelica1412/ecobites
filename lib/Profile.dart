@@ -1,4 +1,5 @@
 import 'package:ecobites/homepage.dart';
+import 'package:ecobites/services/auth.dart';
 import 'package:ecobites/user_store_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,8 +16,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  String? userFirstName;
-  String? userLastName;
+  String? userName;
   String? userEmail;
   String? userPhoneNumber;
   bool _isLoading = true;
@@ -35,8 +35,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         print('User Details: $userDetails');
         setState(() {
           userEmail = userDetails['email'];
-          userFirstName = userDetails['firstName'];
-          userLastName = userDetails['lastName'];
+          userName = userDetails['username'];
           userPhoneNumber = userDetails['phone'];
           _isLoading = false;
         });
@@ -70,7 +69,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             color: Colors.black,
           ),
           onPressed: () {
-            Navigator.pop(context, MaterialPageRoute(builder: (context) => HomePage()));
+            Navigator.pop(
+                context, MaterialPageRoute(builder: (context) => HomePage()));
           },
         ),
         elevation: 0,
@@ -101,15 +101,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     width: 75,
                                   ),
                                 ),
-                                SizedBox(width: 15,),
+                                SizedBox(
+                                  width: 15,
+                                ),
                                 Container(
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        _getTrimmedText(
-                                            '$userFirstName $userLastName', 15),
+                                        _getTrimmedText('$userName', 15),
                                         style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 18,
@@ -120,8 +121,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         height: 5,
                                       ),
                                       Text(
-                                        _getTrimmedText(
-                                            '$userEmail',
+                                        _getTrimmedText('$userEmail',
                                             20), // Call the method to trim text
                                         style: TextStyle(
                                           color: Colors.black,
@@ -306,7 +306,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         height: 50,
                         child: ElevatedButton(
                           onPressed: () {
-                            // Add your logout action here
+                            Auth.logout(context);
                           },
                           style: ElevatedButton.styleFrom(
                             foregroundColor: Colors.red[900],

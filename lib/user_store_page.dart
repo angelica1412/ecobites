@@ -1,8 +1,10 @@
 import 'package:ecobites/UploadBarang.dart';
+import 'package:ecobites/historypage.dart';
 import 'package:flutter/material.dart';
 import 'package:ecobites/Widgets/ProductCard.dart';
 import 'package:ecobites/Widgets/category_button.dart';
 import 'package:ecobites/Widgets/share_widget.dart';
+import 'package:ecobites/authenticate/Controller/storeController.dart';
 
 class userStorePage extends StatefulWidget {
   const userStorePage({super.key});
@@ -14,8 +16,10 @@ class userStorePage extends StatefulWidget {
 class _StorePageState extends State<userStorePage> {
   String _selectedCategory = 'Food';
   bool _searching = false;
-  String searchQuery= "";
-  final FocusNode _searchFocusNode = FocusNode();// Untuk melacak apakah sedang dalam mode pencarian
+  String searchQuery = "";
+  Map<String, String> _storeData = {};
+  final FocusNode _searchFocusNode =
+      FocusNode(); // Untuk melacak apakah sedang dalam mode pencarian
 
   void _setSelectedCategory(String category) {
     setState(() {
@@ -46,15 +50,14 @@ class _StorePageState extends State<userStorePage> {
       price: 5000,
       imageURL: 'assets/pupukurea.jpg',
       category: 'Hasil Daur',
-
     ),
     Product(
       name: 'Roti Berjamur',
-      description: 'Bahan ini dapat digunakan sebagai bahan daur pupuk untuk tanaman tomat ',
+      description:
+          'Bahan ini dapat digunakan sebagai bahan daur pupuk untuk tanaman tomat ',
       price: 7000,
       imageURL: 'assets/rotiberjamur.jpg',
       category: 'Bahan Daur',
-
     ),
     Product(
       name: 'Pisang Goreng',
@@ -97,27 +100,26 @@ class _StorePageState extends State<userStorePage> {
         backgroundColor: Colors.white,
         elevation: 0,
         actions: _buildActions(),
-        leading: _searching?
-        IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            setState(() {
-              _searching=false;
-            }); // Kembali ke halaman sebelumnya
-          },
-        )
-            :
-        IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context); // Kembali ke halaman sebelumnya
-          },
-        ),
+        leading: _searching
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.black),
+                onPressed: () {
+                  setState(() {
+                    _searching = false;
+                  }); // Kembali ke halaman sebelumnya
+                },
+              )
+            : IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.black),
+                onPressed: () {
+                  Navigator.pop(context); // Kembali ke halaman sebelumnya
+                },
+              ),
         title: _searching
             ? TextField(
                 controller: _searchController,
                 focusNode: _searchFocusNode,
-                onChanged: (value){
+                onChanged: (value) {
                   setState(() {
                     searchQuery = value;
                   });
@@ -135,8 +137,7 @@ class _StorePageState extends State<userStorePage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-        centerTitle: true,
-
+        // centerTitle: true,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(4.0), // Tinggi bayangan
           child: Container(
@@ -173,100 +174,136 @@ class _StorePageState extends State<userStorePage> {
               ),
               //card toko
               Container(
-                padding: const EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 3,
-                      blurRadius: 7,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min, // Menyesuaikan tinggi dengan konten
-                  children: [
-                    Expanded(
-                      flex: 3,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: RichText(
-                                    text: TextSpan(
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: MediaQuery.of(context).size.height * 0.03,
-                                        height: 1.5,
-                                      ),
-                                      children: const [
-                                        TextSpan(
-                                          text: 'Grande',
-                                          style: TextStyle(fontWeight: FontWeight.bold),
+                  padding: const EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 3,
+                        blurRadius: 7,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisSize:
+                        MainAxisSize.min, // Menyesuaikan tinggi dengan konten
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 8.0),
+                                    child: RichText(
+                                      text: TextSpan(
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.03,
+                                          height: 1.5,
                                         ),
+                                        children: const [
+                                          TextSpan(
+                                            text: 'Grande',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  const Padding(
+                                    padding: EdgeInsets.only(bottom: 8.0),
+                                    child: Row(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(right: 8.0),
+                                          child: Icon(Icons.star,
+                                              color: Colors.yellow),
+                                        ),
+                                        Text('5.0'),
                                       ],
                                     ),
                                   ),
-                                ),
-                                const Padding(
-                                  padding: EdgeInsets.only(bottom: 8.0),
-                                  child: Row(
+                                  const Row(
                                     children: [
                                       Padding(
                                         padding: EdgeInsets.only(right: 8.0),
-                                        child: Icon(Icons.star, color: Colors.yellow),
+                                        child: Icon(Icons.rate_review_outlined),
                                       ),
-                                      Text('5.0'),
+                                      Text('128 reviews'),
                                     ],
                                   ),
-                                ),
-                                const Row(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(right: 8.0),
-                                      child: Icon(Icons.rate_review_outlined),
-                                    ),
-                                    Text('128 reviews'),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            Spacer(),
-                            GestureDetector(
-                              onTap: (){
-
-                              },
-                              child: Container(
-                                  child:
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.edit_note_outlined,
-                                        ),
-                                        Text('Edit'),
-                                      ],
-                                    ),
-                                  )
-                              ) ,
-
-                            ),
-                          ],
+                                ],
+                              ),
+                              Spacer(),
+                              GestureDetector(
+                                onTap: () {},
+                                child: Container(
+                                    child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.edit_note_outlined,
+                                      ),
+                                      Text('Edit'),
+                                    ],
+                                  ),
+                                )),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                )
+                    ],
+                  )),
 
+              const SizedBox(height: 15),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                child: Card(
+                  elevation: 3.0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Deskripsi Toko:',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        const SizedBox(
+                            height: 6), // Space between title and description
+                        Text(
+                          _storeData['deskripsi'] ??
+                              'Deskripsi toko tidak tersedia.',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
 
               const SizedBox(height: 20),
@@ -292,28 +329,31 @@ class _StorePageState extends State<userStorePage> {
                 ],
               ),
               const SizedBox(height: 20),
-              if(searchQuery.isEmpty)...[
-                ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: _getProductsByCategory(_selectedCategory).length,
-                itemBuilder: (context, index) {
-                  final product = _getProductsByCategory(_selectedCategory)[index];
-                  return ProductCard(
-                    product: product,
-                    isUserStore: true,
-                  );
-                },
-              ),
-              ]
-              else...[
+              if (searchQuery.isEmpty) ...[
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: _getProductsByCategory(_selectedCategory).length,
                   itemBuilder: (context, index) {
-                    final product = _getProductsByCategory(_selectedCategory)[index];
-                    if(product.name.toLowerCase().contains(searchQuery.toLowerCase()))
+                    final product =
+                        _getProductsByCategory(_selectedCategory)[index];
+                    return ProductCard(
+                      product: product,
+                      isUserStore: true,
+                    );
+                  },
+                ),
+              ] else ...[
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: _getProductsByCategory(_selectedCategory).length,
+                  itemBuilder: (context, index) {
+                    final product =
+                        _getProductsByCategory(_selectedCategory)[index];
+                    if (product.name
+                        .toLowerCase()
+                        .contains(searchQuery.toLowerCase()))
                       return ProductCard(
                         product: product,
                         isUserStore: true,
@@ -385,6 +425,16 @@ class _StorePageState extends State<userStorePage> {
             ShareWidget.showShareBottomSheet(context);
           },
         ),
+        IconButton(
+          icon: const Icon(Icons.history),
+          color: Colors.black,
+          onPressed: () {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => HistoryPage()),
+              ); // Pindah ke halaman History
+          },
+        )
       ];
     }
   }

@@ -14,12 +14,14 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
   String? userLastName;
   String? userEmail;
   String? userPhoneNumber;
+  String? userName;
   bool _isLoading = true;
 
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
 
   @override
   void initState() {
@@ -37,24 +39,28 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
           userFirstName = userDetails['firstName'];
           userLastName = userDetails['lastName'];
           userPhoneNumber = userDetails['phone'];
+          userName = userDetails['username'];
 
           _emailController.text = userEmail!;
           _firstNameController.text = userFirstName!;
           _lastNameController.text = userLastName!;
           _phoneController.text = userPhoneNumber!;
+          _usernameController.text = userName!;
 
           _isLoading = false;
         });
       } else {
         print('User details not found');
         setState(() {
-          _isLoading = false; // Mengubah status loading menjadi false jika data tidak ditemukan
+          _isLoading =
+              false; // Mengubah status loading menjadi false jika data tidak ditemukan
         });
       }
     } catch (e) {
       print('Error fetching user details: $e');
       setState(() {
-        _isLoading = false; // Mengubah status loading menjadi false jika terjadi error
+        _isLoading =
+            false; // Mengubah status loading menjadi false jika terjadi error
       });
     }
   }
@@ -103,7 +109,8 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                         const CircleAvatar(
                           radius: 50,
                           backgroundColor: Colors.grey,
-                          child: Icon(Icons.person, size: 50, color: Colors.white),
+                          child:
+                              Icon(Icons.person, size: 50, color: Colors.white),
                         ),
                         TextButton(
                           onPressed: () {
@@ -134,38 +141,22 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                             const Text('First Name: '),
                             const SizedBox(height: 8),
                             TextField(
-                              controller: _firstNameController,
+                              controller: _usernameController,
                               decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 8.0, horizontal: 10.0),
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
                                 ),
-                                labelText: 'Nama Depan',
-                                labelStyle: TextStyle(color: Colors.black),
+                                hintText: '$userName',
+                                hintStyle: TextStyle(color: Colors.black),
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 16), // Add some spacing between the columns
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text('Last Name: '),
-                            const SizedBox(height: 8),
-                            TextField(
-                              controller: _lastNameController,
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                                ),
-                                labelText: 'Nama Belakang',
-                                labelStyle: TextStyle(color: Colors.black),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 16), // Add some spacing between the columns
+                        const SizedBox(
+                            height: 16), // Add some spacing between the columns
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -174,17 +165,20 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                             TextField(
                               controller: _emailController,
                               decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 8.0, horizontal: 10.0),
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
                                 ),
-                                labelText: 'Email Anda',
-                                labelStyle: TextStyle(color: Colors.black),
+                                hintText: '$userEmail',
+                                hintStyle: TextStyle(color: Colors.black),
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 16), // Add some spacing between the columns
+                        const SizedBox(
+                            height: 16), // Add some spacing between the columns
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -194,12 +188,14 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                               controller: _phoneController,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 8.0, horizontal: 10.0),
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
                                 ),
-                                labelText: 'Nomor Telepon Anda',
-                                labelStyle: TextStyle(color: Colors.black),
+                                hintText: '$userPhoneNumber',
+                                hintStyle: TextStyle(color: Colors.black),
                               ),
                             ),
                           ],
@@ -210,7 +206,9 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                             onPressed: () async {
                               await updateUserDetails();
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Profile updated successfully!')),
+                                SnackBar(
+                                    content:
+                                        Text('Profile updated successfully!')),
                               );
                             },
                             child: const Text('Save Changes'),
