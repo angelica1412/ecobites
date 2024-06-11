@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ecobites/authenticate/Controller/storeController.dart';
@@ -96,146 +95,149 @@ class _EditStorePageState extends State<EditStorePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Edit Informasi Toko'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.save),
-            onPressed: _isLoading ? null : _saveStoreData,
-          ),
-        ],
-      ),
-      body: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Upload Gambar Toko',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF000000)),
+    return WillPopScope(
+      onWillPop: () async => !_isLoading,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Edit Informasi Toko'),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.save),
+              onPressed: _isLoading ? null : _saveStoreData,
             ),
-            const SizedBox(height: 8),
-            if (_imageFile != null)
-              Image.file(
-                _imageFile!,
-                height: 200,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              )
-            else if(_imageURL != null)
-              Image.network(
-                _imageURL!,
-                height: 200,
-                width: double.infinity,
-                fit: BoxFit.cover,
-                loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return Container(
-                    height: 120,
-                    width: double.infinity,
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        value: loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
-                            : null,
+          ],
+        ),
+        body: _isLoading
+            ? Center(child: CircularProgressIndicator())
+            : SingleChildScrollView(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Upload Gambar Toko',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF000000)),
+              ),
+              const SizedBox(height: 8),
+              if (_imageFile != null)
+                Image.file(
+                  _imageFile!,
+                  height: 200,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                )
+              else if(_imageURL != null)
+                Image.network(
+                  _imageURL!,
+                  height: 200,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Container(
+                      height: 120,
+                      width: double.infinity,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                              : null,
+                        ),
+                      ),
+                    );
+                  },
+                  errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                    return const Icon(Icons.error);
+                  },
+                ),
+
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: _pickImageFromGallery,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors
+                          .white24, // Change background color as desired
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Icon(
+                        Icons.photo_library,
+                        color: Colors.black,
                       ),
                     ),
-                  );
-                },
-                errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-                  return const Icon(Icons.error);
-                },
+                  ),
+                  const SizedBox(width: 16),
+                  ElevatedButton(
+                    onPressed: _pickImageFromCamera,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors
+                          .white24, // Change background color as desired
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Icon(
+                        Icons.camera_alt,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: _pickImageFromGallery,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors
-                        .white24, // Change background color as desired
-                  ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.photo_library,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                ElevatedButton(
-                  onPressed: _pickImageFromCamera,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors
-                        .white24, // Change background color as desired
-                  ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.camera_alt,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Nama Toko',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF000000)),
-            ),
-            const SizedBox(height: 8),
-            CustomTextField(
-              controller: _storeNameController,
-              hintText: "Masukkan Nama Toko",
-              keyboardType: TextInputType.text,
-              onChanged: (value) {},
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Alamat Toko',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF000000)),
-            ),
-            const SizedBox(height: 8),
-            CustomTextField(
-              controller: _addressController,
-              hintText: "Masukkan Alamat Toko",
-              keyboardType: TextInputType.text,
-              onChanged: (value) {},
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Deskripsi Toko',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF000000)),
-            ),
-            const SizedBox(height: 8),
-            CustomTextField(
-              controller: _descriptionController,
-              hintText: "Masukkan Deskripsi Toko",
-              keyboardType: TextInputType.text,
-              onChanged: (value) {},
-            ),
-            const SizedBox(height: 20),
-            // Add fields for other information (e.g., logo) if needed
-          ],
+              const SizedBox(height: 20),
+              const Text(
+                'Nama Toko',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF000000)),
+              ),
+              const SizedBox(height: 8),
+              CustomTextField(
+                controller: _storeNameController,
+                hintText: "Masukkan Nama Toko",
+                keyboardType: TextInputType.text,
+                onChanged: (value) {},
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'Alamat Toko',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF000000)),
+              ),
+              const SizedBox(height: 8),
+              CustomTextField(
+                controller: _addressController,
+                hintText: "Masukkan Alamat Toko",
+                keyboardType: TextInputType.text,
+                onChanged: (value) {},
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'Deskripsi Toko',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF000000)),
+              ),
+              const SizedBox(height: 8),
+              CustomTextField(
+                controller: _descriptionController,
+                hintText: "Masukkan Deskripsi Toko",
+                keyboardType: TextInputType.text,
+                onChanged: (value) {},
+              ),
+              const SizedBox(height: 20),
+              // Add fields for other information (e.g., logo) if needed
+            ],
+          ),
         ),
       ),
     );
