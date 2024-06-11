@@ -1,6 +1,8 @@
+import 'package:ecobites/authenticate/Controller/storeController.dart';
 import 'package:ecobites/authenticate/Controller/userController.dart';
 import 'package:ecobites/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'login.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -39,11 +41,15 @@ class _RegisterPageState extends State<RegisterPage> {
         'phone': phoneController.text.trim(),
         'provinces': selectedProvince,
       };
-      await Auth.registerUser(
-          context, emailController.text.trim(), passController.text.trim());
-      await addUserDetailsToFirestore(userData);
+      Map<String, dynamic> storeData ={
+        'alamat': addressController.text.trim(),
+        'namaToko': firstNameController.text.trim(),
+      };
+      await Auth.registerUser(context, emailController.text.trim(), passController.text.trim(), storeData, userData);
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -218,6 +224,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Please enter your phone number';
+                    } else if (value.length < 11) {
+                      return 'Phone number must be at least 11 digits';
+                    } else if (value.length > 13) {
+                      return 'Phone number must be at most 13 digits';
                     }
                     return null;
                   },

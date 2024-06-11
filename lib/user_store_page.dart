@@ -1,13 +1,19 @@
 import 'package:ecobites/UploadBarang.dart';
+import 'package:ecobites/authenticate/Controller/userController.dart';
+import 'package:ecobites/editStorePage.dart';
 import 'package:ecobites/historypage.dart';
 import 'package:flutter/material.dart';
 import 'package:ecobites/Widgets/ProductCard.dart';
 import 'package:ecobites/Widgets/category_button.dart';
 import 'package:ecobites/Widgets/share_widget.dart';
+
+import 'authenticate/Controller/productController.dart';
+import 'authenticate/Controller/storeController.dart';
 import 'package:ecobites/authenticate/Controller/storeController.dart';
 
 class userStorePage extends StatefulWidget {
-  const userStorePage({super.key});
+  final String storeID;
+  const userStorePage({super.key, required this.storeID});
 
   @override
   _StorePageState createState() => _StorePageState();
@@ -20,6 +26,11 @@ class _StorePageState extends State<userStorePage> {
   Map<String, String> _storeData = {};
   final FocusNode _searchFocusNode =
       FocusNode(); // Untuk melacak apakah sedang dalam mode pencarian
+  bool _isLoading = true;
+  Map<String, String> _storeData = {};
+  List<Product> _productData =[];
+
+
 
   void _setSelectedCategory(String category) {
     setState(() {
@@ -27,61 +38,104 @@ class _StorePageState extends State<userStorePage> {
     });
   }
 
+  Future<void> _fetchStoreData() async {
+    setState(() {
+      _isLoading = true; // Mulai memuat data
+    });
+    final storeData = await getStorebyID(widget.storeID);
+    final productData= await getProductsByStoreID(widget.storeID);
+    if (storeData != null) {
+      setState(() {
+        _storeData = storeData;
+        _productData = productData!.map((data) => Product.fromMap(data, data['id'])).toList();
+        _isLoading = false; // Data selesai dimuat
+      });
+    } else {
+      // Handle the case where the store data could not be fetched
+      print('Failed to fetch store data');
+      setState(() {
+        _isLoading = false; // Gagal memuat data
+      });
+    }
+  }
+
   final TextEditingController _searchController = TextEditingController();
 
   List<Product> products = [
     Product(
+      id: "1",
       name: 'Martabak',
       description: 'Makanan yang terbuat dari telur dan daun bawang',
       price: 15000,
       imageURL: 'assets/martabak.jpg',
       category: 'Food',
+      jumlah: 10
     ),
     Product(
+      id: "2",
       name: 'Terang Bulan',
       description: 'Makanan yang manis dapat menambahkan mood',
       price: 20000,
       imageURL: 'assets/terangbulan.jpg',
       category: 'Food',
+      jumlah: 10
+
     ),
     Product(
+      id: "2",
       name: 'Pupuk Urea',
       description: 'Pupuk ini dapat mempercepat pertumbuhan tanaman',
       price: 5000,
       imageURL: 'assets/pupukurea.jpg',
       category: 'Hasil Daur',
+      jumlah: 10
     ),
     Product(
+      id: "2",
       name: 'Roti Berjamur',
       description:
           'Bahan ini dapat digunakan sebagai bahan daur pupuk untuk tanaman tomat ',
       price: 7000,
       imageURL: 'assets/rotiberjamur.jpg',
       category: 'Bahan Daur',
+      jumlah: 10
     ),
     Product(
+      id: "2",
       name: 'Pisang Goreng',
       description: 'Description for Product 2',
       price: 2000,
       imageURL: 'assets/product1.png',
       category: 'Food',
+      jumlah: 10
     ),
     Product(
+      id: "2",
       name: 'Pupuk',
       description: 'Pupuk yang tinggi kualitas karbon',
       price: 1000,
       imageURL: 'assets/pupuk.png',
       category: 'Hasil Daur',
+      jumlah: 10
     ),
     Product(
+      id: "2",
       name: 'Sosis Bakar',
       description: 'Sosis ini berkhasiat tinggi',
       price: 2305,
       imageURL: 'assets/sosis.jpg',
       category: 'Food',
+      jumlah: 10
     ),
     // Add more products as needed
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchStoreData();
+  }
+
   @override
   void dispose() {
     _searchController.dispose();
@@ -158,152 +212,144 @@ class _StorePageState extends State<userStorePage> {
       ),
       body: Stack(
         children: [
-          ListView(
+          _isLoading
+          ?Center(child: CircularProgressIndicator())
+          : ListView(
             children: [
               Container(
                 height: MediaQuery.of(context).size.height *
                     0.25, // Tinggi 1/10 dari layar
                 width: double.infinity, // Lebar penuh
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(
-                        'assets/grande.jpg'), // Ganti dengan path foto Anda
-                    fit: BoxFit.cover,
-                  ),
+                child: _storeData['imageURL'] != null
+                ? Image.network(
+                  _storeData['imageURL']!,
+                  fit: BoxFit.cover,
+                  loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Container(
+                      width: double.infinity,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                              : null,
+                        ),
+                      ),
+                    );
+                  },
+                  errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                    return const Icon(Icons.error);
+                  },
+                ): const Image(
+                  image: AssetImage('assets/shop.png'),
+                  fit: BoxFit.cover,
                 ),
               ),
               //card toko
               Container(
-                  padding: const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 3,
-                        blurRadius: 7,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    mainAxisSize:
-                        MainAxisSize.min, // Menyesuaikan tinggi dengan konten
-                    children: [
-                      Expanded(
-                        flex: 3,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 8.0),
-                                    child: RichText(
-                                      text: TextSpan(
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.03,
-                                          height: 1.5,
-                                        ),
-                                        children: const [
-                                          TextSpan(
-                                            text: 'Grande',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
+                padding: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 3,
+                      blurRadius: 7,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min, // Menyesuaikan tinggi dengan konten
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 8.0),
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: MediaQuery.of(context).size.height * 0.03,
+                                        height: 1.5,
                                       ),
-                                    ),
-                                  ),
-                                  const Padding(
-                                    padding: EdgeInsets.only(bottom: 8.0),
-                                    child: Row(
                                       children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(right: 8.0),
-                                          child: Icon(Icons.star,
-                                              color: Colors.yellow),
+                                        TextSpan(
+                                          text: _storeData['namaToko']?? '-',
+                                          style: TextStyle(fontWeight: FontWeight.bold),
                                         ),
-                                        Text('5.0'),
                                       ],
                                     ),
                                   ),
-                                  const Row(
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.only(bottom: 8.0),
+                                  child: Row(
                                     children: [
                                       Padding(
                                         padding: EdgeInsets.only(right: 8.0),
-                                        child: Icon(Icons.rate_review_outlined),
+                                        child: Icon(Icons.star, color: Colors.yellow),
                                       ),
-                                      Text('128 reviews'),
+                                      Text('5.0'),
                                     ],
                                   ),
-                                ],
-                              ),
-                              Spacer(),
-                              GestureDetector(
-                                onTap: () {},
-                                child: Container(
-                                    child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.edit_note_outlined,
-                                      ),
-                                      Text('Edit'),
-                                    ],
+                                ),
+                                const Row(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(right: 8.0),
+                                      child: Icon(Icons.rate_review_outlined),
+                                    ),
+                                    Text('128 reviews'),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            Spacer(),
+                            GestureDetector(
+                              onTap: () async {
+                                final result = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => EditStorePage(storeID: widget.storeID),
                                   ),
-                                )),
-                              ),
-                            ],
-                          ),
+                                );
+                                if (result == true) {
+                                  // If data was saved, reload the store data
+                                  _fetchStoreData();
+                                }
+                              },
+                              child: Container(
+                                  child:
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.edit_note_outlined,
+                                        ),
+                                        Text('Edit'),
+                                      ],
+                                    ),
+                                  )
+                              ) ,
+
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  )),
-
-              const SizedBox(height: 15),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                child: Card(
-                  elevation: 3.0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Deskripsi Toko:',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-                        const SizedBox(
-                            height: 6), // Space between title and description
-                        Text(
-                          _storeData['deskripsi'] ??
-                              'Deskripsi toko tidak tersedia.',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.black87,
-                          ),
-                        ),
-                      ],
                     ),
-                  ),
-                ),
+                  ],
+                )
+
               ),
 
               const SizedBox(height: 20),
@@ -331,33 +377,29 @@ class _StorePageState extends State<userStorePage> {
               const SizedBox(height: 20),
               if (searchQuery.isEmpty) ...[
                 ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: _getProductsByCategory(_selectedCategory).length,
-                  itemBuilder: (context, index) {
-                    final product =
-                        _getProductsByCategory(_selectedCategory)[index];
-                    return ProductCard(
-                      product: product,
-                      isUserStore: true,
-                    );
-                  },
-                ),
-              ] else ...[
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: _getProductsByCategory(_selectedCategory).length,
-                  itemBuilder: (context, index) {
-                    final product =
-                        _getProductsByCategory(_selectedCategory)[index];
-                    if (product.name
-                        .toLowerCase()
-                        .contains(searchQuery.toLowerCase()))
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: _productData.where((product) => product.category == _selectedCategory).length,
+                    itemBuilder: (context, index) {
+                      final product =
+                        _productData.where((product) => product.category == _selectedCategory).toList()[index];
                       return ProductCard(
                         product: product,
                         isUserStore: true,
                       );
+                    },
+                  ),
+              ] else  ...[
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: _productData.where((product) => product.category == _selectedCategory && product.name.toLowerCase().contains(searchQuery.toLowerCase())).length,
+                  itemBuilder: (context, index) {
+                    final product = _productData.where((product) => product.category == _selectedCategory && product.name.toLowerCase().contains(searchQuery.toLowerCase())).toList()[index];
+                    return ProductCard(
+                      product: product,
+                      isUserStore: true,
+                    );
                   },
                 ),
               ],
@@ -376,6 +418,7 @@ class _StorePageState extends State<userStorePage> {
                               fromHome: false,
                               fromUserToko: true,
                               isEdit: false,
+                              storeID: widget.storeID,
                             )));
               },
               child: Icon(Icons.add),
