@@ -60,8 +60,9 @@ class ProductCard extends StatefulWidget {
   final VoidCallback? onQuantityChanged;// Tambahkan properti ini
   final bool isUserStore;
   final bool isCheckout;
+  final String? storeID;
 
-  const ProductCard({Key? key, required this.product, this.onQuantityChanged, this.isUserStore = false, this.isCheckout = false}) : super(key: key);
+  const ProductCard({Key? key, required this.product, this.onQuantityChanged, this.isUserStore = false, this.isCheckout = false,  this.storeID}) : super(key: key);
 
   @override
   _ProductCardState createState() => _ProductCardState();
@@ -224,7 +225,7 @@ class _ProductCardState extends State<ProductCard> {
         children: [
           InkWell(
             onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> UploadBarang(fromHome: false, fromUserToko: true, isEdit: true,product: widget.product)));
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> UploadBarang(fromHome: false, fromUserToko: true, isEdit: true,product: widget.product, storeID:widget.storeID ,)));
               // Tindakan yang akan dijalankan ketika tombol di klik
               // Misalnya, tampilkan dialog edit, navigasi ke halaman edit, dll.
             },

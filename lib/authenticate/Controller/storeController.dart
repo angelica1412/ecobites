@@ -74,12 +74,14 @@ Future<Map<String, String>?> getStorebyID(String storeId) async {
       final deskripsi = data['deskripsi'] ?? 'no desc';
       final imageURL = data['imageURL'] ?? 'assets/shop.png';
       final namaToko = data['namaToko'] ?? '-';
+      final id = doc.id;
 
       return {
         'alamat': alamat,
         'deskripsi': deskripsi,
         'imageURL': imageURL,
         'namaToko': namaToko,
+        'id':id,
       };
     } else {
       print('Store does not exist');

@@ -1,6 +1,7 @@
 
 
 //Add Product Data ro Cloud FireStore
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -51,30 +52,52 @@ Future<List<Map<String, String>>?> getAllProducts() async {
   }
 }
 //Read Product Data by ID
-Future<Map<String, String>?> getProductbyID(String productID) async {
+Future<Map<String, String>?> getProductbyID(String productID, String? storeID) async {
   final FirebaseFirestore db = FirebaseFirestore.instance;
-  try{
-    final DocumentSnapshot doc = await db.collection("Product").doc(productID).get();
-    if(doc.exists){
+  try {
+    final DocumentSnapshot doc = await db.collection('Stores').doc(storeID).collection("Products").doc(productID).get();
+
+    if (doc.exists) {
       final data = doc.data() as Map<String, dynamic>;
-      //ambil data dari firebase
-      return{
-        //return data dari firebase
+      final id=  doc.id; // Add product ID to the data
+      final namaBarang = data['namaBarang']??'';
+      final jumlahBarang = data['jumlahBarang']??'';
+      final satuanBarang = data['satuanBarang']??'';
+      final kualitasBarang = data['kualitasBarang']??'';
+      final hargaAsliBarang = data['hargaAsliBarang']??'';
+      final discount = data['discount']??'';
+      final hargaAkhirBarang = data['hargaAkhirBarang']??'';
+      final kategoriBarang = data['kategoriBarang']??'';
+      final deskripsiBarang = data['deskripsiBarang']??'';
+      final productImageURL = data['productImageURL']??'';
+
+      return {
+        'id':id,
+        'namaBarang':namaBarang,
+        'jumlahBarang':jumlahBarang,
+        'satuanBarang':satuanBarang,
+        'kualitasBarang':kualitasBarang,
+        'hargaAsliBarang':hargaAsliBarang,
+        'discount':discount,
+        'hargaAkhirBarang':hargaAkhirBarang,
+        'kategoriBarang':kategoriBarang,
+        'deskripsiBarang':deskripsiBarang,
+        'productImageURL' : productImageURL,
       };
-    }else {
-      print('product does not exist');
+    } else {
+      // print("Data product: ${data['namaBarang']??''}");
+      print('Product does not exist');
       return null;
     }
-  }catch(e){
+  } catch (e) {
     print('Error getting product: $e');
     return null;
   }
-
-
 }
 
+
 // Get all Products by Store ID
-Future<List<Map<String, dynamic>>?> getProductsByStoreID(String storeID) async {
+Future<List<Map<String, dynamic>>?> getProductsByStoreID(String? storeID) async {
   final FirebaseFirestore db = FirebaseFirestore.instance;
   try {
     // Get reference to the store's products collection

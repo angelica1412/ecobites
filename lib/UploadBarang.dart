@@ -18,7 +18,8 @@ class UploadBarang extends StatefulWidget {
       required this.fromUserToko,
       required this.isEdit,
       this.product,
-        this.storeID,});
+        this.storeID,
+      });
   final bool fromHome;
   final bool fromUserToko;
   final bool isEdit;
@@ -63,7 +64,46 @@ class _UploadBarangState extends State<UploadBarang> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   File? _imageFile;
+  String? _imageURL;
+  Future<void> _fetchProductData() async {
+    setState(() {
+      _isLoading = true;
+    });
+    final productData = await getProductbyID(widget.product!.id, widget.storeID);
 
+    if (productData != null) {
+      setState(() {
+        _namaBarang.text = productData['namaBarang']??'';
+        _selectedQuantity = productData['jumlahBarang']??'';
+        _selectedUnit = productData['satuanBarang']??'';
+        _selectedQuality = productData['kualitasBarang']??'';
+        _hargaAsliController.text = productData['hargaAsliBarang'] ?? '';
+        _selectedDiscount = productData['discount']??'';
+        _hargaDiskonController.text = productData['hargaAkhirBarang']??'';
+        _selectedCategory = productData['kategoriBarang']??'';
+        _deskBarang.text = productData['deskripsiBarang'] ?? '';
+        _imageURL = productData['productImageURL']?? 'assets/shop.png';
+        _isLoading = false;
+      });
+      print(productData['namaBarang']??'');
+      print(productData['jumlahBarang']??'');
+      print(productData['satuanBarang']??'');
+      print(productData['kualitasBarang']??'');
+      print(productData['hargaAsliBarang']??'');
+      print(productData['discount']??'');
+      print(productData['hargaAkhirBarang']??'');
+      print(productData['kategoriBarang']??'');
+      print(productData['deskripsiBarang']??'');
+      print(productData['productImageURL']??'');
+
+    } else {
+      // Handle the case where the store data could not be fetched
+      print('Failed to fetch store data');
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
   Future<void> saveProductData(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       if (_imageFile == null ||
@@ -77,6 +117,7 @@ class _UploadBarangState extends State<UploadBarang> {
         // Tampilkan pesan kesalahan jika ada bagian yang kosong
         showDialog(
           context: context,
+          barrierDismissible: false,
           builder: (BuildContext context) {
             return AlertDialog(
               title: const Text('Data Belum Lengkap'),
@@ -116,26 +157,30 @@ class _UploadBarangState extends State<UploadBarang> {
       });
       showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Sukses'),
-            content: const Text('Data berhasil ditambahkan.'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Tutup dialog
-                  Navigator.of(context).pop(true); // Kembali ke halaman sebelumnya
-                },
-                child: const Text('OK'),
-              ),
-            ],
+          return WillPopScope(
+            onWillPop: () async => false,
+            child: AlertDialog(
+              title: const Text('Sukses'),
+              content: const Text('Data berhasil ditambahkan.'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Tutup dialog
+                    Navigator.of(context).pop(true); // Kembali ke halaman sebelumnya
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
           );
         },
       );
     }
   }
 
-          @override
+  @override
   void dispose() {
     _hargaAsliController.dispose();
     _hargaDiskonController.dispose();
@@ -144,13 +189,8 @@ class _UploadBarangState extends State<UploadBarang> {
 
   void initState() {
     super.initState();
-    if (widget.isEdit && widget.product != null) {
-      _namaBarang.text = widget.product!.name;
-      _deskBarang.text = widget.product!.description;
-      _hargaAsliController.text = widget.product!.price.toString();
-      _selectedCategory = widget.product!.category;
-      _imageFile = File(widget.product!.imageURL); // Asumsi imageURL adalah path file lokal
-      // Jika imageURL adalah URL online, Anda perlu menggunakan mekanisme yang berbeda untuk memuat gambar
+    if(widget.isEdit) {
+      _fetchProductData();
     }
   }
 
@@ -186,7 +226,7 @@ class _UploadBarangState extends State<UploadBarang> {
                 color: Colors.black,
               ),
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.of(context).pop(true); // Kembali ke halaman sebelumnya
               },
             )
                 : null, // Berikan null jika tidak ada leading icon yang diinginkan
@@ -220,6 +260,30 @@ class _UploadBarangState extends State<UploadBarang> {
                         height: 200,
                         width: double.infinity,
                         fit: BoxFit.cover,
+                      )
+                    else if(_imageURL != null)
+                      Image.network(
+                        _imageURL!,
+                        height: 200,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Container(
+                            height: 120,
+                            width: double.infinity,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes != null
+                                    ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                                    : null,
+                              ),
+                            ),
+                          );
+                        },
+                        errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                          return const Icon(Icons.error);
+                        },
                       ),
                     const SizedBox(height: 8),
                     Row(

@@ -384,6 +384,7 @@ class _StorePageState extends State<userStorePage> {
                     return ProductCard(
                       product: product,
                       isUserStore: true,
+                      storeID: widget.storeID,
                     );
                   },
                 ),
@@ -409,8 +410,8 @@ class _StorePageState extends State<userStorePage> {
             bottom: 16.0, // Atur posisi vertikal dari bawah layar
             right: 16.0, // Atur posisi horizontal dari kanan layar
             child: FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
+              onPressed: () async {
+                final result = await Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => UploadBarang(
@@ -418,7 +419,13 @@ class _StorePageState extends State<userStorePage> {
                               fromUserToko: true,
                               isEdit: false,
                               storeID: widget.storeID,
-                            )));
+                            )
+                    )
+                );
+                if (result == true) {
+                  // If data was saved, reload the store data
+                  _fetchStoreData();
+                }
               },
               child: Icon(Icons.add),
               backgroundColor: Colors.green,
