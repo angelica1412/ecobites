@@ -41,22 +41,21 @@ class _RegisterPageState extends State<RegisterPage> {
         'phone': phoneController.text.trim(),
         'provinces': selectedProvince,
       };
-      Map<String, dynamic> storeData ={
+      Map<String, dynamic> storeData = {
         'alamat': addressController.text.trim(),
         'namaToko': userNameController.text.trim(),
       };
-      await Auth.registerUser(context, emailController.text.trim(), passController.text.trim(), storeData, userData);
+      await Auth.registerUser(context, emailController.text.trim(),
+          passController.text.trim(), storeData, userData);
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight:
-            90, // Mengatur tinggi toolbar (termasuk title dan actions)
+            120, // Mengatur tinggi toolbar (termasuk title dan actions)
         backgroundColor: const Color(0xFFFAFAFA),
         elevation: 0,
         title: Column(
@@ -71,14 +70,16 @@ class _RegisterPageState extends State<RegisterPage> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 8,),
+            SizedBox(
+              height: 8,
+            ),
             const Text(
-                  'Enter your username, email, and password correctly to create a new account.',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Color(0xFF838181),
-                  ),
-                ),
+              'Enter your username, email, and password correctly to create a new account.',
+              style: TextStyle(
+                fontSize: 12,
+                color: Color(0xFF838181),
+              ),
+            ),
           ],
         ),
       ),
@@ -171,6 +172,34 @@ class _RegisterPageState extends State<RegisterPage> {
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Please enter a password';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 10),
+                const Text('Confirm Password',
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 10), // Added space
+                TextFormField(
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    hintText: 'Confirm your Password',
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Color(0xFF92E3A9), width: 2.0),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black, width: 2.0),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter a confirm password';
+                    } else if (value != passController.text) {
+                      return "Your password don't match";
                     }
                     return null;
                   },

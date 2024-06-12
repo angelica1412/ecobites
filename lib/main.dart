@@ -18,6 +18,7 @@ void main() async {
       appId: '1:187615014655:android:278a9f8db6c682264be6ca',
       messagingSenderId: '187615014655',
       projectId: "ecobites-57b68",
+      storageBucket: "gs://ecobites-57b68.appspot.com"
     ),
   );
   runApp(const MyApp());

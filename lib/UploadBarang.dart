@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 // import 'package:ecobites/Widgets/SliderWithLabel.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 import 'Widgets/ProductCard.dart';
 import 'historypage.dart';
@@ -39,6 +40,12 @@ class _UploadBarangState extends State<UploadBarang> {
     'Kurang Baik',
     'Buruk',
   ];
+
+  final NumberFormat _formatter = NumberFormat.currency(
+    locale: 'id',
+    symbol: '',
+    decimalDigits: 0,
+  );
 
   String? _selectedQuantity;
   final List<String> _quantities = ['1', '2', '3', '4', '5'];
@@ -361,6 +368,7 @@ class _UploadBarangState extends State<UploadBarang> {
                       controller: _hargaAsliController,
                       hintText: "Harga Asli",
                       keyboardType: TextInputType.number,
+                      prefixText: 'Rp. ',
                       onChanged: (value) {
                         calculateDiscountedPrice();
                       },
@@ -646,12 +654,12 @@ class _UploadBarangState extends State<UploadBarang> {
   void calculateDiscountedPrice() {
     if (_selectedDiscount != null && _hargaAsliController.text.isNotEmpty) {
       double hargaAsli =
-          double.parse(_hargaAsliController.text.replaceAll(',', ''));
+          double.parse(_hargaAsliController.text.replaceAll('.', ''));
       double discountPercentage =
           double.parse(_selectedDiscount!.replaceAll('%', ''));
       double hargaSetelahDiskon =
           hargaAsli - (hargaAsli * (discountPercentage / 100));
-      _hargaDiskonController.text = hargaSetelahDiskon.toStringAsFixed(2);
+      _hargaDiskonController.text = _formatter.format(hargaSetelahDiskon);
     }
   }
 }
