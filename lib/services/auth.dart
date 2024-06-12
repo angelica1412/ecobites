@@ -135,9 +135,11 @@ class Auth {
   static Future<void> logout(BuildContext context) async {
     try {
       await FirebaseAuth.instance.signOut(); // Lakukan proses logout
-      Navigator.pushReplacement( // Navigasi kembali ke layar login setelah logout berhasil
+      Navigator.pushAndRemoveUntil( // Navigasi kembali ke layar login setelah logout berhasil
         context,
         MaterialPageRoute(builder: (context) => const LoginPage()),
+        (Route<dynamic> route) => false,
+
       );
     } catch (e) {
       // Tangani jika terjadi kesalahan saat proses logout

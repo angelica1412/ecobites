@@ -1,3 +1,4 @@
+import 'package:ecobites/DoubleBackToExit.dart';
 import 'package:ecobites/Widgets/voucher.dart';
 import 'package:ecobites/authenticate/Controller/storeController.dart';
 import 'package:flutter/material.dart';
@@ -29,15 +30,16 @@ class _HomePageState extends State<HomePage> {
     _storeFuture = getAllStores();
   }
 
-  void _refreshStoreData(){
+  void _refreshStoreData() {
     setState(() {
       _storeFuture = getAllStores();
     });
   }
+
   @override
   Widget build(BuildContext context) {
-
-    return Scaffold(
+    return DoubleBackToExit(
+        child: Scaffold(
       appBar: AppBar(
         toolbarHeight:
             100, // Mengatur tinggi toolbar (termasuk title dan actions)
@@ -78,14 +80,12 @@ class _HomePageState extends State<HomePage> {
               onPressed: () async {
                 final result = await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ProfileScreen()
-                      ),
+                  MaterialPageRoute(builder: (context) => ProfileScreen()),
                 );
-                    if (result == true) {
-                      _refreshStoreData();
-                      // If data was saved, reload the store data
-
-                    }
+                if (result == true) {
+                  _refreshStoreData();
+                  // If data was saved, reload the store data
+                }
               },
             ),
           ),
@@ -99,10 +99,9 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       body: FutureBuilder<List<Map<String, String>>?>(
-        future: _storeFuture,
-        builder: (context, snapshot) {
-
-            final stores = snapshot.data?? [];
+          future: _storeFuture,
+          builder: (context, snapshot) {
+            final stores = snapshot.data ?? [];
             return SingleChildScrollView(
               child: Container(
                 padding: const EdgeInsets.all(16.0),
@@ -126,23 +125,23 @@ class _HomePageState extends State<HomePage> {
                         hintText: 'Search for store...',
                         prefixIcon: Icon(Icons.search, color: searchIconColor),
                         border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black, width: 2.0),
+                          borderSide:
+                              BorderSide(color: Colors.black, width: 2.0),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFF92E3A9), width: 2.0),
+                          borderSide:
+                              BorderSide(color: Color(0xFF92E3A9), width: 2.0),
                         ),
                       ),
                     ),
                     const SizedBox(height: 20),
                     if (snapshot.connectionState == ConnectionState.waiting)
                       Center(child: CircularProgressIndicator())
-                    else if(snapshot.hasError)
+                    else if (snapshot.hasError)
                       Center(child: Text('Error: ${snapshot.error}'))
-                    else if(!snapshot.hasData || snapshot.data!.isEmpty)
+                    else if (!snapshot.hasData || snapshot.data!.isEmpty)
                       Center(child: Text('No stores found'))
-                    else
-
-                    if (searchQuery.isEmpty) ...[
+                    else if (searchQuery.isEmpty) ...[
                       // Display StoreCards with image on top and smaller size when search query is empty
                       Text(
                         'Recently Viewed',
@@ -162,19 +161,23 @@ class _HomePageState extends State<HomePage> {
                             final store = stores[index];
                             return SizedBox(
                               width: 150,
-                              child: StoreCard(store: Store(
-                                name: store['namaToko'] ?? '',
-                                description: store['deskripsi'] ?? '',
-                                imageURL: store['imageURL'] ?? 'assets/shop.png',
-                                storeID: store['id'] ??'',
-                              ), imageOnTop: true),
+                              child: StoreCard(
+                                  store: Store(
+                                    name: store['namaToko'] ?? '',
+                                    description: store['deskripsi'] ?? '',
+                                    imageURL:
+                                        store['imageURL'] ?? 'assets/shop.png',
+                                    storeID: store['id'] ?? '',
+                                  ),
+                                  imageOnTop: true),
                             );
                           },
                         ),
                       ),
                       const SizedBox(height: 20),
                       Center(
-                        child: VoucherState(fromCheckout: false, onVoucherUsed: (Voucher) {}),
+                        child: VoucherState(
+                            fromCheckout: false, onVoucherUsed: (Voucher) {}),
                       ),
                       const SizedBox(height: 20),
                       Text(
@@ -195,12 +198,15 @@ class _HomePageState extends State<HomePage> {
                             final store = stores[index];
                             return SizedBox(
                               width: 150,
-                              child: StoreCard(store: Store(
-                                name: store['namaToko'] ?? '',
-                                description: store['deskripsi'] ?? '',
-                                imageURL: store['imageURL'] ?? 'assets/shop.png',
-                                storeID: store['id'] ?? '',
-                              ), imageOnTop: true),
+                              child: StoreCard(
+                                  store: Store(
+                                    name: store['namaToko'] ?? '',
+                                    description: store['deskripsi'] ?? '',
+                                    imageURL:
+                                        store['imageURL'] ?? 'assets/shop.png',
+                                    storeID: store['id'] ?? '',
+                                  ),
+                                  imageOnTop: true),
                             );
                           },
                         ),
@@ -222,19 +228,22 @@ class _HomePageState extends State<HomePage> {
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: stores.length,
                         itemBuilder: (context, index) {
-                          final filteredStores = stores.where((store) => store["namaToko"]!.toLowerCase().contains(searchQuery.toLowerCase())).toList();
+                          final filteredStores = stores
+                              .where((store) => store["namaToko"]!
+                                  .toLowerCase()
+                                  .contains(searchQuery.toLowerCase()))
+                              .toList();
                           if (index < 0 || index >= filteredStores.length) {
                             return SizedBox(); // Atau widget lain yang sesuai dengan kebutuhan Anda
                           }
                           final store = filteredStores[index];
                           return StoreCard(
                               store: Store(
-                                name: store['namaToko'] ?? '',
-                                description: store['deskripsi'] ?? '',
-                                imageURL: store['imageURL'] ?? 'assets/shop.png',
-                                storeID: store['id'] ?? '',
-                              )
-                          );
+                            name: store['namaToko'] ?? '',
+                            description: store['deskripsi'] ?? '',
+                            imageURL: store['imageURL'] ?? 'assets/shop.png',
+                            storeID: store['id'] ?? '',
+                          ));
                         },
                       ),
                     ],
@@ -243,8 +252,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             );
-          }
-      ),
+          }),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -278,6 +286,6 @@ class _HomePageState extends State<HomePage> {
         unselectedItemColor: Colors
             .grey, // Mengubah warna item yang tidak dipilih menjadi abu-abu
       ),
-    );
+    ));
   }
 }

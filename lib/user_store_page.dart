@@ -27,6 +27,7 @@ class _StorePageState extends State<userStorePage> {
   final FocusNode _searchFocusNode =
       FocusNode(); // Untuk melacak apakah sedang dalam mode pencarian
   bool _isLoading = true;
+  bool _productNotFound = false;
   List<Product> _productData =[];
 
 
@@ -46,7 +47,25 @@ class _StorePageState extends State<userStorePage> {
     if (storeData != null) {
       setState(() {
         _storeData = storeData;
+        if (storeData != null) {
+    setState(() {
+      _storeData = storeData;
+      if (productData != null && productData.isNotEmpty) {
         _productData = productData!.map((data) => Product.fromMap(data, data['id'])).toList();
+        _productNotFound = false; // Setel variabel _productNotFound ke false jika productData tidak kosong
+      } else {
+        _productData = []; // Kosongkan _productData jika productData kosong atau null
+        _productNotFound = true; // Setel variabel _productNotFound ke true jika productData kosong
+      }
+      _isLoading = false; // Data selesai dimuat
+    });
+  } else {
+    // Handle the case where the store data could not be fetched
+    print('Failed to fetch store data');
+    setState(() {
+      _isLoading = false; // Gagal memuat data
+    });
+  }
         _isLoading = false; // Data selesai dimuat
       });
     } else {
@@ -328,8 +347,8 @@ class _StorePageState extends State<userStorePage> {
                               },
                               child: Container(
                                   child:
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                  const Padding(
+                                    padding: EdgeInsets.all(8.0),
                                     child: Row(
                                       children: [
                                         Icon(
@@ -374,7 +393,9 @@ class _StorePageState extends State<userStorePage> {
                 ],
               ),
               const SizedBox(height: 20),
-              if (searchQuery.isEmpty) ...[
+              if (_productNotFound) ...[
+                Center(child: Text('Product not found')),
+              ] else if (searchQuery.isEmpty) ...[
                 ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),

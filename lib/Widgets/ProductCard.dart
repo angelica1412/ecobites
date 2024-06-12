@@ -24,14 +24,17 @@ class Product {
   });
   factory Product.fromMap(Map<String, dynamic> data, String documentId) {
     double parseDouble(dynamic value) {
-      if (value is String) {
-        return double.tryParse(value) ?? 0.0;
-      } else if (value is num) {
-        return value.toDouble();
-      } else {
-        return 0.0;
-      }
-    }
+  if (value is String) {
+    // Ganti ',' dengan '.' agar parsing dapat dilakukan dengan benar
+    value = value.replaceAll(',', '.');
+    // Lakukan parsing double
+    return double.tryParse(value) ?? 0.0;
+  } else if (value is num) {
+    return value.toDouble();
+  } else {
+    return 0.0;
+  }
+}
 
     int parseInt(dynamic value) {
       if (value is String) {
@@ -134,7 +137,7 @@ class _ProductCardState extends State<ProductCard> {
                   Text(widget.product.description),
                   const SizedBox(height: 5),
                   Text(
-                    '\Rp.${widget.product.price.toInt()}',
+                    'Rp. ${widget.product.price.toStringAsFixed(3)}',
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
