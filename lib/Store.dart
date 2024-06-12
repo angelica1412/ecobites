@@ -25,9 +25,10 @@ class _StorePageState extends State<StorePage> {
   int _totalProducts = 0;
   double _totalPrice = 0.0;
   Map<String, String> _storeData = {};
-  List<Product> _productData =[];
+  List<Product> _productData = [];
   bool _isLoading = true;
   String searchQuery = "";
+  bool _productNotFound = false;
   final FocusNode _searchFocusNode = FocusNode();
 
   void _setSelectedCategory(String category) {
@@ -47,11 +48,22 @@ class _StorePageState extends State<StorePage> {
       _isLoading = true; // Mulai memuat data
     });
     final storeData = await getStorebyID(widget.storeID);
-    final productData= await getProductsByStoreID(widget.storeID);
+    final productData = await getProductsByStoreID(widget.storeID);
     if (storeData != null) {
       setState(() {
         _storeData = storeData;
-        _productData = productData!.map((data) => Product.fromMap(data, data['id'])).toList();
+        if (productData != null && productData.isNotEmpty) {
+          _productData = productData!
+              .map((data) => Product.fromMap(data, data['id']))
+              .toList();
+          _productNotFound =
+              false; // Setel variabel _productNotFound ke false jika productData tidak kosong
+        } else {
+          _productData =
+              []; // Kosongkan _productData jika productData kosong atau null
+          _productNotFound =
+              true; // Setel variabel _productNotFound ke true jika productData kosong
+        }
         _isLoading = false; // Data selesai dimuat
       });
     } else {
@@ -148,28 +160,38 @@ class _StorePageState extends State<StorePage> {
                       width: double.infinity, // Lebar penuh
                       child: _storeData['imageURL'] != null
                           ? Image.network(
-                        _storeData['imageURL']!,
-                        fit: BoxFit.cover,
-                        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                          if (loadingProgress == null) return child;
-                          return Container(
-                            width: double.infinity,
-                            child: Center(
-                              child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes != null
-                                    ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
-                                    : null,
-                              ),
+                              _storeData['imageURL']!,
+                              fit: BoxFit.cover,
+                              loadingBuilder: (BuildContext context,
+                                  Widget child,
+                                  ImageChunkEvent? loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return Container(
+                                  width: double.infinity,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      value:
+                                          loadingProgress.expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  (loadingProgress
+                                                          .expectedTotalBytes ??
+                                                      1)
+                                              : null,
+                                    ),
+                                  ),
+                                );
+                              },
+                              errorBuilder: (BuildContext context, Object error,
+                                  StackTrace? stackTrace) {
+                                return const Icon(Icons.error);
+                              },
+                            )
+                          : const Image(
+                              image: AssetImage('assets/shop.png'),
+                              fit: BoxFit.cover,
                             ),
-                          );
-                        },
-                        errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-                          return const Icon(Icons.error);
-                        },
-                      ): const Image(
-                        image: AssetImage('assets/shop.png'),
-                        fit: BoxFit.cover,
-                      ),
                     ),
                     //card toko
                     Container(
@@ -321,13 +343,21 @@ class _StorePageState extends State<StorePage> {
                       ],
                     ),
                     const SizedBox(height: 20),
-                    if (searchQuery.isEmpty) ...[
+                    if (_productNotFound) ...[
+                      Center(child: Text('Product not found')),
+                    ] else if (searchQuery.isEmpty) ...[
                       ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: _productData.where((product) => product.category == _selectedCategory).length,
+                        itemCount: _productData
+                            .where((product) =>
+                                product.category == _selectedCategory)
+                            .length,
                         itemBuilder: (context, index) {
-                          final product = _productData.where((product) => product.category == _selectedCategory).toList()[index];
+                          final product = _productData
+                              .where((product) =>
+                                  product.category == _selectedCategory)
+                              .toList()[index];
                           return ProductCard(
                             product: product,
                             onQuantityChanged: () {
@@ -344,9 +374,21 @@ class _StorePageState extends State<StorePage> {
                       ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: _productData.where((product) => product.category == _selectedCategory && product.name.toLowerCase().contains(searchQuery.toLowerCase())).length,
+                        itemCount: _productData
+                            .where((product) =>
+                                product.category == _selectedCategory &&
+                                product.name
+                                    .toLowerCase()
+                                    .contains(searchQuery.toLowerCase()))
+                            .length,
                         itemBuilder: (context, index) {
-                          final product = _productData.where((product) => product.category == _selectedCategory && product.name.toLowerCase().contains(searchQuery.toLowerCase())).toList()[index];
+                          final product = _productData
+                              .where((product) =>
+                                  product.category == _selectedCategory &&
+                                  product.name
+                                      .toLowerCase()
+                                      .contains(searchQuery.toLowerCase()))
+                              .toList()[index];
                           if (product.name
                               .toLowerCase()
                               .contains(searchQuery.toLowerCase()))
