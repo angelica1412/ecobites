@@ -61,74 +61,6 @@ class _StorePageState extends State<userStorePage> {
 
   final TextEditingController _searchController = TextEditingController();
 
-  List<Product> products = [
-    Product(
-      id: "1",
-      name: 'Martabak',
-      description: 'Makanan yang terbuat dari telur dan daun bawang',
-      price: 15000,
-      imageURL: 'assets/martabak.jpg',
-      category: 'Food',
-      jumlah: 10
-    ),
-    Product(
-      id: "2",
-      name: 'Terang Bulan',
-      description: 'Makanan yang manis dapat menambahkan mood',
-      price: 20000,
-      imageURL: 'assets/terangbulan.jpg',
-      category: 'Food',
-      jumlah: 10
-
-    ),
-    Product(
-      id: "2",
-      name: 'Pupuk Urea',
-      description: 'Pupuk ini dapat mempercepat pertumbuhan tanaman',
-      price: 5000,
-      imageURL: 'assets/pupukurea.jpg',
-      category: 'Hasil Daur',
-      jumlah: 10
-    ),
-    Product(
-      id: "2",
-      name: 'Roti Berjamur',
-      description: 'Bahan ini dapat digunakan sebagai bahan daur pupuk untuk tanaman tomat ',
-      price: 7000,
-      imageURL: 'assets/rotiberjamur.jpg',
-      category: 'Bahan Daur',
-      jumlah: 10
-    ),
-    Product(
-      id: "2",
-      name: 'Pisang Goreng',
-      description: 'Description for Product 2',
-      price: 2000,
-      imageURL: 'assets/product1.png',
-      category: 'Food',
-      jumlah: 10
-    ),
-    Product(
-      id: "2",
-      name: 'Pupuk',
-      description: 'Pupuk yang tinggi kualitas karbon',
-      price: 1000,
-      imageURL: 'assets/pupuk.png',
-      category: 'Hasil Daur',
-      jumlah: 10
-    ),
-    Product(
-      id: "2",
-      name: 'Sosis Bakar',
-      description: 'Sosis ini berkhasiat tinggi',
-      price: 2305,
-      imageURL: 'assets/sosis.jpg',
-      category: 'Food',
-      jumlah: 10
-    ),
-    // Add more products as needed
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -144,10 +76,6 @@ class _StorePageState extends State<userStorePage> {
 
   @override
   Widget build(BuildContext context) {
-    List<Product> _getProductsByCategory(String category) {
-      return products.where((product) => product.category == category).toList();
-    }
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
