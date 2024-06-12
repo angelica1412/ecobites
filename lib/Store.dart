@@ -37,12 +37,9 @@ class _StorePageState extends State<StorePage> {
   }
 
   final TextEditingController _searchController = TextEditingController();
-  List<Product> _getProductsByCategory(String category) {
-    return products.where((product) => product.category == category).toList();
-  }
 
   List<Product> get productsWithQuantity {
-    return products.where((product) => product.quantity > 0).toList();
+    return _productData.where((product) => product.quantity > 0).toList();
   }
 
   Future<void> _fetchStoreData() async {
@@ -65,76 +62,6 @@ class _StorePageState extends State<StorePage> {
       });
     }
   }
-
-  List<Product> products = [
-    Product(
-      id: "1",
-      name: 'Martabak',
-      description: 'Makanan yang terbuat dari telur dan daun bawang',
-      price: 15000,
-      imageURL: 'assets/martabak.jpg',
-      category: 'Food',
-      jumlah: 10,
-    ),
-    Product(
-      id: "2",
-      name: 'Terang Bulan',
-      description: 'Makanan yang manis dapat menambahkan mood',
-      price: 20000,
-      imageURL: 'assets/terangbulan.jpg',
-      category: 'Food',
-      jumlah: 10,
-    ),
-    Product(
-      id: "2",
-      name: 'Pupuk Urea',
-      description: 'Pupuk ini dapat mempercepat pertumbuhan tanaman',
-      price: 5000,
-      imageURL: 'assets/pupukurea.jpg',
-      category: 'Hasil Daur',
-      jumlah: 10,
-    ),
-    Product(
-      id: "2",
-      name: 'Roti Berjamur',
-      description: 'Bahan ini dapat digunakan sebagai bahan daur pupuk untuk tanaman tomat ',
-      price: 7000,
-      imageURL: 'assets/rotiberjamur.jpg',
-      category: 'Bahan Daur',
-      jumlah: 10,
-    ),
-    Product(
-      id: "2",
-      name: 'Pisang Goreng',
-      description: 'Description for Product 2',
-      price: 2000,
-      imageURL: 'assets/product1.png',
-      category: 'Food',
-      jumlah: 10,
-    ),
-    Product(
-      id: "2",
-      name: 'Pupuk',
-      description: 'Pupuk yang tinggi kualitas karbon',
-      price: 1000,
-      imageURL: 'assets/pupuk.png',
-      category: 'Hasil Daur',
-      jumlah: 10,
-
-    ),
-    Product(
-      id: "2",
-      name: 'Sosis Bakar',
-      description: 'Sosis ini berkhasiat tinggi',
-      price: 2305,
-      imageURL: 'assets/sosis.jpg',
-      category: 'Food',
-      jumlah: 10,
-
-    ),
-    // Add more products as needed
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -405,7 +332,7 @@ class _StorePageState extends State<StorePage> {
                             product: product,
                             onQuantityChanged: () {
                               _handleShowCheckoutButton();
-                              for (var product in products) {
+                              for (var product in _productData) {
                                 _totalProducts += product.quantity;
                                 _totalPrice += product.quantity * product.price;
                               }
@@ -427,7 +354,7 @@ class _StorePageState extends State<StorePage> {
                               product: product,
                               onQuantityChanged: () {
                                 _handleShowCheckoutButton();
-                                for (var product in products) {
+                                for (var product in _productData) {
                                   _totalProducts += product.quantity;
                                   _totalPrice +=
                                       product.quantity * product.price;
@@ -577,7 +504,7 @@ class _StorePageState extends State<StorePage> {
     int totalProducts = 0;
     double totalPrice = 0.0;
     bool hasProductWithQuantity = false;
-    for (var product in products) {
+    for (var product in _productData) {
       if (product.quantity > 0) {
         hasProductWithQuantity = true;
         break;
