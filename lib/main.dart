@@ -29,8 +29,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Auth.checkUserLoginStatus(context);
-
     return MaterialApp(
       home: const SplashScreen(),
       debugShowCheckedModeBanner: false,
@@ -54,14 +52,15 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     // Simulate a time-consuming task (e.g., loading data) for the splash screen.
     // Replace this with your actual data loading logic.
-    Future.delayed(
-      const Duration(seconds: 3),
-      () {
-        Auth.checkUserLoginStatus(context);
-      },
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(
+        const Duration(seconds: 3),
+            () {
+          Auth.checkUserLoginStatus(context);
+        },
+      );
+    });
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
