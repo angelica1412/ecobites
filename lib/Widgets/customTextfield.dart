@@ -7,6 +7,7 @@ class CustomTextField extends StatelessWidget {
   final String? obscureCharacter;
   final String hintText;
   final Widget? prefixIcon;
+  final String? prefixText;
   final Widget? suffixIcon;
 
   const CustomTextField({
@@ -17,6 +18,7 @@ class CustomTextField extends StatelessWidget {
     this.obscureCharacter = "*",
     required this.hintText,
     this.prefixIcon,
+    this.prefixText,
     this.suffixIcon,
     required Null Function(dynamic value) onChanged,
   });
@@ -42,6 +44,7 @@ class CustomTextField extends StatelessWidget {
           hintText: hintText,
           // hintStyle: ,
           prefixIcon: prefixIcon,
+          prefixText: prefixText,
           suffixIcon: suffixIcon,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
