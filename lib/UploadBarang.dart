@@ -545,101 +545,103 @@ class _UploadBarangState extends State<UploadBarang> {
                       onChanged: (value) {},
                     ),
                     const SizedBox(height: 100),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          SizedBox(
-                            width: 75,
-                            height: 50,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                // Show confirmation popup
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text('Konfirmasi'),
-                                      content: const Text(
-                                          'Apakah Anda yakin ingin menghapus semua field?'),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context)
-                                                .pop(); // Close the dialog
-                                          },
-                                          child: const Text('Batal'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            // Clear all fields
-                                            setState(() {
-                                              _imageFile = null;
-                                              _selectedQuantity = null;
-                                              _selectedCategory = null;
-                                              _selectedUnit = null;
-                                              _selectedQuality = null;
-                                              _hargaAsliController.clear();
-                                              _hargaDiskonController.clear();
-                                              _namaBarang.clear();
-                                              _deskBarang.clear();
-                                              _selectedDiscount = null;
-                                            });
-                                            Navigator.of(context)
-                                                .pop(); // Close the dialog
-                                          },
-                                          child: const Text('Hapus'),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFFE57373),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
+                    Container(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: 75,
+                              height: 50,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  // Show confirmation popup
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Konfirmasi'),
+                                        content: const Text(
+                                            'Apakah Anda yakin ingin menghapus semua field?'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context)
+                                                  .pop(); // Close the dialog
+                                            },
+                                            child: const Text('Batal'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              // Clear all fields
+                                              setState(() {
+                                                _imageFile = null;
+                                                _selectedQuantity = null;
+                                                _selectedCategory = null;
+                                                _selectedUnit = null;
+                                                _selectedQuality = null;
+                                                _hargaAsliController.clear();
+                                                _hargaDiskonController.clear();
+                                                _namaBarang.clear();
+                                                _deskBarang.clear();
+                                                _selectedDiscount = null;
+                                              });
+                                              Navigator.of(context)
+                                                  .pop(); // Close the dialog
+                                            },
+                                            child: const Text('Hapus'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFFE57373),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
                                 ),
-                              ),
-                              child: const Padding(
-                                padding: EdgeInsets.all(0.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.delete,
-                                      color: Colors.black,
-                                    )
-                                  ],
+                                child: const Padding(
+                                  padding: EdgeInsets.all(0.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.delete,
+                                        color: Colors.black,
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-              
-                          const SizedBox(width: 20), // Space between the buttons
-                          SizedBox(
-                            width: 200,
-                            height: 50,
-                            child: ElevatedButton(
-                              onPressed: _isLoading? null: ()=> widget.isEdit? updateProductData() :saveProductData(context),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF92E3A9),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
+
+                            const SizedBox(width: 20), // Space between the buttons
+                            SizedBox(
+                              width: 200,
+                              height: 50,
+                              child: ElevatedButton(
+                                onPressed: _isLoading? null: ()=> widget.isEdit? updateProductData() :saveProductData(context),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFF92E3A9),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
                                 ),
+                                child: Text(widget.isEdit?
+                                'Update':'Submit',
+                                style: TextStyle(
+                                    fontSize: 18, color: Colors.black),
                               ),
-                              child: Text(widget.isEdit?
-                              'Update':'Submit',
-                              style: TextStyle(
-                                  fontSize: 18, color: Colors.black),
+                              ),
                             ),
-                            ),
-                          ),
-                           SizedBox(
-                            width: 20,
-                          )
-                        ],
+                             SizedBox(
+                              width: 20,
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ],
