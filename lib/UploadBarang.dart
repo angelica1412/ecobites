@@ -62,7 +62,29 @@ class _UploadBarangState extends State<UploadBarang> {
   final TextEditingController _namaBarang = TextEditingController();
   final TextEditingController _deskBarang = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  Future<void> updateProductData() async {
+    setState(() {
+      _isLoading = true;
+    });
+    await updateProductbyID(widget.storeID,widget.product!.id, {
+      'namaBarang': _namaBarang.text.trim(),
+      'jumlahBarang': _selectedQuantity,
+      'satuanBarang': _selectedUnit,
+      'kualitasBarang': _selectedQuality,
+      'hargaAsliBarang': _hargaAsliController.text.trim(),
+      'discount': _selectedDiscount,
+      'hargaAkhirBarang': _hargaDiskonController.text.trim(),
+      'kategoriBarang': _selectedCategory,
+      'deskripsiBarang': _deskBarang.text.trim(),
+      // Add other fields as needed
+    }, _imageFile);
 
+    // Show a success message or navigate back to the previous screen
+    setState(() {
+      _isLoading = false;
+    });
+    Navigator.pop(context, true);
+  }
   File? _imageFile;
   String? _imageURL;
   Future<void> _fetchProductData() async {
@@ -85,16 +107,6 @@ class _UploadBarangState extends State<UploadBarang> {
         _imageURL = productData['productImageURL']?? 'assets/shop.png';
         _isLoading = false;
       });
-      print(productData['namaBarang']??'');
-      print(productData['jumlahBarang']??'');
-      print(productData['satuanBarang']??'');
-      print(productData['kualitasBarang']??'');
-      print(productData['hargaAsliBarang']??'');
-      print(productData['discount']??'');
-      print(productData['hargaAkhirBarang']??'');
-      print(productData['kategoriBarang']??'');
-      print(productData['deskripsiBarang']??'');
-      print(productData['productImageURL']??'');
 
     } else {
       // Handle the case where the store data could not be fetched
@@ -167,7 +179,7 @@ class _UploadBarangState extends State<UploadBarang> {
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop(); // Tutup dialog
+                    Navigator.of(context).pop(true); // Tutup dialog
                     Navigator.of(context).pop(true); // Kembali ke halaman sebelumnya
                   },
                   child: const Text('OK'),
@@ -602,15 +614,15 @@ class _UploadBarangState extends State<UploadBarang> {
                             width: 200,
                             height: 50,
                             child: ElevatedButton(
-                              onPressed: _isLoading? null: ()=> saveProductData(context),
+                              onPressed: _isLoading? null: ()=> widget.isEdit? updateProductData() :saveProductData(context),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFF92E3A9),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20.0),
                                 ),
                               ),
-                              child: Text(
-                              'Submit',
+                              child: Text(widget.isEdit?
+                              'Update':'Submit',
                               style: TextStyle(
                                   fontSize: 18, color: Colors.black),
                             ),

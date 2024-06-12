@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecobites/UploadBarang.dart';
 import 'package:ecobites/authenticate/Controller/userController.dart';
 import 'package:ecobites/editStorePage.dart';
@@ -385,6 +386,7 @@ class _StorePageState extends State<userStorePage> {
                       product: product,
                       isUserStore: true,
                       storeID: widget.storeID,
+                      onProductUpdated: _fetchStoreData,
                     );
                   },
                 ),
@@ -423,7 +425,6 @@ class _StorePageState extends State<userStorePage> {
                     )
                 );
                 if (result == true) {
-                  // If data was saved, reload the store data
                   _fetchStoreData();
                 }
               },

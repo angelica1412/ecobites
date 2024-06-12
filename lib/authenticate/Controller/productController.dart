@@ -146,11 +146,11 @@ Future<List<Map<String, dynamic>>?> getProductsByStoreID(String? storeID) async 
 }
 
 //Update Product Data by ID
-Future<void> updateProductbyID(String productID, Map<String, dynamic> updatedData, File? imageFile) async {
+Future<void> updateProductbyID(String? storeID,String productID, Map<String, dynamic> updatedData, File? imageFile) async {
   final FirebaseFirestore db = FirebaseFirestore.instance;
   final FirebaseStorage storage = FirebaseStorage.instance;
   try{
-    final docSnapshot = await db.collection('Product').doc(productID).get();
+    final docSnapshot = await db.collection('Stores').doc(storeID).collection("Products").doc(productID).get();
     if (docSnapshot.exists) {
       final currentData = docSnapshot.data() as Map<String, dynamic>;
       final currentImageUrl = currentData['productImageURL'] ?? null;
@@ -174,7 +174,7 @@ Future<void> updateProductbyID(String productID, Map<String, dynamic> updatedDat
       }
 
       // Update Firestore document
-      await db.collection('Product').doc(productID).update(updatedData);
+      await db.collection('Stores').doc(storeID).collection("Products").doc(productID).update(updatedData);
       print('Product data updated in Firestore');
     } else {
       print('Product document does not exist');

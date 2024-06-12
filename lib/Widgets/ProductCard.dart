@@ -58,11 +58,12 @@ class Product {
 class ProductCard extends StatefulWidget {
   final Product product;
   final VoidCallback? onQuantityChanged;// Tambahkan properti ini
+  final VoidCallback? onProductUpdated;
   final bool isUserStore;
   final bool isCheckout;
   final String? storeID;
 
-  const ProductCard({Key? key, required this.product, this.onQuantityChanged, this.isUserStore = false, this.isCheckout = false,  this.storeID}) : super(key: key);
+  const ProductCard({Key? key, required this.product, this.onQuantityChanged,this.onProductUpdated, this.isUserStore = false, this.isCheckout = false,  this.storeID}) : super(key: key);
 
   @override
   _ProductCardState createState() => _ProductCardState();
@@ -224,10 +225,13 @@ class _ProductCardState extends State<ProductCard> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           InkWell(
-            onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> UploadBarang(fromHome: false, fromUserToko: true, isEdit: true,product: widget.product, storeID:widget.storeID ,)));
+            onTap: () async{
+                final result = await Navigator.push(context, MaterialPageRoute(builder: (context)=> UploadBarang(fromHome: false, fromUserToko: true, isEdit: true,product: widget.product, storeID:widget.storeID ,)));
               // Tindakan yang akan dijalankan ketika tombol di klik
               // Misalnya, tampilkan dialog edit, navigasi ke halaman edit, dll.
+              if(result == true){
+                widget.onProductUpdated?.call();
+              }
             },
             child: Row(
               mainAxisSize: MainAxisSize.min,

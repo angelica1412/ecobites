@@ -75,7 +75,7 @@ class _EditStorePageState extends State<EditStorePage> {
     });
   }
 
-  Future<void> _saveStoreData() async {
+  Future<void> updateStoreData() async {
     setState(() {
       _isLoading = true;
     });
@@ -103,7 +103,7 @@ class _EditStorePageState extends State<EditStorePage> {
           actions: [
             IconButton(
               icon: Icon(Icons.save),
-              onPressed: _isLoading ? null : _saveStoreData,
+              onPressed: _isLoading ? null : updateStoreData,
             ),
           ],
         ),
