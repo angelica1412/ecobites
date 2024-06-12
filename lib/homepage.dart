@@ -38,58 +38,63 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(80.0), // Tinggi total AppBar termasuk padding atas
-        child: Padding(
-          padding: EdgeInsets.only(top: 20.0), // Jarak di atas AppBar
-          child: AppBar(
-            backgroundColor: const Color(0xFFFAFAFA),
-            elevation: 0,
-            title: Row(
-              children: [
-                Image.asset(
-                  'assets/logo.png',
-                  height: 75,
-                  width: 75,
-                ),
-                Text(
-                  'Ecobites',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
-                  ),
-                ),
-              ],
+      appBar: AppBar(
+        toolbarHeight:
+            100, // Mengatur tinggi toolbar (termasuk title dan actions)
+        backgroundColor: const Color(0xFFFAFAFA),
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        title: Row(
+          mainAxisAlignment:
+              MainAxisAlignment.start, // Menengahkan title secara vertikal
+          children: [
+            Image.asset(
+              'assets/logo.png',
+              height: 75,
+              width: 75,
             ),
-            actions: [
-              Container(
-                alignment: Alignment.center, // Menengahkan ikon di dalam container
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 178, 178, 178),
-                  shape: BoxShape.circle,
-                ),
-                width: 48,  // Menyesuaikan diameter lingkaran agar ikon muat sempurna
-                height: 48, // Menyesuaikan diameter lingkaran agar ikon muat sempurna
-                margin: EdgeInsets.only(right: 20), // Menambahkan jarak di sebelah kanan
-                child: IconButton(
-                  icon: Icon(Icons.person, size: 24), // Menyesuaikan ukuran ikon agar tidak keluar dari lingkaran
-                  color: Colors.black,
-                  onPressed: () async {
-                    final result = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ProfileScreen()
+            Text(
+              'Ecobites',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 18,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 178, 178, 178),
+              shape: BoxShape.circle,
+            ),
+            width: 48,
+            height: 48,
+            margin: EdgeInsets.only(right: 20),
+            child: IconButton(
+              icon: Icon(Icons.person, size: 24),
+              color: Colors.black,
+              onPressed: () async {
+                final result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfileScreen()
                       ),
-                    );
+                );
                     if (result == true) {
                       _refreshStoreData();
                       // If data was saved, reload the store data
 
                     }
-                  },
-                ),
-              ),
-            ],
+              },
+            ),
+          ),
+        ],
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(1), // Mengatur tinggi border
+          child: Container(
+            color: Colors.black, // Warna border
+            height: 1, // Ketebalan border
           ),
         ),
       ),

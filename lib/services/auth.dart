@@ -1,5 +1,6 @@
 import 'package:ecobites/homepage.dart';
 import 'package:ecobites/main.dart';
+import 'package:ecobites/onboardingscreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -159,7 +160,7 @@ class Auth {
     } else{
       // Jika pengguna belum masuk, arahkan ke layar login
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const SplashScreen(),
+        MaterialPageRoute(builder: (context) => const OnBoardingScreen(),
       )
       );
     }

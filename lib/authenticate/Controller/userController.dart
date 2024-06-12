@@ -34,14 +34,12 @@ Future<Map<String, String>?> getUserDetailsbyUID() async {
     if (doc.exists) {
       final data = doc.data() as Map<String, dynamic>;
       final email = data['email'] ?? '';
-      final firstName = data['firstName'] ?? '';
-      final lastName = data['lastName'] ?? '';
+      final username = data['username'] ?? '';
       final phone = data['phone']??'';
 
       return {
         'email': email,
-        'firstName': firstName,
-        'lastName': lastName,
+        'username': username,
         'phone' : phone,
       };
     } else {

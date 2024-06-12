@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'Welcome Back!!',
+                    'Welcome!!',
                     style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,

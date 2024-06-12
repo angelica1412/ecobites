@@ -15,8 +15,10 @@ class MapsContainer extends StatelessWidget {
     // Format URL untuk melakukan pencarian di Google Maps berdasarkan nama toko
     String googleMapsUrl = 'https://www.google.com/maps/search/?api=1&query=$encodedQueryName $encodedQueryAddress';
 
-    if (await launch(googleMapsUrl)) {
-      await launch(googleMapsUrl);
+    Uri url = Uri.parse(googleMapsUrl);
+
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
     } else {
       throw 'Could not launch $googleMapsUrl';
     }

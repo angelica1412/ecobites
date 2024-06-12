@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecobites/UploadBarang.dart';
 import 'package:ecobites/authenticate/Controller/userController.dart';
 import 'package:ecobites/editStorePage.dart';
+import 'package:ecobites/historypage.dart';
 import 'package:flutter/material.dart';
 import 'package:ecobites/Widgets/ProductCard.dart';
 import 'package:ecobites/Widgets/category_button.dart';
@@ -9,6 +10,7 @@ import 'package:ecobites/Widgets/share_widget.dart';
 
 import 'authenticate/Controller/productController.dart';
 import 'authenticate/Controller/storeController.dart';
+import 'package:ecobites/authenticate/Controller/storeController.dart';
 
 class userStorePage extends StatefulWidget {
   final String storeID;
@@ -21,10 +23,11 @@ class userStorePage extends StatefulWidget {
 class _StorePageState extends State<userStorePage> {
   String _selectedCategory = 'Food';
   bool _searching = false;
-  String searchQuery= "";
-  final FocusNode _searchFocusNode = FocusNode();// Untuk melacak apakah sedang dalam mode pencarian
-  bool _isLoading = true;
+  String searchQuery = "";
   Map<String, String> _storeData = {};
+  final FocusNode _searchFocusNode =
+      FocusNode(); // Untuk melacak apakah sedang dalam mode pencarian
+  bool _isLoading = true;
   List<Product> _productData =[];
 
 
@@ -86,7 +89,6 @@ class _StorePageState extends State<userStorePage> {
       imageURL: 'assets/pupukurea.jpg',
       category: 'Hasil Daur',
       jumlah: 10
-
     ),
     Product(
       id: "2",
@@ -96,7 +98,6 @@ class _StorePageState extends State<userStorePage> {
       imageURL: 'assets/rotiberjamur.jpg',
       category: 'Bahan Daur',
       jumlah: 10
-
     ),
     Product(
       id: "2",
@@ -152,27 +153,26 @@ class _StorePageState extends State<userStorePage> {
         backgroundColor: Colors.white,
         elevation: 0,
         actions: _buildActions(),
-        leading: _searching?
-        IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            setState(() {
-              _searching=false;
-            }); // Kembali ke halaman sebelumnya
-          },
-        )
-            :
-        IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context); // Kembali ke halaman sebelumnya
-          },
-        ),
+        leading: _searching
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.black),
+                onPressed: () {
+                  setState(() {
+                    _searching = false;
+                  }); // Kembali ke halaman sebelumnya
+                },
+              )
+            : IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.black),
+                onPressed: () {
+                  Navigator.pop(context); // Kembali ke halaman sebelumnya
+                },
+              ),
         title: _searching
             ? TextField(
                 controller: _searchController,
                 focusNode: _searchFocusNode,
-                onChanged: (value){
+                onChanged: (value) {
                   setState(() {
                     searchQuery = value;
                   });
@@ -190,8 +190,7 @@ class _StorePageState extends State<userStorePage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-        centerTitle: true,
-
+        // centerTitle: true,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(4.0), // Tinggi bayangan
           child: Container(
@@ -475,6 +474,16 @@ class _StorePageState extends State<userStorePage> {
             ShareWidget.showShareBottomSheet(context);
           },
         ),
+        IconButton(
+          icon: const Icon(Icons.history),
+          color: Colors.black,
+          onPressed: () {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => HistoryPage()),
+              ); // Pindah ke halaman History
+          },
+        )
       ];
     }
   }
