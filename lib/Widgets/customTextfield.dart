@@ -82,6 +82,8 @@ class CustomTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final Function(String)? onChanged;
   final String? prefixText;
+  final bool enableCurrencyFormatter; // Tambahkan properti ini
+
 
   const CustomTextField({
     super.key,
@@ -94,6 +96,7 @@ class CustomTextField extends StatelessWidget {
     this.suffixIcon,
     this.onChanged,
     this.prefixText,
+    this.enableCurrencyFormatter = false, // Defaultnya false
   });
 
   @override
@@ -106,10 +109,7 @@ class CustomTextField extends StatelessWidget {
       keyboardType: keyboardType,
       obscureText: isObscureText!,
       obscuringCharacter: obscureCharacter!,
-      inputFormatters: [
-        // FilteringTextInputFormatter.digitsOnly,
-        CurrencyInputFormatter(),
-      ],
+      inputFormatters: enableCurrencyFormatter ? [CurrencyInputFormatter()] : null, // Terapkan formatter jika diperlukan
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.only(top: 12.0, left: 12.0),
         constraints: BoxConstraints(
