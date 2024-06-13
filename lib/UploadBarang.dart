@@ -445,6 +445,7 @@ class _UploadBarangState extends State<UploadBarang> {
                       hintText: "Harga Asli",
                       keyboardType: TextInputType.number,
                       prefixText: 'Rp. ',
+                      enableCurrencyFormatter: true,
                       onChanged: (value) {
                         calculateDiscountedPrice();
                       },
