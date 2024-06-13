@@ -120,7 +120,7 @@ class _OrderPageState extends State<OrderPage> {
                 children: [
                   Expanded(
                     child: Text(
-                      'KFC Rumah Makan',
+                      'Dunkin Donut Store',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
