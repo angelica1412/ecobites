@@ -53,7 +53,6 @@ flutter:
   - assets/register.png
   - assets/defaultProfilePicture.png
   - assets/daurulang.png
-  - assets/food.png
   - assets/pupuk.png
   - assets/voucher.png
   - assets/product1.png
@@ -61,12 +60,8 @@ flutter:
   - assets/product3.png
   - assets/shop.png
   - assets/sosis.jpg
-  - assets/kentang.jpg
-  - assets/pupukjualan.jpg
-  - assets/bahandaur.jpg
   - assets/whatsapp.png
   - assets/instagram.png
-  - assets/shop2.png
   - assets/driver.png
   - assets/maps.png
   - assets/shopeepay.png
@@ -78,21 +73,12 @@ flutter:
   - assets/onboarding1.png
   - assets/onboarding2.png
   - assets/onboarding3.png
-  - assets/pupukurea.jpg
-  - assets/rotiberjamur.jpg
-  - assets/terangbulan.jpg
   - assets/martabak.jpg
-  - assets/cahyaa.jpg
-  - assets/matahari.jpg
-  - assets/mirasa.jpg
-  - assets/tokoindonesia.jpg
-  - assets/dunkin.jpg
   - assets/voucher25.png
   - assets/freedelivery.png
   - assets/voucherchinese.png
   - assets/voucher45.png
   - assets/mapsContainer.png
-  - assets/grande.jpg
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
