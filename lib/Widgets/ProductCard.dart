@@ -1,5 +1,6 @@
 
 import 'package:ecobites/UploadBarang.dart';
+import 'package:ecobites/detailproduk.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -110,65 +111,79 @@ class _ProductCardState extends State<ProductCard> {
       fit: BoxFit.cover,
     );
   }
+  void _showProductDetail(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return ProductDetailPage(product: widget.product, isUserStore: widget.isUserStore,storeID: widget.storeID,onQuantityChanged: widget.onQuantityChanged, );
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
     final formattedPrice = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp. ', decimalDigits: 0)
         .format(widget.product.price);
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Gambar produk
-            Expanded(
-              flex: 2,
-              child: _buildImage(widget.product.imageURL),
-            ),
-            const SizedBox(width: 10),
-            // Informasi produk
-            Expanded(
-              flex: 3,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.product.name,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  Text(widget.product.description),
-                  const SizedBox(height: 5),
-                  Text(
-                    formattedPrice,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  // _buildEditButton()
-                  if (widget.isUserStore)
-                    _buildEditButton()
-                  else if (widget.product.quantity == 0)
-                    _buildAddButton()
-                  else if (widget.isCheckout)
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text('qty : ${widget.product.quantity}', style: const TextStyle(fontWeight: FontWeight.bold )),
-                        ],
-                      ),
-                    )
-                  else
-                    _buildQuantityButton(),
-                ],
+    return GestureDetector(
+      onTap: (){
+          _showProductDetail(context);
+        },
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Gambar produk
+              Expanded(
+                flex: 2,
+                child: _buildImage(widget.product.imageURL),
               ),
-            ),
-            const SizedBox(width: 10),
-          ],
+              const SizedBox(width: 10),
+              // Informasi produk
+              Expanded(
+                flex: 3,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.product.name,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(widget.product.description),
+                    const SizedBox(height: 5),
+                    Text(
+                      formattedPrice,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    // _buildEditButton()
+                    if (widget.isUserStore)
+                      _buildEditButton()
+                    else if (widget.product.quantity == 0)
+                      _buildAddButton()
+                    else if (widget.isCheckout)
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text('qty : ${widget.product.quantity}', style: const TextStyle(fontWeight: FontWeight.bold )),
+                          ],
+                        ),
+                      )
+                    else
+                      _buildQuantityButton(),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 10),
+            ],
+          ),
         ),
       ),
     );
@@ -232,7 +247,9 @@ class _ProductCardState extends State<ProductCard> {
         children: [
           InkWell(
             onTap: () async{
-                final result = await Navigator.push(context, MaterialPageRoute(builder: (context)=> UploadBarang(fromHome: false, fromUserToko: true, isEdit: true,product: widget.product, storeID:widget.storeID ,)));
+              final result = await Navigator.push(context, MaterialPageRoute(builder: (context)=> UploadBarang(fromHome: false, fromUserToko: true, isEdit: true,product: widget.product, storeID:widget.storeID ,)
+              )
+              );
               // Tindakan yang akan dijalankan ketika tombol di klik
               // Misalnya, tampilkan dialog edit, navigasi ke halaman edit, dll.
               if(result == true){
