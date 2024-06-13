@@ -1,6 +1,8 @@
 
 import 'package:ecobites/UploadBarang.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
 
 class Product {
   final String id;
@@ -24,17 +26,16 @@ class Product {
   });
   factory Product.fromMap(Map<String, dynamic> data, String documentId) {
     double parseDouble(dynamic value) {
-  if (value is String) {
-    // Ganti ',' dengan '.' agar parsing dapat dilakukan dengan benar
-    value = value.replaceAll(',', '.');
-    // Lakukan parsing double
-    return double.tryParse(value) ?? 0.0;
-  } else if (value is num) {
-    return value.toDouble();
-  } else {
-    return 0.0;
-  }
-}
+      if (value is String) {
+        // Hapus titik pemisah ribuan sebelum parsing
+        value = value.replaceAll('.', '').replaceAll(',', '.');
+        return double.tryParse(value) ?? 0.0;
+      } else if (value is num) {
+        return value.toDouble();
+      } else {
+        return 0.0;
+      }
+    }
 
     int parseInt(dynamic value) {
       if (value is String) {
@@ -111,6 +112,8 @@ class _ProductCardState extends State<ProductCard> {
   }
   @override
   Widget build(BuildContext context) {
+    final formattedPrice = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp. ', decimalDigits: 0)
+        .format(widget.product.price);
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -139,7 +142,7 @@ class _ProductCardState extends State<ProductCard> {
                   Text(widget.product.description),
                   const SizedBox(height: 5),
                   Text(
-                    'Rp. ${widget.product.price.toStringAsFixed(3)}',
+                    formattedPrice,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
