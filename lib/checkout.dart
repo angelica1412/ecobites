@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecobites/Widgets/Payment_method.dart';
 import 'package:ecobites/Widgets/secondarytabbar.dart';
 import 'package:ecobites/Widgets/Voucher.dart';
@@ -7,16 +8,19 @@ import 'package:flutter/material.dart';
 import 'Widgets/ProductCard.dart';
 import 'Widgets/payment_summary.dart';
 import 'aftercheckout.dart';
+import 'authenticate/Controller/storeController.dart';
 
 class OrderPage extends StatefulWidget {
   const OrderPage({
     super.key,
     required this.productsWithQuantity,
     required this.totalprice,
+    required this.storeID,
   });
 
   final List<Product> productsWithQuantity;
   final double totalprice;
+  final String storeID;
 
   @override
   State<OrderPage> createState() => _OrderPageState();
@@ -116,34 +120,48 @@ class _OrderPageState extends State<OrderPage> {
               ),
               SizedBox(height: 20),
               Divider(),
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      'Dunkin Donut Store',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      // Handle tambah action
-                    },
-                    child: Text(
-                      'Tambah',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    style: TextButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    ),
-                  ),
-                ],
+              FutureBuilder<Map<String, String>?>(
+                future: getStorebyID(widget.storeID),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error loading store data');
+                  } else if (!snapshot.hasData || snapshot.data == null) {
+                    return Text('Store not found');
+                  } else {
+                    final storeData = snapshot.data!;
+                    return Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            storeData['namaToko'] ?? 'No store name',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            // Handle tambah action
+                          },
+                          child: Text(
+                            'Tambah',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                          style: TextButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                },
               ),
               Divider(),
               SizedBox(height: 20),
@@ -210,3 +228,4 @@ class _OrderPageState extends State<OrderPage> {
     );
   }
 }
+

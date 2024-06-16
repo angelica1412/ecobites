@@ -428,6 +428,7 @@ class _StorePageState extends State<StorePage> {
                                       productsWithQuantity:
                                           productsWithQuantity,
                                       totalprice: _totalPrice,
+                                  storeID: widget.storeID,
                                     )));
                         // Lakukan tindakan saat container diklik
                         // Misalnya, tampilkan dialog, navigasi ke halaman checkout, dll.
