@@ -186,11 +186,11 @@ Future<void> updateProductbyID(String? storeID,String productID, Map<String, dyn
 
 
 // Delete Product Data by ID
-Future<void> deleteProductFromFirestore(String productID) async {
+Future<void> deleteProductFromFirestore(String? storeID, String productID) async {
   final FirebaseFirestore db = FirebaseFirestore.instance;
   final FirebaseStorage storage = FirebaseStorage.instance;
   try {
-    final docSnapshot = await db.collection('Product').doc(productID).get();
+    final docSnapshot = await db.collection('Stores').doc(storeID).collection("Products").doc(productID).get();
     if (docSnapshot.exists) {
       final data = docSnapshot.data() as Map<String, dynamic>;
       final imageUrl = data['productImageURL'] ?? null;
@@ -202,7 +202,7 @@ Future<void> deleteProductFromFirestore(String productID) async {
       }
 
       // Delete the document from Firestore
-      await db.collection('Product').doc(productID).delete();
+      await db.collection('Stores').doc(storeID).collection("Products").doc(productID).delete();
       print('Product data deleted from Firestore');
     } else {
       print('Product document does not exist');

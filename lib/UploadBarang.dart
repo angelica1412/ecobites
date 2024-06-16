@@ -115,6 +115,7 @@ class _UploadBarangState extends State<UploadBarang> {
         _isLoading = false;
       });
 
+
     } else {
       // Handle the case where the store data could not be fetched
       print('Failed to fetch store data');
@@ -198,6 +199,17 @@ class _UploadBarangState extends State<UploadBarang> {
       );
     }
   }
+  Future<void> deleteProduct() async {
+    setState(() {
+      _isLoading = true;
+    });
+    await deleteProductFromFirestore(widget.storeID, widget.product!.id);
+    setState(() {
+      _isLoading = false;
+    });
+    Navigator.pop(context, true);
+  }
+
 
   @override
   void dispose() {
@@ -547,53 +559,44 @@ class _UploadBarangState extends State<UploadBarang> {
                     ),
                     const SizedBox(height: 100),
                     Container(
+                      width: double.infinity,
                       child: Align(
                         alignment: Alignment.center,
-                        child: Row(
+                        child: widget.isEdit
+                            ? Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SizedBox(
-                              width: 75,
+                              width: MediaQuery.of(context).size.width * 0.4,
                               height: 50,
                               child: ElevatedButton(
-                                onPressed: () {
+                                onPressed: ()  {
                                   // Show confirmation popup
                                   showDialog(
                                     context: context,
+                                    barrierDismissible: false,
                                     builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: const Text('Konfirmasi'),
-                                        content: const Text(
-                                            'Apakah Anda yakin ingin menghapus semua field?'),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.of(context)
-                                                  .pop(); // Close the dialog
-                                            },
-                                            child: const Text('Batal'),
-                                          ),
-                                          TextButton(
-                                            onPressed: () {
-                                              // Clear all fields
-                                              setState(() {
-                                                _imageFile = null;
-                                                _selectedQuantity = null;
-                                                _selectedCategory = null;
-                                                _selectedUnit = null;
-                                                _selectedQuality = null;
-                                                _hargaAsliController.clear();
-                                                _hargaDiskonController.clear();
-                                                _namaBarang.clear();
-                                                _deskBarang.clear();
-                                                _selectedDiscount = null;
-                                              });
-                                              Navigator.of(context)
-                                                  .pop(); // Close the dialog
-                                            },
-                                            child: const Text('Hapus'),
-                                          ),
-                                        ],
+                                      return WillPopScope(
+                                        onWillPop: () async => false,
+                                        child: AlertDialog(
+                                          title: const Text('Konfirmasi'),
+                                          content: const Text('Apakah Anda yakin ingin menghapus semua field?'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop(); // Close the dialog
+                                              },
+                                              child: const Text('Batal'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () async {
+                                                Navigator.of(context).pop();
+                                                await deleteProduct();
+                                              },
+                                              child: const Text('Hapus'),
+                                            ),
+                                          ],
+                                        ),
                                       );
                                     },
                                   );
@@ -612,39 +615,61 @@ class _UploadBarangState extends State<UploadBarang> {
                                       Icon(
                                         Icons.delete,
                                         color: Colors.black,
-                                      )
+                                      ),
+                                      SizedBox(width: 8),
+                                      Text('Hapus', style: TextStyle(color: Colors.black))
                                     ],
                                   ),
                                 ),
                               ),
                             ),
-
                             const SizedBox(width: 20), // Space between the buttons
                             SizedBox(
-                              width: 200,
+                              width: MediaQuery.of(context).size.width * 0.4,
                               height: 50,
                               child: ElevatedButton(
-                                onPressed: _isLoading? null: ()=> widget.isEdit? updateProductData() :saveProductData(context),
+                                onPressed: () => updateProductData(),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xFF92E3A9),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20.0),
                                   ),
                                 ),
-                                child: Text(widget.isEdit?
-                                'Update':'Submit',
-                                style: TextStyle(
-                                    fontSize: 18, color: Colors.black),
-                              ),
+                                child: Text(
+                                  'Update',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.black,
+                                  ),
+                                ),
                               ),
                             ),
-                             SizedBox(
-                              width: 20,
-                            )
                           ],
+                        )
+                            : SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: _isLoading ? null : () => saveProductData(context),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF92E3A9),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                            ),
+                            child: Text(
+                              'Submit',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),
+
+
                   ],
                 ),
                 ),
