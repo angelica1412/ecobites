@@ -144,7 +144,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 Icon(Icons.star_border, color: Colors.yellow),
                 const SizedBox(width: 5),
                 Text(
-                  'rating.toString()', // Rating value
+                  '4.0', // Rating value
                   style: const TextStyle(fontSize: 16),
                 ),
               ],

@@ -3,8 +3,10 @@ import 'package:ecobites/Widgets/Payment_method.dart';
 import 'package:ecobites/Widgets/secondarytabbar.dart';
 import 'package:ecobites/Widgets/Voucher.dart';
 import 'package:ecobites/aftercheckout.dart';
+import 'package:ecobites/authenticate/Controller/historyController.dart';
 import 'package:ecobites/voucherPage.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'Widgets/ProductCard.dart';
 import 'Widgets/payment_summary.dart';
 import 'aftercheckout.dart';
@@ -32,6 +34,11 @@ class _OrderPageState extends State<OrderPage> {
   bool isDelivery = true;
   Voucher? selectedVoucher;
   String? _selectedPaymentMethod; // Add this line
+  bool _isLoading = false;
+  Map<String, dynamic> historyData = {};
+  List<Voucher> _filteredVoucherCodes = [];
+
+
 
   @override
   void dispose() {
@@ -48,6 +55,86 @@ class _OrderPageState extends State<OrderPage> {
   void _onPaymentMethodSelected(String? paymentMethod) {
     setState(() {
       _selectedPaymentMethod = paymentMethod;
+    });
+  }
+  Future<void> prepareHistoryData() async {
+    // Get current date
+    final now = DateTime.now();
+    final formatter = DateFormat('dd MMMM yyyy');
+    final formattedDate = formatter.format(now);
+
+    // Get store data
+    final storeData = await getStorebyID(widget.storeID);
+
+    // Prepare product list
+    final productList = widget.productsWithQuantity.map((product) {
+      return {
+        'id': product.id,
+        'namaBarang': product.name,
+        'quantity': product.quantity,
+        'satuanBarang': product.satuanBarang,
+        'kualitasBarang': product.quality,
+        'hargaAsliBarang': product.hargaAsliBarang,
+        'discount': product.discount,
+        'hargaAkhirBarang': product.hargaAkhirBarang,
+        'kategoriBarang': product.category,
+        'deskripsiBarang': product.description,
+        'productImageURL': product.imageURL,
+      };
+    }).toList();
+    final voucherList = selectedVoucher != null ? [
+      {
+        'code': selectedVoucher!.code,
+        'imageName': selectedVoucher!.imageName,
+        'description': selectedVoucher!.description,
+        'productDiscount': selectedVoucher!.productDiscount,
+        'deliveryDiscount': selectedVoucher!.deliveryDiscount,
+        'maxDiscount': selectedVoucher!.maxDiscount,
+      }
+    ] : [];
+    final voucherList2 = [
+      {
+        'code': selectedVoucher?.code,
+        'imageName': selectedVoucher?.imageName,
+        'description': selectedVoucher?.description,
+        'productDiscount': selectedVoucher?.productDiscount,
+        'deliveryDiscount': selectedVoucher?.deliveryDiscount,
+        'maxDiscount': selectedVoucher?.maxDiscount,
+      }
+    ];
+
+
+    // Update historyData
+    historyData = {
+      'storeID': widget.storeID,
+      'storeName': storeData?['namaToko'] ?? 'No store name',
+      'Products': productList,
+      'totalPrice': widget.totalprice,
+      'address': _addressController.text,
+      'isDelivery': isDelivery,
+      'voucher': voucherList, // Assuming Voucher has a toMap() method
+      'paymentMethod': _selectedPaymentMethod,
+      'date': formattedDate,
+    };
+  }
+
+  Future<void> saveHistorytoUser() async{
+    setState(() {
+      _isLoading = true;
+    });
+
+    await addHistorytoUsersFirestore(historyData);
+    setState(() {
+      _isLoading=false;
+    });
+  }
+  Future<void> saveHistorytoStore() async{
+    setState(() {
+      _isLoading = true;
+    });
+    await addHistorytoStoresFirestore(widget.storeID, historyData);
+    setState(() {
+      _isLoading=false;
     });
   }
 
@@ -205,12 +292,15 @@ class _OrderPageState extends State<OrderPage> {
                   width: 167, // Lebar yang diinginkan
                   height: 50, // Tinggi yang diinginkan
                   child: ElevatedButton(
-                    onPressed: _selectedPaymentMethod == null ? null : () {
+                    onPressed: _selectedPaymentMethod == null ? null : () async {
+                      await prepareHistoryData(); // Persiapkan historyData
+                      // Simpan historyData ke Firestore
+                      await saveHistorytoUser();
+                      await saveHistorytoStore();
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => CheckoutPage(isDelivery: isDelivery)),
                       ); // Pindah ke halaman Upload
-                      print('$isDelivery');
                     },
                     child: Text('Checkout'),
                     style: ElevatedButton.styleFrom(

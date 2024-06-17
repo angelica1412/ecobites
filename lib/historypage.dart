@@ -1,24 +1,58 @@
 import 'package:ecobites/Widgets/secondarytabbar.dart';
 import 'package:ecobites/homepage.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'UploadBarang.dart';
+import 'authenticate/Controller/historyController.dart';
 
 class ActivityCard {
+  final String id; // ID dari dokumen Firestore
+  final String storeID;
+  final String storeName;
+  final List<Map<String, dynamic>> products;
+  final double totalPrice;
+  final String address;
+  final bool isDelivery;
+  final List<Map<String, dynamic>> voucher; // Assuming voucher is a list of maps
+  final String paymentMethod;
   final String date;
-  final String status;
-  final String imageName;
-  final String productName;
-  final int quantity;
 
   ActivityCard({
+    required this.id,
+    required this.storeID,
+    required this.storeName,
+    required this.products,
+    required this.totalPrice,
+    required this.address,
+    required this.isDelivery,
+    required this.voucher,
+    required this.paymentMethod,
     required this.date,
-    required this.status,
-    required this.imageName,
-    required this.productName,
-    required this.quantity,
   });
+
+  factory ActivityCard.fromMap(Map<String, dynamic> data, String documentId) {
+    return ActivityCard(
+      id: documentId,
+      storeID: data['storeID'] ?? '',
+      storeName: data['storeName'] ?? '',
+      products: List<Map<String, dynamic>>.from(data['Products'] ?? []).map((product) {
+        return {
+          'namaBarang': product['namaBarang'] ?? '',
+          'quantity': product['quantity'] ?? 0,
+          'productImageURL': product['productImageURL'] ?? '',
+        };
+      }).toList(),
+      totalPrice: data['totalPrice']?.toDouble() ?? 0.0,
+      address: data['address'] ?? '',
+      isDelivery: data['isDelivery'] ?? false,
+      voucher: List<Map<String, dynamic>>.from(data['voucher'] ?? []),
+      paymentMethod: data['paymentMethod'] ?? '',
+      date: data['date'] ?? '',
+    );
+  }
 }
+
 
 class HistoryPage extends StatefulWidget {
   @override
@@ -29,20 +63,39 @@ class _HistoryPageState extends State<HistoryPage> {
   int _selectedTabIndex = 0;
   String? _selectedDropdown1;
   String? _selectedDropdown2;
+  List<ActivityCard> salesData = [];
+  List<ActivityCard> purchaseData = [];
+  // List<ActivityCard> salesData = [
+  //   ActivityCard(date: '2021-12-01', status: 'On Progress', imageName: 'assets/martabak.jpg', productName: 'Martabak', quantity: 3),
+  //   ActivityCard(date: '2021-12-02', status: 'Done', imageName: 'assets/pupuk.png', productName: 'Pupuk Kualitas bagus', quantity: 2),
+  //   ActivityCard(date: '2021-12-03', status: 'Cancelled', imageName: 'assets/sosis.jpg', productName: 'Sosis Bakar', quantity: 5),
+  //   // Tambahkan lebih banyak data sesuai kebutuhan
+  // ];
+  //
+  // List<ActivityCard> purchaseData = [
+  //   ActivityCard(date: '2021-12-01', status: 'Done', imageName: 'assets/pupuk.png', productName: 'Pupuk Kualitas bagus', quantity: 1),
+  //   ActivityCard(date: '2021-12-04', status: 'On Progress', imageName: 'assets/sosis.jpg', productName: 'Sosis Bakar', quantity: 4),
+  //   // Tambahkan lebih banyak data sesuai kebutuhan
+  // ];
 
-  List<ActivityCard> salesData = [
-    ActivityCard(date: '2021-12-01', status: 'On Progress', imageName: 'assets/martabak.jpg', productName: 'Martabak', quantity: 3),
-    ActivityCard(date: '2021-12-02', status: 'Done', imageName: 'assets/pupuk.png', productName: 'Pupuk Kualitas bagus', quantity: 2),
-    ActivityCard(date: '2021-12-03', status: 'Cancelled', imageName: 'assets/sosis.jpg', productName: 'Sosis Bakar', quantity: 5),
-    // Tambahkan lebih banyak data sesuai kebutuhan
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _fetchHistoryData();
+  }
+  Future<void> _fetchHistoryData() async {
+    // Load sales history
+    List<ActivityCard> purchases = await readStoreHistoryFromFirestore();
+    setState(() {
+      purchaseData = purchases;
+    });
+    List<ActivityCard> sales = await readUserHistoryFromFirestore();
+    setState(() {
+      salesData = sales;
+    });
 
-  List<ActivityCard> purchaseData = [
-    ActivityCard(date: '2021-12-01', status: 'Done', imageName: 'assets/pupuk.png', productName: 'Pupuk Kualitas bagus', quantity: 1),
-    ActivityCard(date: '2021-12-04', status: 'On Progress', imageName: 'assets/sosis.jpg', productName: 'Sosis Bakar', quantity: 4),
-    // Tambahkan lebih banyak data sesuai kebutuhan
-  ];
-
+    // Load purchase history
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -141,8 +194,9 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 
   Widget _buildSalesView() {
-    return ListView.builder(
+    return ListView.separated(
       itemCount: salesData.length,
+      separatorBuilder: (context, index) => SizedBox(height: 16.0), // Tambahkan jarak setinggi 16.0 antara setiap Card
       itemBuilder: (context, index) {
         final activity = salesData[index];
         return Center(
@@ -157,35 +211,95 @@ class _HistoryPageState extends State<HistoryPage> {
                     padding: EdgeInsets.only(bottom: 8.0),
                     decoration: BoxDecoration(
                       border: Border(
-                          bottom: BorderSide(color: Colors.grey, width: 1.0)),
+                        bottom: BorderSide(color: Colors.grey, width: 1.0),
+                      ),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(activity.date),
-                        Text(activity.status),
-                      ],
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                              activity.storeName,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold
+                          ),),
+                          Text(activity.date),
+                          // Text(activity.status),
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(height: 16.0),
-                  Row(
-                    children: [
-                      Image.asset(
-                        activity.imageName,
-                        width: 70,
-                        height: 70,
-                      ),
-                      SizedBox(width: 16.0),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                  ListView.separated(
+                    shrinkWrap: true,
+                    separatorBuilder: (context, index) => SizedBox(height: 16.0), // Tambahkan jarak setinggi 16.0 antara setiap Card
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: activity.products.length,
+                    itemBuilder: (context, idx) {
+                      final product = activity.products[idx];
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
                           children: [
-                            Text(activity.productName),
-                            Text('Jumlah: ${activity.quantity}'),
+                            Image.network(
+                                product['productImageURL'],
+                                width: 70,
+                                height: 70,
+                                fit: BoxFit.cover,
+                                loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                  return Container(
+                                    height: 70,
+                                    width: 70,
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded/(loadingProgress.expectedTotalBytes ?? 1)
+                                            :null,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                                  return const Icon(Icons.error);
+                                }
+                            ),
+                            SizedBox(width: 16.0),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(product['namaBarang']),
+                                  Text('Jumlah: ${product['quantity']}'),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
-                      ),
-                    ],
+                      );
+                    },
+                  ),
+                  SizedBox(height: 8,),
+                  Divider(),
+                  SizedBox(height: 8.0), // Jarak antara produk dan total price
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Jumlah Harga', // Menampilkan total price dengan format 2 digit desimal
+                          style: TextStyle(
+                          ),
+                        ),
+                        Text(
+                          'Rp ${NumberFormat("#,##0", "id_ID").format(activity.totalPrice)}', // Menampilkan total price dengan format 2 digit desimal// Menampilkan total price dengan format 2 digit desimal
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -194,11 +308,13 @@ class _HistoryPageState extends State<HistoryPage> {
         );
       },
     );
+
   }
 
   Widget _buildPurchaseView() {
-    return ListView.builder(
+    return ListView.separated(
       itemCount: purchaseData.length,
+      separatorBuilder: (context, index) => SizedBox(height: 16.0), // Tambahkan jarak setinggi 16.0 antara setiap Card
       itemBuilder: (context, index) {
         final activity = purchaseData[index];
         return Center(
@@ -213,35 +329,77 @@ class _HistoryPageState extends State<HistoryPage> {
                     padding: EdgeInsets.only(bottom: 8.0),
                     decoration: BoxDecoration(
                       border: Border(
-                          bottom: BorderSide(color: Colors.grey, width: 1.0)),
+                        bottom: BorderSide(color: Colors.grey, width: 1.0),
+                      ),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(activity.date),
-                        Text(activity.status),
-                      ],
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            activity.storeName,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold
+                            ),),
+                          Text(activity.date),
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(height: 16.0),
-                  Row(
-                    children: [
-                      Image.asset(
-                        activity.imageName,
-                        width: 70,
-                        height: 70,
-                      ),
-                      SizedBox(width: 16.0),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                  ListView.separated(
+                    shrinkWrap: true,
+                    separatorBuilder: (context, index) => SizedBox(height: 16.0), // Tambahkan jarak setinggi 16.0 antara setiap Card
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: activity.products.length,
+                    itemBuilder: (context, idx) {
+                      final product = activity.products[idx];
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Row(
                           children: [
-                            Text(activity.productName),
-                            Text('Jumlah: ${activity.quantity}'),
+                            Image.network(
+                              product['productImageURL'],
+                              width: 70,
+                              height: 70,
+                              fit: BoxFit.cover,
+                            ),
+                            SizedBox(width: 16.0),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(product['namaBarang']),
+                                  Text('Jumlah: ${product['quantity']}'),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
-                      ),
-                    ],
+                      );
+                    },
+                  ),
+                  SizedBox(height: 8.0),
+                  Divider(),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Jumlah Harga', // Menampilkan total price dengan format 2 digit desimal
+                          style: TextStyle(
+                          ),
+                        ),
+                        Text(
+                          'Rp ${NumberFormat("#,##0", "id_ID").format(activity.totalPrice)}', // Menampilkan total price dengan format 2 digit desimal // Menampilkan total price dengan format 2 digit desimal
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

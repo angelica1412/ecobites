@@ -12,6 +12,11 @@ class Product {
   final double price;
   final String imageURL;
   final String category;
+  final String satuanBarang;
+  final String quality;
+  final String hargaAsliBarang;
+  final String hargaAkhirBarang;
+  final String discount;
   final int jumlah;
   int quantity;
 
@@ -22,7 +27,12 @@ class Product {
     required this.price,
     required this.imageURL,
     required this.category,
+    required this.satuanBarang,
+    required this.quality,
     required this.jumlah,
+    required this.discount,
+    required this.hargaAkhirBarang,
+    required this.hargaAsliBarang,
     this.quantity = 0,
   });
   factory Product.fromMap(Map<String, dynamic> data, String documentId) {
@@ -56,6 +66,12 @@ class Product {
       imageURL: data['productImageURL'] ?? 'assets/shop.png',
       category: data['kategoriBarang'] ?? 'Other',
       jumlah: parseInt(data['jumlahBarang']),
+      satuanBarang: data['satuanBarang'] ?? '',
+      discount: data['discount'] ??'',
+      hargaAkhirBarang: data['hargaAkhirBarang']??'',
+      hargaAsliBarang: data['hargaAsliBarang']??'',
+      quality: data['kualitasBarang']??'',
+
     );
   }
 }
