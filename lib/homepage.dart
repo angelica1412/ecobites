@@ -2,15 +2,9 @@ import 'package:ecobites/DoubleBackToExit.dart';
 import 'package:ecobites/Widgets/voucher.dart';
 import 'package:ecobites/authenticate/Controller/storeController.dart';
 import 'package:flutter/material.dart';
-import 'package:ecobites/Store.dart';
 import 'package:ecobites/Widgets/storeCard.dart';
 import 'package:ecobites/historypage.dart';
 import 'package:ecobites/profile.dart';
-import 'package:ecobites/voucherPage.dart';
-import 'package:get/get.dart';
-
-import 'UploadBarang.dart';
-
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -43,7 +37,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         toolbarHeight:
             100, // Mengatur tinggi toolbar (termasuk title dan actions)
-        backgroundColor: const Color(0xFFFAFAFA),
+        backgroundColor: const Color(0xFFFFFBFE),
         elevation: 0,
         automaticallyImplyLeading: false,
         title: Row(
@@ -69,7 +63,8 @@ class _HomePageState extends State<HomePage> {
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: const Color.fromARGB(255, 178, 178, 178),
-              shape: BoxShape.circle,
+              shape: BoxShape.circle
+              // borderRadius: BorderRadius.circular(60), // Atur border radius sesuai kebutuhan
             ),
             width: 48,
             height: 48,
@@ -90,13 +85,6 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ],
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(1), // Mengatur tinggi border
-          child: Container(
-            color: Colors.black, // Warna border
-            height: 1, // Ketebalan border
-          ),
-        ),
       ),
       body: FutureBuilder<List<Map<String, String>>?>(
           future: _storeFuture,
@@ -125,6 +113,7 @@ class _HomePageState extends State<HomePage> {
                         hintText: 'Search for store...',
                         prefixIcon: Icon(Icons.search, color: searchIconColor),
                         border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
                           borderSide:
                               BorderSide(color: Colors.black, width: 2.0),
                         ),
