@@ -112,6 +112,7 @@ class CustomTextField extends StatelessWidget {
       inputFormatters: enableCurrencyFormatter ? [CurrencyInputFormatter()] : null, // Terapkan formatter jika diperlukan
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.only(top: 12.0, left: 12.0),
+        prefix: Text(prefixText ?? ""),
         constraints: BoxConstraints(
           maxHeight: height * 0.9,
           maxWidth: width,
@@ -121,7 +122,6 @@ class CustomTextField extends StatelessWidget {
         hintText: hintText,
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
-        prefixText: prefixText,
         prefixStyle: const TextStyle(color: Colors.black, fontSize: 16),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
@@ -156,6 +156,8 @@ class CurrencyInputFormatter extends TextInputFormatter {
     symbol: '',
     decimalDigits: 0,
   );
+  final Function(String)? onChanged;
+  CurrencyInputFormatter({this.onChanged});
 
   @override
   TextEditingValue formatEditUpdate(
@@ -169,7 +171,9 @@ class CurrencyInputFormatter extends TextInputFormatter {
 
     // Format text
     String formattedText = _formatter.format(int.parse(newText));
-
+    if (onChanged != null) {
+      onChanged!(formattedText);
+    }
     return TextEditingValue(
       text: formattedText,
       selection: TextSelection.collapsed(offset: formattedText.length),

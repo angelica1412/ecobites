@@ -5,6 +5,7 @@ import 'package:ecobites/authenticate/Controller/productController.dart';
 import 'package:flutter/cupertino.dart';
 // import 'package:ecobites/Widgets/SliderWithLabel.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -48,9 +49,6 @@ class _UploadBarangState extends State<UploadBarang> {
     decimalDigits: 0,
   );
 
-  String? _selectedQuantity;
-  final List<String> _quantities = ['1', '2', '3', '4', '5'];
-
   String? _selectedDiscount;
   final List<String> _discountOptions = ['100%', '90%', '50%'];
 
@@ -67,6 +65,7 @@ class _UploadBarangState extends State<UploadBarang> {
   final TextEditingController _hargaAsliController = TextEditingController();
   final TextEditingController _hargaDiskonController = TextEditingController();
   final TextEditingController _namaBarang = TextEditingController();
+  final TextEditingController _jumlahBarang = TextEditingController();
   final TextEditingController _deskBarang = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Future<void> updateProductData() async {
@@ -75,7 +74,7 @@ class _UploadBarangState extends State<UploadBarang> {
     });
     await updateProductbyID(widget.storeID,widget.product!.id, {
       'namaBarang': _namaBarang.text.trim(),
-      'jumlahBarang': _selectedQuantity,
+      'jumlahBarang': _jumlahBarang.text.trim(),
       'satuanBarang': _selectedUnit,
       'kualitasBarang': _selectedQuality,
       'hargaAsliBarang': _hargaAsliController.text.trim(),
@@ -103,7 +102,7 @@ class _UploadBarangState extends State<UploadBarang> {
     if (productData != null) {
       setState(() {
         _namaBarang.text = productData['namaBarang']??'';
-        _selectedQuantity = productData['jumlahBarang']??'';
+        _jumlahBarang.text = productData['jumlahBarang']??'';
         _selectedUnit = productData['satuanBarang']??'';
         _selectedQuality = productData['kualitasBarang']??'';
         _hargaAsliController.text = productData['hargaAsliBarang'] ?? '';
@@ -127,7 +126,7 @@ class _UploadBarangState extends State<UploadBarang> {
   Future<void> saveProductData(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       if (_imageFile == null ||
-          _selectedQuantity == null ||
+          _jumlahBarang.text.isEmpty ||
           _selectedUnit == null ||
           _selectedQuality == null ||
           _hargaAsliController.text.isEmpty ||
@@ -161,7 +160,7 @@ class _UploadBarangState extends State<UploadBarang> {
       });
       Map<String, dynamic> productData = {
         'namaBarang': _namaBarang.text.trim(),
-        'jumlahBarang': _selectedQuantity,
+        'jumlahBarang': _jumlahBarang.text.trim(),
         'satuanBarang': _selectedUnit,
         'kualitasBarang': _selectedQuality,
         'hargaAsliBarang': _hargaAsliController.text.trim(),
@@ -378,38 +377,41 @@ class _UploadBarangState extends State<UploadBarang> {
                     Row(
                       children: [
                         Expanded(
-                          child: DropdownButton<String>(
-                            hint: const Text('Jumlah'),
-                            value: _selectedQuantity,
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                _selectedQuantity = newValue;
-                              });
-                            },
-                            items: _quantities.map((quantity) {
-                              return DropdownMenuItem(
-                                value: quantity,
-                                child: Text(quantity),
-                              );
-                            }).toList(),
+                          child: CustomTextField(
+                            controller: _jumlahBarang,
+                            hintText: "Jumlah",
+                            keyboardType: TextInputType.number,
+                            onChanged: (value) {},
                           ),
                         ),
                         const SizedBox(width: 8),
                         Expanded(
-                          child: DropdownButton<String>(
-                            hint: const Text('Satuan'),
-                            value: _selectedUnit,
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                _selectedUnit = newValue;
-                              });
-                            },
-                            items: _unitOptions.map((unit) {
-                              return DropdownMenuItem(
-                                value: unit,
-                                child: Text(unit),
-                              );
-                            }).toList(),
+                          child: Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              border: Border.all(width: 1),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton<String>(
+                                  hint: const Text('Satuan'),
+                                  value: _selectedUnit,
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      _selectedUnit = newValue;
+                                    });
+                                  },
+                                  items: _unitOptions.map((unit) {
+                                    return DropdownMenuItem(
+                                      value: unit,
+                                      child: Text(unit),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -425,20 +427,32 @@ class _UploadBarangState extends State<UploadBarang> {
                           color: Color(0xFF000000)),
                     ),
                     const SizedBox(height: 8),
-                    DropdownButton<String>(
-                      hint: const Text('Kualitas Barang'),
-                      value: _selectedQuality,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedQuality = newValue;
-                        });
-                      },
-                      items: _quality.map((quality) {
-                        return DropdownMenuItem(
-                          value: quality,
-                          child: Text(quality),
-                        );
-                      }).toList(),
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            hint: const Text('Kualitas Barang'),
+                            value: _selectedQuality,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                _selectedQuality = newValue;
+                              });
+                            },
+                            items: _quality.map((quality) {
+                              return DropdownMenuItem(
+                                value: quality,
+                                child: Text(quality),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
                     ),
               // Kualitas Barang end
                     const SizedBox(
@@ -456,7 +470,9 @@ class _UploadBarangState extends State<UploadBarang> {
                       controller: _hargaAsliController,
                       hintText: "Harga Asli",
                       keyboardType: TextInputType.number,
-                      prefixText: 'Rp. ',
+                      prefixIcon: Padding(padding: EdgeInsets.only(top: 15,bottom: 15,left: 15), child: Text('Rp. ',style: TextStyle(fontSize: 16),)),
+
+
                       enableCurrencyFormatter: true,
                       onChanged: (value) {
                         calculateDiscountedPrice();
@@ -471,21 +487,34 @@ class _UploadBarangState extends State<UploadBarang> {
                           color: Color(0xFF000000)),
                     ),
                     const SizedBox(height: 8),
-                    DropdownButton<String>(
-                      hint: const Text('Pilih Potongan'),
-                      value: _selectedDiscount,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedDiscount = newValue;
-                          calculateDiscountedPrice();
-                        });
-                      },
-                      items: _discountOptions.map((discount) {
-                        return DropdownMenuItem(
-                          value: discount,
-                          child: Text(discount),
-                        );
-                      }).toList(),
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1),
+                        borderRadius: BorderRadius.circular(8),
+
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: DropdownButton<String>(
+                            hint: const Text('Pilih Potongan'),
+                            value: _selectedDiscount,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                _selectedDiscount = newValue;
+                                calculateDiscountedPrice();
+                              });
+                            },
+                            items: _discountOptions.map((discount) {
+                              return DropdownMenuItem(
+                                value: discount,
+                                child: Text(discount),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 20),
                     const Text(
@@ -527,20 +556,32 @@ class _UploadBarangState extends State<UploadBarang> {
                           color: Color(0xFF000000)),
                     ),
                     const SizedBox(height: 8),
-                    DropdownButton<String>(
-                      hint: const Text('Pilih Kategori Barang'),
-                      value: _selectedCategory,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedCategory = newValue;
-                        });
-                      },
-                      items: _categoryOptions.map((category) {
-                        return DropdownMenuItem(
-                          value: category,
-                          child: Text(category),
-                        );
-                      }).toList(),
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1),
+                        borderRadius: BorderRadius.circular(8)
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            hint: const Text('Pilih Kategori Barang'),
+                            value: _selectedCategory,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                _selectedCategory = newValue;
+                              });
+                            },
+                            items: _categoryOptions.map((category) {
+                              return DropdownMenuItem(
+                                value: category,
+                                child: Text(category),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 20),
                     const Text(
@@ -557,7 +598,7 @@ class _UploadBarangState extends State<UploadBarang> {
                       hintText: "Deskripsi Barang",
                       onChanged: (value) {},
                     ),
-                    const SizedBox(height: 100),
+                    const SizedBox(height: 50),
                     Container(
                       width: double.infinity,
                       child: Align(

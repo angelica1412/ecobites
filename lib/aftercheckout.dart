@@ -1,3 +1,4 @@
+import 'package:ecobites/Widgets/share_widget.dart';
 import 'package:ecobites/homepage.dart';
 import 'package:flutter/material.dart';
 
@@ -62,7 +63,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
         ),
         // Driver details and communication options
         Positioned(
-          bottom: 0,
+          bottom: -20,
           left: 0,
           right: 0,
           child: Container(
@@ -84,12 +85,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
               ],
             ),
             child: Column(
+
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
                     const CircleAvatar(
-                      radius: 30.0, // increased radius for a bigger profile picture
+                      radius: 40.0, // increased radius for a bigger profile picture
                       backgroundImage: AssetImage(
                           'assets/driver.png'), // Add your driver image asset
                     ),
@@ -115,6 +117,35 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       ],
                     ),
                     const Spacer(),
+                    InkWell(
+                      onTap:(){
+
+                      },
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.green.withOpacity(0.3),
+                                  ),
+                                  padding: const EdgeInsets.all(8),
+                                  child: Image.asset(
+                                    'assets/whatsapp.png',
+                                    height: 25,
+                                    width: 25,
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                     const Text('4 mnt', style: TextStyle(fontSize: 16.0)),
                   ],
                 ),
