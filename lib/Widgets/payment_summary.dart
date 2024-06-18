@@ -2,6 +2,7 @@ import 'package:ecobites/Widgets/payment_detail_row.dart';
 import 'package:ecobites/voucherPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class PaymentSummary extends StatelessWidget {
   const PaymentSummary({
@@ -17,6 +18,7 @@ class PaymentSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final NumberFormat currencyFormatter = NumberFormat.currency(locale: 'id', symbol: 'Rp. ',decimalDigits: 0);
     double productDiscount = 0;
     double deliveryDiscount = 0;
     double shippingFee = 10000; // Ongkos kirim contoh
@@ -59,39 +61,39 @@ class PaymentSummary extends StatelessWidget {
         Divider(),
         PaymentDetailRow(
           title: 'Subtotal',
-          value: 'Rp ${totalPrice.toStringAsFixed(2)}',
+          value: currencyFormatter.format(totalPrice),
         ),
         if (isDelivery) ...[
           PaymentDetailRow(
             title: 'Ongkos Kirim',
-            value: 'Rp ${shippingFee.toStringAsFixed(2)}',
+            value: currencyFormatter.format(shippingFee),
           ),
           if (selectedVoucher != null && productDiscount > 0)
             PaymentDetailRow(
               title: 'Diskon Produk',
-              value: '-Rp ${productDiscount.toStringAsFixed(2)}',
+              value: '-${currencyFormatter.format(productDiscount)}',
             ),
           if (selectedVoucher != null && deliveryDiscount > 0)
             PaymentDetailRow(
               title: 'Diskon Ongkir',
-              value: '-Rp ${deliveryDiscount.toStringAsFixed(2)}',
+              value: '-${currencyFormatter.format(deliveryDiscount)}',
             ),
           Divider(),
           PaymentDetailRow(
             title: 'Total',
-            value: 'Rp ${finalTotalPrice.toStringAsFixed(2)}',
+            value: currencyFormatter.format(finalTotalPrice),
             isTotal: true,
           ),
         ] else ...[
           if (selectedVoucher != null && productDiscount > 0)
             PaymentDetailRow(
               title: 'Diskon Produk',
-              value: '-Rp ${productDiscount.toStringAsFixed(2)}',
+              value: '-${currencyFormatter.format(productDiscount)}',
             ),
           Divider(),
           PaymentDetailRow(
             title: 'Total',
-            value: 'Rp ${finalTotalPrice.toStringAsFixed(2)}',
+            value: currencyFormatter.format(finalTotalPrice),
             isTotal: true,
           ),
         ],

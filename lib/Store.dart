@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:ecobites/Widgets/ProductCard.dart';
 import 'package:ecobites/Widgets/category_button.dart';
 import 'package:ecobites/Widgets/share_widget.dart';
+import 'package:intl/intl.dart';
 import 'Widgets/MapsContainer.dart';
 import 'package:ecobites/authenticate/Controller/storeController.dart';
 
@@ -88,6 +89,7 @@ class _StorePageState extends State<StorePage> {
   }
 
   Widget build(BuildContext context) {
+    final NumberFormat currencyFormatter = NumberFormat.currency(locale: 'id', symbol: 'Rp. ',decimalDigits: 0);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -475,7 +477,7 @@ class _StorePageState extends State<StorePage> {
                               Padding(
                                 padding: EdgeInsets.fromLTRB(0, 0, 16, 0),
                                 child: Text(
-                                  'Total: \Rp.${_totalPrice.toInt()}', // Ganti dengan total harga sesuai dengan logika aplikasi Anda
+                                  'Total: ${currencyFormatter.format(_totalPrice)}',
                                   style: TextStyle(color: Colors.white),
                                 ),
                               ),

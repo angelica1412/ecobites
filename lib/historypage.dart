@@ -1,6 +1,7 @@
 import 'package:ecobites/Widgets/secondarytabbar.dart';
 import 'package:ecobites/homepage.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import 'UploadBarang.dart';
@@ -16,7 +17,7 @@ class ActivityCard {
   final bool isDelivery;
   final List<Map<String, dynamic>> voucher; // Assuming voucher is a list of maps
   final String paymentMethod;
-  final String date;
+  final DateTime date;
 
   ActivityCard({
     required this.id,
@@ -32,6 +33,15 @@ class ActivityCard {
   });
 
   factory ActivityCard.fromMap(Map<String, dynamic> data, String documentId) {
+    final DateFormat dateFormat = DateFormat('dd MMMM yyyy HH:mm:ss'); // Ubah format untuk termasuk jam
+    DateTime parsedDate;
+
+    try {
+      parsedDate = dateFormat.parse(data['date'] ?? DateTime.now().toIso8601String());
+    } catch (e) {
+      // Handle format exception jika terjadi kesalahan parsing
+      parsedDate = DateTime.now();
+    }
     return ActivityCard(
       id: documentId,
       storeID: data['storeID'] ?? '',
@@ -48,7 +58,7 @@ class ActivityCard {
       isDelivery: data['isDelivery'] ?? false,
       voucher: List<Map<String, dynamic>>.from(data['voucher'] ?? []),
       paymentMethod: data['paymentMethod'] ?? '',
-      date: data['date'] ?? '',
+      date: parsedDate,
     );
   }
 }
@@ -86,15 +96,13 @@ class _HistoryPageState extends State<HistoryPage> {
   Future<void> _fetchHistoryData() async {
     // Load sales history
     List<ActivityCard> purchases = await readStoreHistoryFromFirestore();
-    setState(() {
-      purchaseData = purchases;
-    });
     List<ActivityCard> sales = await readUserHistoryFromFirestore();
-    setState(() {
-      salesData = sales;
-    });
 
-    // Load purchase history
+    setState(() {
+      // Sort data based on date
+      purchaseData = purchases..sort((a, b) => b.date.compareTo(a.date));
+      salesData = sales..sort((a, b) => b.date.compareTo(a.date));
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -110,6 +118,7 @@ class _HistoryPageState extends State<HistoryPage> {
       ),
       body: Column(
         children: [
+          SizedBox(height: 20),
           SecondaryTabbar(
             onTabSelected: (index) {
               setState(() {
@@ -194,6 +203,11 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 
   Widget _buildSalesView() {
+    if (salesData.isEmpty) {
+      return const Center(
+        child: CircularProgressIndicator(), // Show loading indicator while fetching data
+      );
+    }
     return ListView.separated(
       itemCount: salesData.length,
       separatorBuilder: (context, index) => SizedBox(height: 16.0), // Tambahkan jarak setinggi 16.0 antara setiap Card
@@ -224,7 +238,13 @@ class _HistoryPageState extends State<HistoryPage> {
                           style: TextStyle(
                             fontWeight: FontWeight.bold
                           ),),
-                          Text(activity.date),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(DateFormat('dd MMMM yyyy').format(activity.date), style: TextStyle(fontSize: 12),), // Tanggal di atas
+                              Text(DateFormat('HH:mm:ss').format(activity.date), style: TextStyle(fontSize: 12),), // Jam di bawah
+                            ],
+                          ),
                           // Text(activity.status),
                         ],
                       ),
@@ -312,6 +332,11 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 
   Widget _buildPurchaseView() {
+    if (purchaseData.isEmpty) {
+      return const Center(
+        child: CircularProgressIndicator(), // Show loading indicator while fetching data
+      );
+    }
     return ListView.separated(
       itemCount: purchaseData.length,
       separatorBuilder: (context, index) => SizedBox(height: 16.0), // Tambahkan jarak setinggi 16.0 antara setiap Card
@@ -342,7 +367,13 @@ class _HistoryPageState extends State<HistoryPage> {
                             style: TextStyle(
                                 fontWeight: FontWeight.bold
                             ),),
-                          Text(activity.date),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(DateFormat('dd MMMM yyyy').format(activity.date), style: TextStyle(fontSize: 12),), // Tanggal di atas
+                              Text(DateFormat('HH:mm:ss').format(activity.date), style: TextStyle(fontSize: 12),), // Jam di bawah
+                            ],
+                          ),
                         ],
                       ),
                     ),
@@ -364,6 +395,22 @@ class _HistoryPageState extends State<HistoryPage> {
                               width: 70,
                               height: 70,
                               fit: BoxFit.cover,
+                                loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                  return Container(
+                                    height: 70,
+                                    width: 70,
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded/(loadingProgress.expectedTotalBytes ?? 1)
+                                            :null,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                                  return const Icon(Icons.error);
+                                }
                             ),
                             SizedBox(width: 16.0),
                             Expanded(

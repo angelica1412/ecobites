@@ -60,7 +60,7 @@ class _OrderPageState extends State<OrderPage> {
   Future<void> prepareHistoryData() async {
     // Get current date
     final now = DateTime.now();
-    final formatter = DateFormat('dd MMMM yyyy');
+    final formatter = DateFormat('dd MMMM yyyy HH:mm:ss');
     final formattedDate = formatter.format(now);
 
     // Get store data
@@ -124,18 +124,12 @@ class _OrderPageState extends State<OrderPage> {
     });
 
     await addHistorytoUsersFirestore(historyData);
-    setState(() {
-      _isLoading=false;
-    });
   }
   Future<void> saveHistorytoStore() async{
     setState(() {
       _isLoading = true;
     });
     await addHistorytoStoresFirestore(widget.storeID, historyData);
-    setState(() {
-      _isLoading=false;
-    });
   }
 
   @override
@@ -288,23 +282,31 @@ class _OrderPageState extends State<OrderPage> {
               Divider(),
               SizedBox(height: 20),
               Center(
-                child: Container(
+                child: _isLoading
+                    ? CircularProgressIndicator() // Show loading indicator when isLoading is true
+                    : Container(
                   width: 167, // Lebar yang diinginkan
                   height: 50, // Tinggi yang diinginkan
-                  child: ElevatedButton(
-                    onPressed: _selectedPaymentMethod == null ? null : () async {
-                      await prepareHistoryData(); // Persiapkan historyData
-                      // Simpan historyData ke Firestore
+                  child:  ElevatedButton(
+                    onPressed: _selectedPaymentMethod == null || _isLoading
+                        ? null // Disable button if no payment method selected or while loading
+                        : () async {
+                      setState(() {
+                        _isLoading = true; // Set isLoading to true when checkout button is pressed
+                      });
+                      await prepareHistoryData();
                       await saveHistorytoUser();
                       await saveHistorytoStore();
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => CheckoutPage(isDelivery: isDelivery)),
-                      ); // Pindah ke halaman Upload
+                      );
                     },
                     child: Text('Checkout'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: _selectedPaymentMethod == null ? Colors.grey : const Color(0xFF92E3A9),
+                      backgroundColor: _selectedPaymentMethod == null || _isLoading
+                          ? Colors.grey // Disable button color
+                          : const Color(0xFF92E3A9), // Enable button color
                       textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
