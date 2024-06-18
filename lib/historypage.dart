@@ -101,7 +101,7 @@ class _HistoryPageState extends State<HistoryPage> {
     return Scaffold(
       appBar: AppBar(
         title: Center(
-          child: Text('History Page',
+          child: Text('Activity Page',
               style: TextStyle(
                   color: Colors.black, fontWeight: FontWeight.bold)),
         ),

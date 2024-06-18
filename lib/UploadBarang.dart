@@ -241,10 +241,10 @@ class _UploadBarangState extends State<UploadBarang> {
       child: Scaffold(
           appBar: AppBar(
             title: widget.isEdit
-                ? Text('Edit Barang',
+                ? Text('Edit Product',
                 style: TextStyle(
                     color: Colors.black, fontWeight: FontWeight.bold))
-                : const Text('Upload Barang',
+                : const Text('Upload Product',
                 style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
             centerTitle: true,
             leading: _isLoading
