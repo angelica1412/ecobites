@@ -1,5 +1,6 @@
 import 'package:ecobites/Profile.dart';
 import 'package:ecobites/authenticate/Controller/userController.dart';
+import 'package:ecobites/services/auth.dart';
 import 'package:flutter/material.dart';
 
 class PengaturanAkun extends StatefulWidget {
@@ -36,16 +37,12 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
         print('User Details: $userDetails');
         setState(() {
           userEmail = userDetails['email'];
-          userFirstName = userDetails['firstName'];
-          userLastName = userDetails['lastName'];
           userPhoneNumber = userDetails['phone'];
           userName = userDetails['username'];
 
-          _emailController.text = userEmail!;
-          _firstNameController.text = userFirstName!;
-          _lastNameController.text = userLastName!;
-          _phoneController.text = userPhoneNumber!;
-          _usernameController.text = userName!;
+          _emailController.text = userDetails['email'] ?? '';
+          _phoneController.text = userDetails['phone'] ?? '';
+          _usernameController.text = userDetails['username'] ?? '';
 
           _isLoading = false;
         });
@@ -68,8 +65,7 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
   Future<void> updateUserDetails() async {
     try {
       final updatedDetails = {
-        'firstName': _firstNameController.text,
-        'lastName': _lastNameController.text,
+        'username': _usernameController,
         'email': _emailController.text,
         'phone': _phoneController.text,
       };
@@ -138,7 +134,13 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('First Name: '),
+                            const Text(
+                              'Username: ',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                             const SizedBox(height: 8),
                             TextField(
                               controller: _usernameController,
@@ -149,8 +151,6 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10)),
                                 ),
-                                hintText: '$userName',
-                                hintStyle: TextStyle(color: Colors.black),
                               ),
                             ),
                           ],
@@ -214,6 +214,33 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                             child: const Text('Save Changes'),
                           ),
                         ),
+                        const SizedBox(height: 150,),
+                        Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            width: 150,
+                            height: 50,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Auth.logout(context);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                foregroundColor: Colors.red[900],
+                                backgroundColor: Colors.red[200],
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                ),
+                              ),
+                              child: const Text(
+                                'Logout',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   ),
