@@ -1,7 +1,7 @@
-import 'package:ecobites/Profile.dart';
+import 'dart:io';
 import 'package:ecobites/authenticate/Controller/userController.dart';
-import 'package:ecobites/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class PengaturanAkun extends StatefulWidget {
   const PengaturanAkun({super.key});
@@ -11,15 +11,12 @@ class PengaturanAkun extends StatefulWidget {
 }
 
 class _PengaturanAkunState extends State<PengaturanAkun> {
-  String? userFirstName;
-  String? userLastName;
-  String? userEmail;
-  String? userPhoneNumber;
-  String? userName;
   bool _isLoading = true;
+  File? _imageFile;
+  String? _imageURL;
 
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
+
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
@@ -31,15 +28,15 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
   }
 
   Future<void> fetchUserDetails() async {
+    setState(() {
+      _isLoading=true;
+    });
     try {
       final userDetails = await getUserDetailsbyUID();
       if (userDetails != null) {
         print('User Details: $userDetails');
         setState(() {
-          userEmail = userDetails['email'];
-          userPhoneNumber = userDetails['phone'];
-          userName = userDetails['username'];
-
+          _imageURL = userDetails['userImageURL'];
           _emailController.text = userDetails['email'] ?? '';
           _phoneController.text = userDetails['phone'] ?? '';
           _usernameController.text = userDetails['username'] ?? '';
@@ -61,15 +58,24 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
       });
     }
   }
+  Future<void> _pickImageFromGallery() async {
+    final pickedFile =
+    await ImagePicker().pickImage(source: ImageSource.gallery);
 
+    setState(() {
+      if (pickedFile != null) {
+        _imageFile = File(pickedFile.path);
+        print(_imageFile);
+      }
+    });
+  }
   Future<void> updateUserDetails() async {
     try {
       final updatedDetails = {
-        'username': _usernameController,
-        'email': _emailController.text,
+        'username': _usernameController.text,
         'phone': _phoneController.text,
       };
-      await updateUserDetailsbyUID(updatedDetails);
+      await updateUserDetailsbyUID(updatedDetails, _imageFile);
       print('User details updated successfully');
     } catch (e) {
       print('Error updating user details: $e');
@@ -84,12 +90,7 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ProfileScreen(),
-              ),
-            );
+            Navigator.pop(context, true);
           },
         ),
       ),
@@ -102,16 +103,55 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                   Center(
                     child: Column(
                       children: [
-                        const CircleAvatar(
-                          radius: 50,
-                          backgroundColor: Colors.grey,
-                          child:
-                              Icon(Icons.person, size: 50, color: Colors.white),
-                        ),
+                        if(_imageFile != null)
+                          ClipOval(
+                            child: SizedBox(
+                              width: 100,
+                              height: 100,
+                              child: Image.file(
+                                _imageFile!,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          )
+                        else if(_imageURL != null)
+                          ClipOval(
+                            child: SizedBox(
+                              width: 100,
+                              height: 100,
+                              child: Image.network(
+                                _imageURL!,
+                                fit: BoxFit.cover,
+                                loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                  return Container(
+                                    height: 120,
+                                    width: double.infinity,
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        value: loadingProgress.expectedTotalBytes != null
+                                            ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                                            : null,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                                  return const Icon(Icons.error);
+                                },
+
+                              ),
+                            ),
+                          )
+                        else if (_imageURL == null && _imageFile == null)
+                          const CircleAvatar(
+                            radius: 50,
+                            backgroundColor: Colors.grey,
+                            child:
+                                Icon(Icons.person, size: 50, color: Colors.white),
+                          ),
                         TextButton(
-                          onPressed: () {
-                            // Add your change profile picture action here
-                          },
+                          onPressed: _pickImageFromGallery,
                           child: const Text('Change Profile Picture'),
                         ),
                       ],
@@ -127,121 +167,109 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                   ),
                   Container(
                     width: 350,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Column untuk Full Name
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Username: ',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            TextField(
-                              controller: _usernameController,
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 8.0, horizontal: 10.0),
-                                border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                            height: 16), // Add some spacing between the columns
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text('Your Email: '),
-                            const SizedBox(height: 8),
-                            TextField(
-                              controller: _emailController,
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 8.0, horizontal: 10.0),
-                                border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                ),
-                                hintText: '$userEmail',
-                                hintStyle: TextStyle(color: Colors.black),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                            height: 16), // Add some spacing between the columns
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text('Your Phone Number: '),
-                            const SizedBox(height: 8),
-                            TextField(
-                              controller: _phoneController,
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 8.0, horizontal: 10.0),
-                                border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                ),
-                                hintText: '$userPhoneNumber',
-                                hintStyle: TextStyle(color: Colors.black),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-                        Center(
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              await updateUserDetails();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                    content:
-                                        Text('Profile updated successfully!')),
-                              );
-                            },
-                            child: const Text('Save Changes'),
-                          ),
-                        ),
-                        const SizedBox(height: 150,),
-                        Align(
-                          alignment: Alignment.center,
-                          child: Container(
-                            width: 150,
-                            height: 50,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Auth.logout(context);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                foregroundColor: Colors.red[900],
-                                backgroundColor: Colors.red[200],
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                ),
-                              ),
-                              child: const Text(
-                                'Logout',
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Column untuk Full Name
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Username: ',
                                 style: TextStyle(
-                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w600,
                                 ),
+                              ),
+                              const SizedBox(height: 8),
+                              TextField(
+                                controller: _usernameController,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 8.0, horizontal: 10.0),
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                              height: 16), // Add some spacing between the columns
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text('Your Email: '),
+                              const SizedBox(height: 8),
+                              TextField(
+                                controller: _emailController,
+                                enabled: false,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 8.0, horizontal: 10.0),
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                  ),
+                                  hintText: '$_emailController',
+                                  hintStyle: TextStyle(color: Colors.black),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                              height: 16), // Add some spacing between the columns
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text('Your Phone Number: '),
+                              const SizedBox(height: 8),
+                              TextField(
+                                controller: _phoneController,
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 8.0, horizontal: 10.0),
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                  ),
+                                  hintText: '$_phoneController',
+                                  hintStyle: TextStyle(color: Colors.black),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          Center(
+                            child: Container(
+                              width: double.infinity,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  await updateUserDetails();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content:
+                                            Text('Profile updated successfully!')),
+                                  );
+                                },
+                                child: const Text('Save Changes'),
                               ),
                             ),
                           ),
-                        )
-                      ],
+                          const SizedBox(height: 50,),
+
+                          const SizedBox(height: 50,),
+
+                        ],
+                      ),
                     ),
                   ),
                 ],

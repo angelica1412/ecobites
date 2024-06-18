@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:ecobites/Widgets/storeCard.dart';
 import 'package:ecobites/historypage.dart';
 import 'package:ecobites/profile.dart';
+
+import 'authenticate/Controller/userController.dart';
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -17,19 +19,41 @@ class _HomePageState extends State<HomePage> {
   TextEditingController searchController = TextEditingController();
   String searchQuery = "";
   Future<List<Map<String, String>>?>? _storeFuture;
+  String? _imageURL;
+  bool? _isLoading = false;
 
+
+  Future<void> fetchUserDetails() async {
+   setState(() {
+     _isLoading=true;
+   });
+    try {
+      final userDetails = await getUserDetailsbyUID();
+      if (userDetails != null) {
+        print('User Details: $userDetails');
+        setState(() {
+          _imageURL = userDetails['userImageURL'];
+          _isLoading = false;
+        });
+      } else {
+        print('User details not found');
+        setState(() {
+          _isLoading=false;
+        });
+      }
+    } catch (e) {
+      print('Error fetching user details: $e');
+      setState(() {
+        _isLoading=false;
+      });
+    }
+  }
   @override
   void initState() {
     super.initState();
+    fetchUserDetails();
     _storeFuture = getAllStores();
   }
-
-  void _refreshStoreData() {
-    setState(() {
-      _storeFuture = getAllStores();
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return DoubleBackToExit(
@@ -59,31 +83,87 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
         actions: [
-          Container(
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 178, 178, 178),
-              shape: BoxShape.circle
-              // borderRadius: BorderRadius.circular(60), // Atur border radius sesuai kebutuhan
+          _isLoading == true?
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Container(alignment: Alignment.center,
+                width: 48,
+                height: 48,
+                  child: CircularProgressIndicator(),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle
+                  ),
+                ),
+              )
+              :_imageURL != null?
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: GestureDetector(
+                onTap: () async{
+                  final result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfileScreen()),
+                  );
+                  if (result == true) {
+                    initState();
+                    // If data was saved, reload the store data
+                  }
+                },
+                child: ClipOval(
+                  child: Container(
+                    width: 48,
+                    height: 48,
+                    child: Image.network(
+                      _imageURL!,
+                      fit: BoxFit.cover,
+                      loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return Container(
+                          height: 48,
+                          width: 48,
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                                  : null,
+                            ),
+                          ),
+                        );
+                      },
+                      errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                        return const Icon(Icons.error);
+                      },
+
+                    ),
+                  ),
+                ),
+              ),
+            ):
+            Container(
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 178, 178, 178),
+                shape: BoxShape.circle
+                // borderRadius: BorderRadius.circular(60), // Atur border radius sesuai kebutuhan
+              ),
+              width: 48,
+              height: 48,
+              margin: EdgeInsets.only(right: 20),
+              child: IconButton(
+                icon: Icon(Icons.person, size: 24),
+                color: Colors.black,
+                onPressed: () async {
+                  final result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfileScreen()),
+                  );
+                  if (result == true) {
+                    initState();
+                    // If data was saved, reload the store data
+                  }
+                },
+              ),
             ),
-            width: 48,
-            height: 48,
-            margin: EdgeInsets.only(right: 20),
-            child: IconButton(
-              icon: Icon(Icons.person, size: 24),
-              color: Colors.black,
-              onPressed: () async {
-                final result = await Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProfileScreen()),
-                );
-                if (result == true) {
-                  _refreshStoreData();
-                  // If data was saved, reload the store data
-                }
-              },
-            ),
-          ),
         ],
       ),
       body: FutureBuilder<List<Map<String, String>>?>(
