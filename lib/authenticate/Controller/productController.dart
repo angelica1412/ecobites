@@ -29,26 +29,26 @@ Future<void> addProductToFireStore(String? storeID, Map<String, dynamic> product
   }
 }
 
-Future<List<Map<String, String>>?> getAllProducts() async {
-  final FirebaseFirestore db = FirebaseFirestore.instance;
-  try {
-    final QuerySnapshot querySnapshot = await db.collection("Product").get();
-    if (querySnapshot.docs.isNotEmpty) {
-      List<Map<String, String>> products = [];
-      for (var doc in querySnapshot.docs) {
-        final data = doc.data() as Map<String, dynamic>;
-
-        products.add({
-        });
-      }
-      return products;
-    } else {
-      print('No Products Found');
-    }
-  } catch (e) {
-    print('Error getting product: $e');
-  }
-}
+// Future<List<Map<String, String>>?> getAllProducts() async {
+//   final FirebaseFirestore db = FirebaseFirestore.instance;
+//   try {
+//     final QuerySnapshot querySnapshot = await db.collection("Product").get();
+//     if (querySnapshot.docs.isNotEmpty) {
+//       List<Map<String, String>> products = [];
+//       for (var doc in querySnapshot.docs) {
+//         final data = doc.data() as Map<String, dynamic>;
+//
+//         products.add({
+//         });
+//       }
+//       return products;
+//     } else {
+//       print('No Products Found');
+//     }
+//   } catch (e) {
+//     print('Error getting product: $e');
+//   }
+// }
 //Read Product Data by ID
 Future<Map<String, String>?> getProductbyID(String productID, String? storeID) async {
   final FirebaseFirestore db = FirebaseFirestore.instance;

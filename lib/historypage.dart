@@ -1,10 +1,7 @@
 import 'package:ecobites/Widgets/secondarytabbar.dart';
 import 'package:ecobites/homepage.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
-import 'UploadBarang.dart';
 import 'authenticate/Controller/historyController.dart';
 
 class ActivityCard {
