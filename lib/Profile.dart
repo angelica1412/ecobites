@@ -21,7 +21,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String? userPhoneNumber;
   bool _isLoading = true;
   bool _isPressed = false;
-  String? _imageURL;
+  String? _imageURL="";
 
 
   @override
@@ -75,8 +75,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             color: Colors.black,
           ),
           onPressed: () {
-            Navigator.pop(
-                context, true);
+            Navigator.pop(context, true);
           },
         ),
         elevation: 0,
@@ -104,7 +103,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   child:
                                   Column(
                                     children: [
-                                        if(_imageURL != null)
+                                        if(_imageURL != null && _imageURL!.isNotEmpty)
                                           ClipOval(
                                             child: SizedBox(
                                               width: 80,
@@ -138,7 +137,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           radius: 40,
                                           backgroundColor: Colors.grey,
                                           child:
-                                          Icon(Icons.person, size: 40, color: Colors.white),
+                                          Icon(Icons.person, size: 40, color: Colors.black),
                                         ),
                                       // Image.asset(
                                       //   'assets/defaultProfilePicture.png',
