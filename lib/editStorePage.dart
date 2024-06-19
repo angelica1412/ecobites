@@ -40,7 +40,7 @@ class _EditStorePageState extends State<EditStorePage> {
         _storeNameController.text = storeData['namaToko'] ?? '';
         _addressController.text = storeData['alamat'] ?? '';
         _descriptionController.text = storeData['deskripsi'] ?? '';
-        _imageURL = storeData['imageURL']?? 'assets/shop.png';
+        _imageURL = storeData['imageURL']?? '';
         _isLoading = false;
       });
     } else {
@@ -129,7 +129,7 @@ class _EditStorePageState extends State<EditStorePage> {
                   width: double.infinity,
                   fit: BoxFit.cover,
                 )
-              else if(_imageURL != null)
+              else if(_imageURL != null && _imageURL!.isNotEmpty)
                 Image.network(
                   _imageURL!,
                   height: 200,
@@ -152,8 +152,14 @@ class _EditStorePageState extends State<EditStorePage> {
                   errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
                     return const Icon(Icons.error);
                   },
-                ),
+                )
+              else
+              Image.asset(
+              'assets/shop.png',
+                width: double.infinity,
+                height: 200,
 
+              ),
               const SizedBox(height: 8),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

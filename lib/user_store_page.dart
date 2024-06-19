@@ -163,10 +163,9 @@ class _StorePageState extends State<userStorePage> {
           : ListView(
             children: [
               Container(
-                height: MediaQuery.of(context).size.height *
-                    0.25, // Tinggi 1/10 dari layar
+                height: MediaQuery.of(context).size.height *0.25, // Tinggi 1/10 dari layar
                 width: double.infinity, // Lebar penuh
-                child: _storeData['imageURL'] != null
+                child: (_storeData['imageURL'] != null && _storeData['imageURL']!.isNotEmpty)
                 ? Image.network(
                   _storeData['imageURL']!,
                   fit: BoxFit.cover,
@@ -186,9 +185,9 @@ class _StorePageState extends State<userStorePage> {
                   errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
                     return const Icon(Icons.error);
                   },
-                ): const Image(
-                  image: AssetImage('assets/shop.png'),
-                  fit: BoxFit.cover,
+                ): Image.asset(
+                  'assets/shop.png',
+
                 ),
               ),
               //card toko

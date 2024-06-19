@@ -160,7 +160,7 @@ class _StorePageState extends State<StorePage> {
                       height: MediaQuery.of(context).size.height *
                           0.25, // Tinggi 1/10 dari layar
                       width: double.infinity, // Lebar penuh
-                      child: _storeData['imageURL'] != null
+                      child: (_storeData['imageURL'] != null && _storeData['imageURL']!.isNotEmpty)
                           ? Image.network(
                               _storeData['imageURL']!,
                               fit: BoxFit.cover,
@@ -173,13 +173,7 @@ class _StorePageState extends State<StorePage> {
                                   child: Center(
                                     child: CircularProgressIndicator(
                                       value:
-                                          loadingProgress.expectedTotalBytes !=
-                                                  null
-                                              ? loadingProgress
-                                                      .cumulativeBytesLoaded /
-                                                  (loadingProgress
-                                                          .expectedTotalBytes ??
-                                                      1)
+                                          loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
                                               : null,
                                     ),
                                   ),
@@ -190,10 +184,10 @@ class _StorePageState extends State<StorePage> {
                                 return const Icon(Icons.error);
                               },
                             )
-                          : const Image(
-                              image: AssetImage('assets/shop.png'),
-                              fit: BoxFit.cover,
-                            ),
+                          : Image.asset(
+                            'assets/shop.png',
+
+                      ),
                     ),
                     //card toko
                     Container(

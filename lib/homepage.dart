@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
   TextEditingController searchController = TextEditingController();
   String searchQuery = "";
   Future<List<Map<String, String>>?>? _storeFuture;
-  String? _imageURL;
+  String? _imageURL="";
   bool? _isLoading = false;
 
 
@@ -95,7 +95,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               )
-              :_imageURL != null?
+              :_imageURL != null && _imageURL!.isNotEmpty?
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: GestureDetector(
@@ -138,7 +138,8 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-            ):
+            )
+              :
             Container(
               alignment: Alignment.center,
               decoration: BoxDecoration(
@@ -150,8 +151,7 @@ class _HomePageState extends State<HomePage> {
               height: 48,
               margin: EdgeInsets.only(right: 20),
               child: IconButton(
-                icon: Icon(Icons.person, size: 24),
-                color: Colors.black,
+                icon: Icon(Icons.person, size: 24,color: Colors.black),
                 onPressed: () async {
                   final result = await Navigator.push(
                     context,

@@ -72,7 +72,7 @@ Future<Map<String, String>?> getStorebyID(String storeId) async {
       final data = doc.data() as Map<String, dynamic>;
       final alamat = data['alamat'] ?? 'no address';
       final deskripsi = data['deskripsi'] ?? 'no desc';
-      final imageURL = data['imageURL'] ?? 'assets/shop.png';
+      final imageURL = data['imageURL'] ?? '';
       final namaToko = data['namaToko'] ?? '-';
       final id = doc.id;
 
