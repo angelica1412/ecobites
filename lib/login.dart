@@ -12,12 +12,18 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
-
+  bool _isLoading = false;
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
   Future<void> userLogin(BuildContext context) async {
     if (_formkey.currentState!.validate()) {
+      setState(() {
+        _isLoading=true;
+      });
       await Auth.login(context, emailController.text.trim(), passController.text.trim());
+      setState(() {
+        _isLoading=false;
+      });
       // Bring the user to the home page after successful login
     }
   }
@@ -135,7 +141,9 @@ class _LoginPageState extends State<LoginPage> {
                   alignment: Alignment.center,
                   child: SizedBox(
                     width: 300,
-                    child: ElevatedButton(
+                    child: _isLoading? Center(child: CircularProgressIndicator(),)
+                        :
+                    ElevatedButton(
                       onPressed: () {
                         userLogin(context);
                         // Add your authentication logic here

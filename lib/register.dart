@@ -13,6 +13,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  bool _isLoading = false;
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
@@ -34,6 +35,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future<void> registration(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading=true;
+      });
       Map<String, dynamic> userData = {
         'username': userNameController.text.trim(),
         'email': emailController.text.trim(),
@@ -47,6 +51,9 @@ class _RegisterPageState extends State<RegisterPage> {
       };
       await Auth.registerUser(context, emailController.text.trim(),
           passController.text.trim(), storeData, userData);
+      setState(() {
+        _isLoading=false;
+      });
     }
   }
 
@@ -294,8 +301,11 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 const SizedBox(height: 20),
                 Center(
-                  child: ElevatedButton(
-                    onPressed: () => registration(context),
+                  child: _isLoading? Center(child: CircularProgressIndicator(),):ElevatedButton(
+                    onPressed: () {
+                      registration(context);
+                    },
+
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF92E3A9),
                       shape: RoundedRectangleBorder(
