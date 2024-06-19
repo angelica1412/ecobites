@@ -11,7 +11,7 @@ class PengaturanAkun extends StatefulWidget {
 }
 
 class _PengaturanAkunState extends State<PengaturanAkun> {
-  bool _isLoading = true;
+  bool _isLoading = false;
   File? _imageFile;
   String? _imageURL;
 
@@ -43,6 +43,7 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
 
           _isLoading = false;
         });
+        print(_imageURL);
       } else {
         print('User details not found');
         setState(() {
@@ -70,6 +71,9 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
     });
   }
   Future<void> updateUserDetails() async {
+    setState(() {
+      _isLoading=true;
+    });
     try {
       final updatedDetails = {
         'username': _usernameController.text,
@@ -77,8 +81,14 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
       };
       await updateUserDetailsbyUID(updatedDetails, _imageFile);
       print('User details updated successfully');
+      setState(() {
+        _isLoading=false;
+      });
     } catch (e) {
       print('Error updating user details: $e');
+      setState(() {
+        _isLoading=false;
+      });
     }
   }
 
@@ -94,9 +104,7 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
           },
         ),
       ),
-      body: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
+      body:  SingleChildScrollView(
               child: Column(
                 children: [
                   const SizedBox(height: 20),
@@ -114,7 +122,7 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                               ),
                             ),
                           )
-                        else if(_imageURL != null)
+                        else if(_imageURL != null && _imageURL!.isNotEmpty)
                           ClipOval(
                             child: SizedBox(
                               width: 100,
@@ -143,12 +151,12 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                               ),
                             ),
                           )
-                        else if (_imageURL == null && _imageFile == null)
+                        else
                           const CircleAvatar(
                             radius: 50,
                             backgroundColor: Colors.grey,
                             child:
-                                Icon(Icons.person, size: 50, color: Colors.white),
+                                Icon(Icons.person, size: 50, color: Colors.black),
                           ),
                         TextButton(
                           onPressed: _pickImageFromGallery,
@@ -251,7 +259,7 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
                               ),
-                              child: ElevatedButton(
+                              child: _isLoading? Center(child: CircularProgressIndicator(),):ElevatedButton(
                                 onPressed: () async {
                                   await updateUserDetails();
                                   ScaffoldMessenger.of(context).showSnackBar(
