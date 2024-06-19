@@ -1,9 +1,7 @@
 import 'package:ecobites/homepage.dart';
-import 'package:ecobites/main.dart';
 import 'package:ecobites/onboardingscreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import '../authenticate/Controller/storeController.dart';
 import '../authenticate/Controller/userController.dart';
 import '../login.dart';
@@ -83,11 +81,7 @@ class Auth {
   static Future<void> registerUser(BuildContext context, String email, String password, Map<String, dynamic> storeData, Map<String, dynamic> userData) async {
 
       try {
-        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: email,
-          password: password
-
-        );
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text(
