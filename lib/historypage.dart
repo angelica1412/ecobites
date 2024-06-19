@@ -75,6 +75,8 @@ class _HistoryPageState extends State<HistoryPage> {
   String? _selectedDropdown2;
   List<ActivityCard> salesData = [];
   List<ActivityCard> purchaseData = [];
+  bool _isSalesDataLoading = true;
+  bool _isPurchaseDataLoading = true;
   // List<ActivityCard> salesData = [
   //   ActivityCard(date: '2021-12-01', status: 'On Progress', imageName: 'assets/martabak.jpg', productName: 'Martabak', quantity: 3),
   //   ActivityCard(date: '2021-12-02', status: 'Done', imageName: 'assets/pupuk.png', productName: 'Pupuk Kualitas bagus', quantity: 2),
@@ -94,15 +96,32 @@ class _HistoryPageState extends State<HistoryPage> {
     _fetchHistoryData();
   }
   Future<void> _fetchHistoryData() async {
-    // Load sales history
-    List<ActivityCard> purchases = await readStoreHistoryFromFirestore();
-    List<ActivityCard> sales = await readUserHistoryFromFirestore();
-
+    // Start loading
     setState(() {
-      // Sort data based on date
-      purchaseData = purchases..sort((a, b) => b.date.compareTo(a.date));
-      salesData = sales..sort((a, b) => b.date.compareTo(a.date));
+      _isSalesDataLoading = true;
+      _isPurchaseDataLoading = true;
     });
+
+    try {
+      // Load sales history
+      List<ActivityCard> purchases = await readStoreHistoryFromFirestore();
+      List<ActivityCard> sales = await readUserHistoryFromFirestore();
+
+      setState(() {
+        // Sort data based on date
+        purchaseData = purchases..sort((a, b) => b.date.compareTo(a.date));
+        salesData = sales..sort((a, b) => b.date.compareTo(a.date));
+      });
+    } catch (e) {
+      // Handle error
+      print('Error fetching history data: $e');
+    } finally {
+      // End loading
+      setState(() {
+        _isSalesDataLoading = false;
+        _isPurchaseDataLoading = false;
+      });
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -203,9 +222,14 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 
   Widget _buildSalesView() {
+    if (_isSalesDataLoading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     if (salesData.isEmpty) {
       return const Center(
-        child: CircularProgressIndicator(), // Show loading indicator while fetching data
+        child: Text('No sales data available'),
       );
     }
     return ListView.separated(
@@ -332,9 +356,14 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 
   Widget _buildPurchaseView() {
+    if (_isPurchaseDataLoading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     if (purchaseData.isEmpty) {
       return const Center(
-        child: CircularProgressIndicator(), // Show loading indicator while fetching data
+        child: Text('No purchase data available'),
       );
     }
     return ListView.separated(
