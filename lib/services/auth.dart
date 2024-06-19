@@ -54,6 +54,17 @@ class Auth {
               "invalid Email",
               style: TextStyle(fontSize: 18.0),
             )));
+      }else if(e.code == "network-request-failed"){
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+
+            backgroundColor: Colors.amber,
+            content: Text(
+              "Network Error",
+              style: TextStyle(fontSize: 20.0),
+            ),
+          ),
+        );
       }
       else{
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -121,6 +132,17 @@ class Auth {
               backgroundColor: Colors.amber,
               content: Text(
                 "Email address is Badly Formatted",
+                style: TextStyle(fontSize: 20.0),
+              ),
+            ),
+          );
+        }else if(e.code == "network-request-failed"){
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+
+              backgroundColor: Colors.amber,
+              content: Text(
+                "Network Error",
                 style: TextStyle(fontSize: 20.0),
               ),
             ),
