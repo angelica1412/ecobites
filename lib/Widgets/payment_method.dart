@@ -53,8 +53,8 @@ class _PaymentMethodState extends State<PaymentMethod> {
           physics: NeverScrollableScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
-            mainAxisSpacing: 0.1,
-            crossAxisSpacing: 0,
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 10,
             childAspectRatio: 0.8,
           ),
           itemCount: paymentMethodTitles.length,
