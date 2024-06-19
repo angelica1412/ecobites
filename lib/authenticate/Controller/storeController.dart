@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:path_provider/path_provider.dart';
 
 Future<void> addStoreToFireStore(Map<String, dynamic> storeData) async {
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -107,6 +109,7 @@ Future<void> updateStorebyID(String storeID, Map<String, dynamic> updatedData, F
 
       // If a new image file is provided, delete the old image and upload the new one
       if (imageFile != null) {
+        File compressedFile = await compressImage(imageFile, 50); // Compress with 85% quality
         if (currentImageUrl != null && currentImageUrl != 'assets/shop.png') {
           // Delete the old image from Firebase Storage
           final oldImageRef = storage.refFromURL(currentImageUrl);
@@ -115,7 +118,7 @@ Future<void> updateStorebyID(String storeID, Map<String, dynamic> updatedData, F
 
         // Upload the new image to Firebase Storage
         final storageRef = storage.ref().child('store_images').child('$storeID.jpg');
-        final uploadTask = storageRef.putFile(imageFile);
+        final uploadTask = storageRef.putFile(compressedFile);
         final TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => {});
         final imageUrl = await taskSnapshot.ref.getDownloadURL();
 
@@ -132,4 +135,17 @@ Future<void> updateStorebyID(String storeID, Map<String, dynamic> updatedData, F
   } catch (e) {
     print('Error updating store data: $e');
   }
+}
+
+Future<File> compressImage(File file, int quality) async {
+  final dir = await getTemporaryDirectory();
+  final targetPath = '${dir.absolute.path}/temp.jpg';
+
+  var result = await FlutterImageCompress.compressAndGetFile(
+    file.absolute.path,
+    targetPath,
+    quality: quality, // Anda bisa menyesuaikan kualitas sesuai kebutuhan
+  );
+
+  return File(result!.path);
 }

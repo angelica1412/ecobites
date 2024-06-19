@@ -1,11 +1,8 @@
-
-
-//Add Product Data ro Cloud FireStore
-import 'dart:convert';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:path_provider/path_provider.dart';
 
 Future<void> addProductToFireStore(String? storeID, Map<String, dynamic> productData, File? imageFile) async {
   final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -15,10 +12,11 @@ Future<void> addProductToFireStore(String? storeID, Map<String, dynamic> product
     final productRef = storeRef.collection('Products').doc(); // Create a new document reference in the Products subcollection
     final String productID = productRef.id;
     if (imageFile != null) {
+      File compressedFile = await compressImage(imageFile, 50); // Compress with 85% quality
       // Upload image to Firebase Storage
       final storageRef = storage.ref().child('product_images').child(
           '$productID.jpg');
-      final uploadTask = storageRef.putFile(imageFile);
+      final uploadTask = storageRef.putFile(compressedFile);
       final TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => {});
       final imageUrl = await taskSnapshot.ref.getDownloadURL();
 
@@ -157,6 +155,7 @@ Future<void> updateProductbyID(String? storeID,String productID, Map<String, dyn
 
       // If a new image file is provided, delete the old image and upload the new one
       if (imageFile != null) {
+        File compressedFile = await compressImage(imageFile, 50); // Compress with 85% quality
         if (currentImageUrl != null && currentImageUrl != 'assets/shop.png') {
           // Delete the old image from Firebase Storage
           final oldImageRef = storage.refFromURL(currentImageUrl);
@@ -165,7 +164,7 @@ Future<void> updateProductbyID(String? storeID,String productID, Map<String, dyn
 
         // Upload the new image to Firebase Storage
         final storageRef = storage.ref().child('product_images').child('$productID.jpg');
-        final uploadTask = storageRef.putFile(imageFile);
+        final uploadTask = storageRef.putFile(compressedFile);
         final TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => {});
         final productImageURL = await taskSnapshot.ref.getDownloadURL();
 
@@ -210,4 +209,17 @@ Future<void> deleteProductFromFirestore(String? storeID, String productID) async
   } catch (e) {
     print('Error deleting product data: $e');
   }
+}
+
+Future<File> compressImage(File file, int quality) async {
+  final dir = await getTemporaryDirectory();
+  final targetPath = '${dir.absolute.path}/temp.jpg';
+
+  var result = await FlutterImageCompress.compressAndGetFile(
+    file.absolute.path,
+    targetPath,
+    quality: quality, // Anda bisa menyesuaikan kualitas sesuai kebutuhan
+  );
+
+  return File(result!.path);
 }

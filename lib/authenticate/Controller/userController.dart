@@ -2,6 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:path_provider/path_provider.dart';
+
 
 //Add user Data ro Cloud FireStore
 Future<void> addUserDetailsToFirestore(Map<String, dynamic> userData) async {
@@ -63,19 +66,19 @@ Future<void> updateUserDetailsbyUID(Map<String, dynamic> updatedData, File? imag
   final myUid = user?.uid;
   final FirebaseFirestore db = FirebaseFirestore.instance;
   final FirebaseStorage storage = FirebaseStorage.instance;
-
   try {
     final docSnapshot = await db.collection('Users').doc(myUid).get();
     if (docSnapshot.exists){
       final currentData = docSnapshot.data() as Map<String, dynamic>;
       final currentImageUrl = currentData['userImageURL'] ?? null;
       if(imageFile != null){
+        File compressedFile = await compressImage(imageFile, 50); // Compress with 85% quality
         if(currentImageUrl != null && currentImageUrl != ''){
           final oldImageRef = storage.refFromURL(currentImageUrl);
           await oldImageRef.delete();
         }
         final storageRef = storage.ref().child('users_images').child('$myUid.jpg');
-        final uploadTask = storageRef.putFile(imageFile);
+        final uploadTask = storageRef.putFile(compressedFile);
         final TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => {});
         final userImageURL = await taskSnapshot.ref.getDownloadURL();
 
@@ -91,16 +94,16 @@ Future<void> updateUserDetailsbyUID(Map<String, dynamic> updatedData, File? imag
   }
 }
 
-//Delete User Data by UID
-// Future<void> deleteUserFromFirestore(String userId) async {
-//   final FirebaseAuth auth = FirebaseAuth.instance;
-//   final User? user = auth.currentUser;
-//   final myUid = user?.uid;
-//   final FirebaseFirestore db = FirebaseFirestore.instance;
-//   try {
-//     await db.collection('users').doc(myUid).delete();
-//     print('User deleted from Firestore');
-//   } catch (e) {
-//     print('Error deleting user: $e');
-//   }
-// }
+Future<File> compressImage(File file, int quality) async {
+  final dir = await getTemporaryDirectory();
+  final targetPath = '${dir.absolute.path}/temp.jpg';
+
+  var result = await FlutterImageCompress.compressAndGetFile(
+    file.absolute.path,
+    targetPath,
+    quality: quality, // Anda bisa menyesuaikan kualitas sesuai kebutuhan
+  );
+
+  return File(result!.path);
+}
+
